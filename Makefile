@@ -1,4 +1,5 @@
-FILES			= 	main.c
+FILES			= 	main.c \
+					test/test.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -17,14 +18,17 @@ ERROR_FLAGS 	= 	-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ)
+$(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@if [ ! -d $(dir $@) ]; then \
+   		mkdir $(dir $@); \
+	fi
 	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	mkdir $(OBJ_SUBDIR)
 
 $(LIBFT): $(LIBFT_DIR)/Makefile
 	make -C libft
