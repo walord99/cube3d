@@ -1,0 +1,4 @@
+.vscode
+*.DSYM
+cube3d
+obj/
