@@ -1,5 +1,4 @@
-FILES			= 	main.c \
-					test/test.c
+FILES			= 	main.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -9,17 +8,31 @@ CC				= 	gcc
 
 NAME			= 	cube3d
 HEADER_DIR		= 	include
-LIBFT_DIR 		= 	libft
+LIB_DIR  		=	libs
+LIBFT_DIR 		= 	$(LIB_DIR)/libft
+MLX_DIR			=	$(LIB_DIR)/MLX42
+MLX_BUILD_DIR	=	$(MLX_DIR)/build
+
+MLX				= 	$(MLX_BUILD_DIR)/libmlx42.a
 LIBFT			= 	$(LIBFT_DIR)/libft.a
 
 INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR)
 
-ERROR_FLAGS 	= 	-Wall -Werror -Wextra
+
+UNAME 			= 	$(shell uname -s)
+ifeq ($(UNAME), Linux)
+  LIB_FLAGS		= 	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
+endif
+ifeq ($(UNAME), Darwin)
+  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"$(shell brew info glfw | grep files | cut -d " " -f1)/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
+endif
+
+ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -o $(NAME)
+$(NAME): $(LIBFT) $(MLX) $(OBJ)
+	$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
@@ -27,15 +40,20 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	fi
 	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
-$(OBJ_DIR):
-	mkdir $(OBJ_SUBDIR)
-
 $(LIBFT): $(LIBFT_DIR)/Makefile
-	make -C libft
+	make -C $(LIBFT_DIR)
 
 $(LIBFT_DIR)/Makefile:
 	@git submodule init
-	@git submodule update
+	@git submodule update $(LIBFT_DIR)
+
+$(MLX): $(MLX_DIR)/CMakeLists.txt
+	cmake $(MLX_DIR) -B $(MLX_BUILD_DIR)
+	make -C $(MLX_BUILD_DIR)
+
+$(MLX_DIR)/CMakeLists.txt:
+	@git submodule init
+	@git submodule update $(MLX_DIR)
 
 clean:
 	rm -rf $(OBJ_DIR)
