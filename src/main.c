@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/02 15:13:56 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/02 16:22:18 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,15 @@
 # define M_PI 3.141592653589793
 #endif
 
-#define screenWidth 600
-#define screenHeight 600
+#define screenWidth 1920
+#define screenHeight 1080
+
+int				map[10 * 10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1,
+					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1};
 
 typedef struct s_vector
 {
@@ -35,6 +42,7 @@ typedef struct s_game
 	t_vector	plane;
 	mlx_t		*mlx;
 	mlx_image_t	*rendered;
+	mlx_image_t *render_time;
 }				t_game;
 
 t_vector	rotate_vector(const t_vector v, double angle)
@@ -81,7 +89,7 @@ double	dbl_abs(double n)
 	return (n);
 }
 
-uint32_t rbga_builder(int r, int g, int b, int a)
+uint32_t	rbga_builder(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -175,23 +183,60 @@ void	cast_rays(t_game *game, int *map)
 		while (y <= drawEnd)
 		{
 			if (side == 0)
-			mlx_put_pixel(game->rendered, x, y, rbga_builder(255, 255, 255, 255));
+				mlx_put_pixel(game->rendered, x, y, rbga_builder(255, 255, 255,
+						255));
 			else
-			mlx_put_pixel(game->rendered, x, y, rbga_builder(200, 200, 200, 255));
+				mlx_put_pixel(game->rendered, x, y, rbga_builder(200, 200, 200,
+						255));
 			y++;
 		}
 		x++;
 	}
 }
 
+void 	key_hook(mlx_key_data_t key_data, void *param)
+{
+	t_game *game = (t_game *)param;
+
+	}
+
+
+void	loop_hook(void *param)
+{
+	t_game	*game;
+
+	game = (t_game *)param;
+
+	double move_speed = game->mlx->delta_time * 6.0;
+	double rot_speed = game->mlx->delta_time * 90.0;
+
+		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+			game->pos = add_vector(game->pos, multiply_vector(game->look_dir, move_speed));
+		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+			game->pos = add_vector(game->pos, multiply_vector(game->look_dir, -1 * move_speed));
+		if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+			game->pos = add_vector(game->pos, multiply_vector(rotate_vector(game->look_dir, deg_to_rad(-90)) , move_speed));
+		if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+			game->pos = add_vector(game->pos, multiply_vector(rotate_vector(game->look_dir, deg_to_rad(90)) , move_speed));
+		if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+		{	
+			game->look_dir = rotate_vector(game->look_dir, deg_to_rad(rot_speed));
+			game->plane = rotate_vector(game->plane, deg_to_rad(rot_speed));
+		}
+		if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		{	
+			game->look_dir = rotate_vector(game->look_dir, deg_to_rad(-1 * rot_speed));
+			game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
+		}
+	mlx_delete_image(game->mlx, game->rendered);
+	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);
+	cast_rays(game, map);
+	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
+}
+
 int	main(void)
 {
 	t_game game;
-	int map[10 * 10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-		1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
-		0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1};
 	game.pos.x = 1.5;
 	game.pos.y = 3.2;
 	game.look_dir.x = 0;
@@ -201,8 +246,8 @@ int	main(void)
 	game.look_dir = rotate_vector(game.look_dir, deg_to_rad(90));
 	game.plane = rotate_vector(game.plane, deg_to_rad(90));
 	game.mlx = mlx_init(screenWidth, screenHeight, "cube3d", false);
-	game.rendered = mlx_new_image(game.mlx, screenWidth, screenWidth);
-	cast_rays(&game, map);
-	mlx_image_to_window(game.mlx, game.rendered, 0 ,0);
+	mlx_key_hook(game.mlx, &key_hook, &game);
+	mlx_loop_hook(game.mlx, &loop_hook, &game);
 	mlx_loop(game.mlx);
+	mlx_terminate(game.mlx);
 }
