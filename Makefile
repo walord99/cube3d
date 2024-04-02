@@ -16,7 +16,7 @@ MLX_BUILD_DIR	=	$(MLX_DIR)/build
 MLX				= 	$(MLX_BUILD_DIR)/libmlx42.a
 LIBFT			= 	$(LIBFT_DIR)/libft.a
 
-INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR)
+INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include
 
 
 UNAME 			= 	$(shell uname -s)
@@ -24,7 +24,7 @@ ifeq ($(UNAME), Linux)
   LIB_FLAGS		= 	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
 endif
 ifeq ($(UNAME), Darwin)
-  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"$(shell brew info glfw | grep files | cut -d " " -f1)/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
+  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"/Users/$(shell whoami)/.brew/Cellar/glfw/3.3.9/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
 endif
 
 ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
