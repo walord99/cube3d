@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/02 16:22:18 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/03 14:49:06 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "libft.h"
 #include <float.h>
 #include <math.h>
+#include <stdio.h>
+#include <unistd.h>
 #ifndef M_PI
 # define M_PI 3.141592653589793
 #endif
@@ -42,7 +44,6 @@ typedef struct s_game
 	t_vector	plane;
 	mlx_t		*mlx;
 	mlx_image_t	*rendered;
-	mlx_image_t *render_time;
 }				t_game;
 
 t_vector	rotate_vector(const t_vector v, double angle)
@@ -198,36 +199,88 @@ void 	key_hook(mlx_key_data_t key_data, void *param)
 {
 	t_game *game = (t_game *)param;
 
-	}
+}
 
+double fast_inv_sqrt(double n)
+{
+	long i;
+  	float x2, y;
+  	const float threehalfs = 1.5F;
+
+  	x2 = n * 0.5F;
+  	y  = n;
+  	i  = * ( long * ) &y;                       // evil floating point bit level hacking
+  	i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
+  	y  = * ( float * ) &i;
+  	y  = y * ( threehalfs - ( x2 * y * y ) );
+
+	return y;
+}
+
+t_vector normalise_vector(t_vector v)
+{
+	double magnetude_sqrd = pow(v.x, 2) + pow(v.y, 2);
+	double inv_sqrt = fast_inv_sqrt(magnetude_sqrd);
+	v.x *= inv_sqrt;
+	v.y *= inv_sqrt;
+	return v;
+}
+
+void 	mouse_hook(double xpos, double ypos, void *param)
+{
+	printf("x: %f\ny: %f\n", xpos, ypos);
+}
 
 void	loop_hook(void *param)
 {
 	t_game	*game;
 
 	game = (t_game *)param;
-
-	double move_speed = game->mlx->delta_time * 6.0;
+	t_vector movement;
+	movement.x = 0;
+	movement.y = 0;
+	double move_speed = game->mlx->delta_time * 3.0;
 	double rot_speed = game->mlx->delta_time * 90.0;
 
-		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-			game->pos = add_vector(game->pos, multiply_vector(game->look_dir, move_speed));
-		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-			game->pos = add_vector(game->pos, multiply_vector(game->look_dir, -1 * move_speed));
-		if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-			game->pos = add_vector(game->pos, multiply_vector(rotate_vector(game->look_dir, deg_to_rad(-90)) , move_speed));
-		if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-			game->pos = add_vector(game->pos, multiply_vector(rotate_vector(game->look_dir, deg_to_rad(90)) , move_speed));
-		if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
-		{	
-			game->look_dir = rotate_vector(game->look_dir, deg_to_rad(rot_speed));
-			game->plane = rotate_vector(game->plane, deg_to_rad(rot_speed));
-		}
-		if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
-		{	
-			game->look_dir = rotate_vector(game->look_dir, deg_to_rad(-1 * rot_speed));
-			game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
-		}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		movement = add_vector(movement, game->look_dir);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		movement = add_vector(movement, multiply_vector(game->look_dir, -1 ));
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		movement = add_vector(movement, rotate_vector(game->look_dir, deg_to_rad(-90)));
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		movement = add_vector(movement, rotate_vector(game->look_dir, deg_to_rad(90)));
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+	{	
+		game->look_dir = rotate_vector(game->look_dir, deg_to_rad(rot_speed));
+		game->plane = rotate_vector(game->plane, deg_to_rad(rot_speed));
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+	{	
+		game->look_dir = rotate_vector(game->look_dir, deg_to_rad(-1 * rot_speed));
+		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
+	}
+	movement = normalise_vector(movement);
+	movement = multiply_vector(movement, move_speed);
+
+	int mapX = (int)game->pos.x;
+	int mapY = (int)game->pos.y;
+	t_vector temp_pos = add_vector(game->pos, movement);
+	if (map[(int)temp_pos.x * 10 + mapY] != 0)
+	{		
+		if (movement.x < 0)
+			movement.x = movement.x - (temp_pos.x - (int)temp_pos.x) + 1.001;
+		else
+			movement.x = movement.x - (temp_pos.x - (int)temp_pos.x) - 0.001;
+	}
+	if (map[mapX * 10 + (int)temp_pos.y])
+	{
+		if (movement.y < 0)
+			movement.y = movement.y - (temp_pos.y - (int)temp_pos.y) + 1.001;
+		else
+			movement.y = movement.y - (temp_pos.y - (int)temp_pos.y) - 0.001;
+	}
+	game->pos = add_vector(game->pos, movement);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);
 	cast_rays(game, map);
@@ -247,6 +300,7 @@ int	main(void)
 	game.plane = rotate_vector(game.plane, deg_to_rad(90));
 	game.mlx = mlx_init(screenWidth, screenHeight, "cube3d", false);
 	mlx_key_hook(game.mlx, &key_hook, &game);
+	mlx_cursor_hook(game.mlx, &mouse_hook, &game);
 	mlx_loop_hook(game.mlx, &loop_hook, &game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);

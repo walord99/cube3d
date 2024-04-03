@@ -1,4 +1,4 @@
-FILES			= 	main.c
+FILES			= 	game/main.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -36,7 +36,7 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
-   		mkdir $(dir $@); \
+   		mkdir -p $(dir $@); \
 	fi
 	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
