@@ -1,4 +1,4 @@
-FILES			= 	main.c
+FILES			= 	main.c parsing/map.c parsing/main.c parsing/file.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -7,7 +7,7 @@ OBJ 			= 	$(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
 CC				= 	gcc
 
 NAME			= 	cube3d
-HEADER_DIR		= 	include
+HEADER_DIR		= 	includes
 LIB_DIR  		=	libs
 LIBFT_DIR 		= 	$(LIB_DIR)/libft
 MLX_DIR			=	$(LIB_DIR)/MLX42
@@ -24,14 +24,14 @@ ifeq ($(UNAME), Linux)
   LIB_FLAGS		= 	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
 endif
 ifeq ($(UNAME), Darwin)
-  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"/Users/$(shell whoami)/.brew/Cellar/glfw/3.3.9/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
+  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"$(shell brew info glfw | grep files | cut -d " " -f1)/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
 endif
 
 ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(OBJ)
+$(NAME): $(MLX) $(LIBFT)  $(OBJ)
 	$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
