@@ -1,4 +1,4 @@
-FILES			= 	main.c
+FILES			= 	main.c parsing/map.c parsing/main.c parsing/file.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -7,7 +7,7 @@ OBJ 			= 	$(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
 CC				= 	gcc
 
 NAME			= 	cube3d
-HEADER_DIR		= 	include
+HEADER_DIR		= 	includes
 LIB_DIR  		=	libs
 LIBFT_DIR 		= 	$(LIB_DIR)/libft
 MLX_DIR			=	$(LIB_DIR)/MLX42
@@ -31,7 +31,7 @@ ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(OBJ)
+$(NAME): $(MLX) $(LIBFT)  $(OBJ)
 	$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
