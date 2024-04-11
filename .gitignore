@@ -2,4 +2,5 @@
 .vscode
 *.DSYM
 cube3d
+# src/main.c
 obj/

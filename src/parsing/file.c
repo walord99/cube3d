@@ -6,13 +6,11 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/05 14:30:07 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:20:32 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-//TODO:change the isdigit strlen strncmp ... by libft functions
 
 int	open_file(char *file_path)
 {
@@ -71,10 +69,10 @@ bool	is_valid_color_str(char *color_pref)
 		return (false);
 	while (color_pref[i] != '\0')
 	{
-		if (isdigit(color_pref[i]))
+		if (ft_isdigit(color_pref[i]))
 		{
 			num = 0;
-			while (isdigit(color_pref[i]))
+			while (ft_isdigit(color_pref[i]))
 			{
 				num = num * 10 + (color_pref[i] - '0');
 				i++;

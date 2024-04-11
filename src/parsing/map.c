@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/03 02:23:15 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/04/11 13:21:08 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	line_check(char **str)
 	int	x;
 
 	start = 0;
-	end = strlen(str[0]);
+	end = ft_strlen(str[0]);
 	x = 0;
 	while (is_white_space(str[x][start]))
 		start++;
@@ -81,7 +81,7 @@ int	line_check(char **str)
 	while (str[x])
 		x++;
 	x--;
-	end = strlen(str[x]);
+	end = ft_strlen(str[x]);
 	start = 0;
 	while (is_white_space(str[x][start]))
 		start++;

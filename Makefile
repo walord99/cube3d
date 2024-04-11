@@ -1,4 +1,4 @@
-FILES			= 	main.c parsing/map.c parsing/main.c parsing/file.c
+FILES			= 	parsing/map.c  parsing/file.c render/main.c main.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj
@@ -31,12 +31,12 @@ ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(MLX) $(LIBFT)  $(OBJ)
-	$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
+@$(NAME): $(MLX) $(LIBFT)  $(OBJ)
+	@$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
-   		mkdir $(dir $@); \
+		mkdir -p $(dir $@); \
 	fi
 	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
@@ -56,11 +56,11 @@ $(MLX_DIR)/CMakeLists.txt:
 	@git submodule update $(MLX_DIR)
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	make -C $(LIBFT_DIR) fclean
-	rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
 
 re: clean all
 
