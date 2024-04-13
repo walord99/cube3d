@@ -6,34 +6,48 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/11 13:26:23 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/13 01:19:35 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	char	*str[15];
+	int		fd;
+	t_map	*map;
+	int		i;
 
-	str[0] = "			1111111111111 111111111111";
-	str[1] = "			1000000000110000000000001";
-	str[2] = "			1011000001110000000000001";
-	str[3] = "			1001000000000000000000001";
-	str[4] = "111111111011000001110000000000001";
-	str[5] = "100000000011000001110111111111111   0       1   1   1    ";
-	str[6] = "11110111111111011100000010001";
-	str[7] = "111101111111110111101010010001";
-	str[8] = "                     11000000110101011100000010001";
-	str[9] = "      1000000000000000N1100000010001";
-	str[10] = "10000000000000001101010010001";
-	str[11] = "110000011101010111110111100111";
-	str[12] = "11110111 1110101 101111010001    ";
-	str[13] = "              11111111 111111 111111111111     ";
-	str[14] = NULL;
-	if (is_map_valid(str))
-		printf("Map is valid\n");
-	else
-		printf("Map is invalid\n");
-	return (0);
+	if (argc != 2)
+	{
+		printf(ERR_ARGC);
+		return (1);
+	}
+	fd = file_check(argv);
+	if (fd != -1)
+	{
+		map = init_map_struct();
+		if (!map)
+		{
+			close(fd);
+			return (1);
+		}
+		read_and_parse_file(fd, map);
+		// close(fd);
+		fd = file_check(argv);
+		if (fd == -1)
+			return (1);
+		allocate_grid(map);
+		populate_grid(map, fd);
+		close(fd);
+		if (is_map_valid(map->grid))
+			printf("OK\n");
+		else
+			printf("KO\n");
+		for (i = 0; i < map->height; i++)
+		{
+			printf("%s\n", map->grid[i]);
+		}
+		return (0);
+	}
 }
