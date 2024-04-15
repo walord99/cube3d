@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/13 01:12:59 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/15 19:33:41 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ bool	is_char_valid(char **str)
 	while (str[x])
 	{
 		y = 0;
+			int len=(int)ft_strlen(str[x]);
+			printf("==>%i\n",len);
+			printf("----->%s\n", str[x]);
 		while (str[x][y])
 		{
 			if (str[x][y] == '1' || str[x][y] == '0'
@@ -174,10 +177,20 @@ int	colonne_check(char **str)
 
 bool	is_map_valid(char **str)
 {
-	if (!first_and_last_line_check(str) && !colonne_check(str)
-		&& is_char_valid(str))
-		return (true);
-	return (false);
+	if (!is_char_valid(str))
+		return (false);
+	
+	// if (colonne_check(str))
+	// {
+	// 	printf("col check\n");
+	// 	return(false);
+	// }
+	// if (first_and_last_line_check(str))
+	// {
+	// 	printf("first last\n");
+	// 	return(false);
+	// }
+	return (true);
 }
 
 char	**allocate_grid(t_map *map)
@@ -191,18 +204,7 @@ char	**allocate_grid(t_map *map)
 	i = 0;
 	while (i < map->height)
 	{
-		map->grid[i] = malloc((1 + map->width) * sizeof(char));
-		if (!map->grid[i])
-		{
-			j = 0;
-			while (j < i)
-			{
-				free(map->grid[j]);
-				j++;
-			}
-			free(map->grid);
-			return (NULL);
-		}
+		map->grid[i] = malloc((map->width + 1) * sizeof(char));
 		i++;
 	}
 	return (map->grid);
@@ -220,13 +222,12 @@ void	set_value_to_grid(t_map *map, int width, int height, char c)
 		map->grid[height][width] = ' ';
 }
 
-
-//TODO: check why the function isnt printing rhe whole grid (from first_map_line to height)
+// TODO: check why the function isnt printing rhe whole grid (from first_map_line to height)
 void	populate_grid(t_map *map, int fd)
 {
-	unsigned int	i;
-	char			*current_line;
-	int				width;
+	int		i;
+	char	*current_line;
+	int		width;
 
 	if (!map || map->first_map_line == -1 || !map->grid)
 		return ;
@@ -236,20 +237,40 @@ void	populate_grid(t_map *map, int fd)
 		get_next_line(fd, true);
 		i++;
 	}
-	i = map->first_map_line;
-	while (i != map->height)
+	i = 0;
+	while (i < map->height)
 	{
 		current_line = get_next_line(fd, true);
 		width = 0;
-		while (width < map->width )
+		while (width < map->width)
 		{
 			if ((size_t)width < ft_strlen(current_line))
-				// map->grid[i][width] = current_line[width];
 				set_value_to_grid(map, width, i, current_line[width]);
 			else
 				set_value_to_grid(map, width, i, ' ');
 			width++;
 		}
+		free(current_line);
 		i++;
+	}
+}
+
+void	free_map(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	if (map)
+	{
+		if (map->grid)
+		{
+			while (i < map->height)
+			{
+				free(map->grid[i]);
+				i++;
+			}
+			free(map->grid);
+		}
+		free(map);
 	}
 }

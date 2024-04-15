@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/13 01:23:07 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/15 19:21:37 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ typedef struct s_map
 int					first_non_white(char *line);
 bool				is_white_space(char c);
 bool				is_map_valid(char **str);
+// bool	is_map_valid(t_map *map);
 bool				is_valid_tex_prefix(char *tex_pref);
 bool				is_valid_color_str(char *color_pref);
 int					check_file_extension(char *file_name);
+void				free_map(t_map *map);
 int					file_check(char **argv);
 t_map				*init_map_struct(void);
 int					read_and_parse_file(int fd, t_map *map);

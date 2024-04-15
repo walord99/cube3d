@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/13 01:19:20 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:37:15 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	open_file(char *file_path)
 	if (fd < 0)
 	{
 		perror("Error opening file");
-		return (1);
+		return (-1);
 	}
 	return (fd);
 }
@@ -123,6 +123,7 @@ int	read_and_parse_file(int fd, t_map *map)
 			{
 				current_line = get_next_line(fd, true);
 				line_counter++;
+				continue;
 			}
 			else
 			{
