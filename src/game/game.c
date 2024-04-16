@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/05 14:41:04 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:05:06 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,42 +47,18 @@ typedef struct s_game
 	mlx_image_t	*rendered;
 }				t_game;
 
-t_vector	rotate_vector(const t_vector v, double angle)
-{
-	t_vector	result;
-
-	result.x = v.x * cos(angle) - v.y * sin(angle);
-	result.y = v.x * sin(angle) + v.y * cos(angle);
-	return (result);
-}
 
 double	rad_to_deg(double rad)
 {
 	return (rad * 180 / M_PI);
 }
 
-t_vector	add_vector(t_vector v1, t_vector v2)
-{
-	t_vector	result;
-
-	result.x = v1.x + v2.x;
-	result.y = v1.y + v2.y;
-	return (result);
-}
 
 double	deg_to_rad(double deg)
 {
 	return (deg * (M_PI / 180));
 }
 
-t_vector	multiply_vector(t_vector v, double mult)
-{
-	t_vector	result;
-
-	result.x = v.x * mult;
-	result.y = v.y * mult;
-	return (result);
-}
 
 double	dbl_abs(double n)
 {
