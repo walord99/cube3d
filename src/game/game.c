@@ -6,171 +6,17 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:05:06 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:42:07 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
-#include "libft.h"
-#include <float.h>
-#include <math.h>
-#include <stdio.h>
-#include <unistd.h>
-#ifndef M_PI
-# define M_PI 3.141592653589793
-#endif
+#include "cub3d.h"
 
-#define PLAYER_MOVE_BOX 0.01
-#define screenWidth 1920
-#define screenHeight 1080
-
-int				map[10 * 10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
-					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1,
-					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
-					0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 1, 1};
-
-typedef struct s_vector
-{
-	double		x;
-	double		y;
-}				t_vector;
-
-typedef struct s_game
-{
-	int			*map;
-	t_vector	pos;
-	t_vector	look_dir;
-	t_vector	plane;
-	mlx_t		*mlx;
-	mlx_image_t	*rendered;
-}				t_game;
-
-
-double	rad_to_deg(double rad)
-{
-	return (rad * 180 / M_PI);
-}
-
-
-double	deg_to_rad(double deg)
-{
-	return (deg * (M_PI / 180));
-}
-
-
-double	dbl_abs(double n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
-}
-
-uint32_t	rbga_builder(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-void	cast_rays(t_game *game, int *map)
-{
-	double		cameraX;
-	int			mapX;
-	int			mapY;
-	t_vector	rayDir;
-	t_vector	sideDist;
-	t_vector	deltaDist;
-	double		perpWallDist;
-	int			stepX;
-	int			stepY;
-	int			hit;
-	int			side;
-	int			x;
-	int			y;
-	int			lineHeight;
-	int			drawStart;
-	int			drawEnd;
-
-	x = 0;
-	while (x < screenWidth)
-	{
-		cameraX = 2 * x / (double)screenWidth - 1;
-		rayDir = add_vector(game->look_dir, multiply_vector(game->plane,
-					cameraX));
-		mapX = game->pos.x / 1;
-		mapY = game->pos.y / 1;
-		if (rayDir.x == 0)
-			deltaDist.x = DBL_MAX;
-		else
-			deltaDist.x = dbl_abs(1 / rayDir.x);
-		if (rayDir.y == 0)
-			deltaDist.y = DBL_MAX;
-		else
-			deltaDist.y = dbl_abs(1 / rayDir.y);
-		if (rayDir.x < 0)
-		{
-			stepX = -1;
-			sideDist.x = (game->pos.x - mapX) * deltaDist.x;
-		}
-		else
-		{
-			stepX = 1;
-			sideDist.x = (1 + mapX - game->pos.x) * deltaDist.x;
-		}
-		if (rayDir.y < 0)
-		{
-			stepY = -1;
-			sideDist.y = (game->pos.y - mapY) * deltaDist.y;
-		}
-		else
-		{
-			stepY = 1;
-			sideDist.y = (1 + mapY - game->pos.y) * deltaDist.y;
-		}
-		hit = 0;
-		while (hit == 0)
-		{
-			if (sideDist.x < sideDist.y)
-			{
-				sideDist.x += deltaDist.x;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDist.y += deltaDist.y;
-				;
-				mapY += stepY;
-				side = 1;
-			}
-			if (map[mapX * 10 + mapY] != 0)
-				hit = 1;
-		}
-		if (side == 0)
-			perpWallDist = sideDist.x - deltaDist.x;
-		else
-			perpWallDist = sideDist.y - deltaDist.y;
-		lineHeight = screenHeight / perpWallDist;
-		drawStart = -lineHeight / 2 + screenHeight / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		drawEnd = lineHeight / 2 + screenHeight / 2;
-		if (drawEnd >= screenHeight)
-			drawEnd = screenHeight - 1;
-		y = drawStart;
-		while (y <= drawEnd)
-		{
-			if (side == 0)
-				mlx_put_pixel(game->rendered, x, y, rbga_builder(255, 255, 255,
-						255));
-			else
-				mlx_put_pixel(game->rendered, x, y, rbga_builder(200, 200, 200,
-						255));
-			y++;
-		}
-		x++;
-	}
-}
+int			map[10 * 10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0,
+				1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 void	key_hook(mlx_key_data_t key_data, void *param)
 {
@@ -179,45 +25,9 @@ void	key_hook(mlx_key_data_t key_data, void *param)
 	game = (t_game *)param;
 }
 
-double	fast_inv_sqrt(double n)
-{
-	long		i;
-	const float	threehalfs = 1.5F;
-
-	float x2, y;
-	x2 = n * 0.5F;
-	y = n;
-	i = *(long *)&y;           // evil floating point bit level hacking
-	i = 0x5f3759df - (i >> 1); // what the fuck?
-	y = *(float *)&i;
-	y = y * (threehalfs - (x2 * y * y));
-	return (y);
-}
-
-t_vector	normalise_vector(t_vector v)
-{
-	double	magnetude_sqrd;
-	double	inv_sqrt;
-
-	magnetude_sqrd = pow(v.x, 2) + pow(v.y, 2);
-	inv_sqrt = fast_inv_sqrt(magnetude_sqrd);
-	v.x *= inv_sqrt;
-	v.y *= inv_sqrt;
-	return (v);
-}
-
 void	mouse_hook(double xpos, double ypos, void *param)
 {
-	//printf("x: %f\ny: %f\n", xpos, ypos);
-}
-
-t_vector	round_off_floating_point_errors(t_vector v)
-{
-	if (v.x < 0.001 && v.x > -0.001)
-		v.x = 0;
-	if (v.y < 0.001 && v.y > -0.001)
-		v.y = 0;
-	return (v);
+	// printf("x: %f\ny: %f\n", xpos, ypos);
 }
 
 void	loop_hook(void *param)
@@ -294,7 +104,7 @@ void	loop_hook(void *param)
 	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
 }
 
-void init_game(t_game *game)
+void	init_game(t_game *game)
 {
 	game->pos.x = 1.5;
 	game->pos.y = 3.2;
@@ -304,17 +114,9 @@ void init_game(t_game *game)
 	game->plane.y = 0;
 	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(90));
 	game->plane = rotate_vector(game->plane, deg_to_rad(90));
-	game->mlx = mlx_init(screenWidth, screenHeight, "cube3d", false);
-	mlx_key_hook(game->mlx, &key_hook, &game);
-	mlx_cursor_hook(game->mlx, &mouse_hook, &game);
-	mlx_loop_hook(game->mlx, &loop_hook, &game);
+	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
+	mlx_key_hook(game->mlx, &key_hook, game);
+	mlx_cursor_hook(game->mlx, &mouse_hook, game);
+	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_loop(game->mlx);
-
-}
-
-int	main(void)
-{
-	t_game game;
-	init_game(&game);
-	mlx_terminate(game.mlx);
 }

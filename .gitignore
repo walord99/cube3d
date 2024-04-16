@@ -1,4 +1,6 @@
+.DS_Store
 .vscode
 *.DSYM
-cube3d
+*.cub
+cub3D
 obj/
