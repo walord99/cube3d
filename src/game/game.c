@@ -6,17 +6,11 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:42:07 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:58:14 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int			map[10 * 10] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-				0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0,
-				1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 void	key_hook(mlx_key_data_t key_data, void *param)
 {
@@ -82,14 +76,14 @@ void	loop_hook(void *param)
 		y_offset = -PLAYER_MOVE_BOX;
 	else
 		y_offset = PLAYER_MOVE_BOX;
-	if (map[(int)(temp_pos.x + x_offset) * 10 + mapY] != 0)
+	if (get_map_coordinate((int)(temp_pos.x + x_offset), mapY, game->map) != 0)
 	{
 		if (x_offset > 0)
 			temp_pos.x -= temp_pos.x - (mapX + 1) + x_offset;
 		else
 			temp_pos.x -= temp_pos.x - mapX + x_offset;
 	}
-	if (map[mapX * 10 + (int)(temp_pos.y + y_offset)] != 0)
+	if (get_map_coordinate(mapX, (int)(temp_pos.y + y_offset), game->map) != 0)
 	{
 		if (y_offset > 0)
 			temp_pos.y -= temp_pos.y - (mapY + 1) + y_offset;
@@ -100,7 +94,7 @@ void	loop_hook(void *param)
 	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);
-	cast_rays(game, map);
+	cast_rays(game);
 	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
 }
 

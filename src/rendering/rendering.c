@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:42:13 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:57:46 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ uint32_t	rbga_builder(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	cast_rays(t_game *game, int *map)
+void	cast_rays(t_game *game)
 {
 	double		cameraX;
 	int			mapX;
@@ -88,7 +88,7 @@ void	cast_rays(t_game *game, int *map)
 				mapY += stepY;
 				side = 1;
 			}
-			if (map[mapX * 10 + mapY] != 0)
+			if (get_map_coordinate(mapX, mapY, game->map) != 0)
 				hit = 1;
 		}
 		if (side == 0)

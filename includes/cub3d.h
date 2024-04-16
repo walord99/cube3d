@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/16 09:41:51 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/16 09:57:59 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_vector			round_off_floating_point_errors(t_vector v);
 t_vector			normalise_vector(t_vector v);
 
 // rendering funnctions
-void				cast_rays(t_game *game, int *map);
+void				cast_rays(t_game *game);
 
 // game functions
 void				init_game(t_game *game);
@@ -104,5 +104,7 @@ void				init_game(t_game *game);
 double				fast_inv_sqrt(double n);
 double				dbl_abs(double n);
 double				deg_to_rad(double deg);
+
+int					get_map_coordinate(int x, int y, int *map);
 
 #endif
