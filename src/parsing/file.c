@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/15 15:37:15 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:21:14 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ bool	is_valid_color_str(char *color_pref)
 	return (res);
 }
 
-
-
 int	read_and_parse_file(int fd, t_map *map)
 {
 	char	*current_line;
@@ -131,10 +129,10 @@ int	read_and_parse_file(int fd, t_map *map)
 				{
 					if(first_non_white(current_line) != -1)
 					{
-						printf("Error: Empty line between map lines!\n");
+						printf("Error: Empty lines are not permitted between or after map lines!\n");
 						free(current_line);
 						close(fd);
-						return -1;
+						return 1;
 					}
 					else
 					{
@@ -153,7 +151,8 @@ int	read_and_parse_file(int fd, t_map *map)
 				{
 					free(current_line);
 					close(fd);
-					return (-1);
+					printf("Floor color is not valid\n");
+					return 1;
 				}
 				else
 				{
@@ -166,7 +165,8 @@ int	read_and_parse_file(int fd, t_map *map)
 				{
 					free(current_line);
 					close(fd);
-					return (-1);
+					printf("Ceiling color is not valid\n");
+					return 1;
 				}
 				else
 					map->checked_element.c_color = true;
@@ -190,7 +190,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					printf("Error, double texture found!\n");
 					free(current_line);
 					close(fd);
-					return (-1);
+					return 1;
 				}
 			}
 			else
@@ -207,7 +207,7 @@ int	read_and_parse_file(int fd, t_map *map)
 						printf("Error: Incomplete elements!\n");
 						free(current_line);
 						close(fd);
-						return (-1);
+						return 1;
 					}
 					else
 					{
@@ -223,7 +223,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					printf("Error: Map is not closed\n");
 					free(current_line);
 					close(fd);
-					return (-1);
+					return 1;
 				}
 			}
 		}
@@ -235,11 +235,12 @@ int	read_and_parse_file(int fd, t_map *map)
 		free(current_line);
 		printf("Error: Incorrect Map\n");
 		close(fd);
-		return (-1);
+		return 1;
 	}
 	map->height = (unsigned int)line_counter - (unsigned int)map_1st_line_idx;
 	map->first_map_line = map_1st_line_idx;
 	free(current_line);
+	current_line = NULL;
 	close(fd);
-	return (map_1st_line_idx);
+	return 0;
 }

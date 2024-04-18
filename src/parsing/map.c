@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/15 19:33:41 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:18:30 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_map	*init_map_struct(void)
 	map->height = 0;
 	map->width = 0;
 	map->first_map_line = -1;
-	map->has_direction = 0;
+	map->has_direction = false;
 	map->checked_element = (t_element_check){
 		.f_color = false,
 		.c_color = false,
@@ -56,21 +56,26 @@ t_map	*init_map_struct(void)
 	return (map);
 }
 
-bool	is_char_valid(char **str)
+bool	is_char_valid(char **str, t_map map)
 {
-	int	has_direction;
 	int	x;
 	int	y;
+	int	len;
 
-	has_direction = 0;
 	x = 0;
-	while (str[x])
+	while (x < map.height)
 	{
+		// str[x] = ft_strtrim(str[x], "\n");
 		y = 0;
-			int len=(int)ft_strlen(str[x]);
-			printf("==>%i\n",len);
-			printf("----->%s\n", str[x]);
-		while (str[x][y])
+		len = (int)ft_strlen(str[x]);
+		// printf("length: ==>%i\n", len);
+		// printf("line %i: ----->%s\n", x, str[x]);
+		// if(len > map.width)
+		// {
+		// 	printf("error\n");
+		// 	return(false);
+		// }
+		while (y < map.width)
 		{
 			if (str[x][y] == '1' || str[x][y] == '0'
 				|| is_white_space(str[x][y]))
@@ -78,7 +83,12 @@ bool	is_char_valid(char **str)
 			else if (str[x][y] == 'N' || str[x][y] == 'S' || str[x][y] == 'E'
 				|| str[x][y] == 'W')
 			{
-				has_direction++;
+				if (map.has_direction)
+				{
+					printf("Only one start point is permitted\n");
+					return (false);
+				}
+				map.has_direction++;
 				y++;
 			}
 			else
@@ -90,23 +100,16 @@ bool	is_char_valid(char **str)
 		}
 		x++;
 	}
-	if (has_direction != 1)
-	{
-		printf("Only one start point is permitted! You have %d\n",
-			has_direction);
-		return (false);
-	}
 	return (true);
 }
 
-int	first_and_last_line_check(char **str)
+int	first_and_last_line_check(char **str, t_map map)
 {
-	int	start;
-	int	end;
-	int	x;
-
+	if (!str)
+		return (0);
+	int start, end, x;
 	start = 0;
-	end = ft_strlen(str[0]);
+	end = map.width;
 	x = 0;
 	while (is_white_space(str[x][start]))
 		start++;
@@ -116,25 +119,23 @@ int	first_and_last_line_check(char **str)
 	{
 		if (str[x][start] != '1' && str[x][start] != ' ')
 		{
-			printf("first line has incorrect char [%c].\n", str[x][start]);
+			printf("First line has incorrect character [%c].\n", str[x][start]);
 			return (1);
 		}
 		start++;
 	}
-	while (str[x])
-		x++;
-	x--;
-	end = ft_strlen(str[x]);
+	x = map.height - 1;
 	start = 0;
 	while (is_white_space(str[x][start]))
 		start++;
+	end = map.width;
 	while (is_white_space(str[x][end - 1]))
 		end--;
 	while (start < end)
 	{
 		if (str[x][start] != '1' && str[x][start] != ' ')
 		{
-			printf("last line has incorrect char [%c].\n", str[x][start]);
+			printf("Last line has incorrect character [%c].\n", str[x][start]);
 			return (1);
 		}
 		start++;
@@ -142,84 +143,85 @@ int	first_and_last_line_check(char **str)
 	return (0);
 }
 
-int	colonne_check(char **str)
+int	colonne_check(char **str, t_map map)
 {
 	int	x;
 	int	y;
+	int	end;
 
 	if (!str)
 		return (0);
 	x = 0;
-	while (str[x])
+	while (x < map.height)
 	{
 		y = 0;
 		while (is_white_space(str[x][y]))
 			y++;
 		if (str[x][y] != '1')
 		{
-			printf("col [%d] is not closed\n", x);
-			return (1);
+			if (first_non_white(str[x]) != -1)
+			{
+				printf("Column [%d] is not closed\n", x);
+				return (1);
+			}
 		}
-		while (str[x][y])
-			y++;
-		y--;
-		while (y >= 0 && is_white_space(str[x][y]))
-			y--;
-		if (str[x][y] != '1')
+		end = map.width;
+		while (end > 0 && is_white_space(str[x][end - 1]))
+			end--;
+		if (str[x][end - 1] != '1')
 		{
-			printf("col [%d] is not closed\n", x);
-			return (1);
+			if (first_non_white(str[x]) != -1)
+			{
+				printf("Column [%d] is not closed\n", x);
+				return (1);
+			}
 		}
 		x++;
 	}
 	return (0);
 }
 
-bool	is_map_valid(char **str)
+bool	is_map_valid(char **str, t_map map)
 {
-	if (!is_char_valid(str))
+	if (!is_char_valid(str, map))
 		return (false);
-	
-	// if (colonne_check(str))
-	// {
-	// 	printf("col check\n");
-	// 	return(false);
-	// }
-	// if (first_and_last_line_check(str))
-	// {
-	// 	printf("first last\n");
-	// 	return(false);
-	// }
+	if (colonne_check(str, map))
+	{
+		printf("col check\n");
+		return (false);
+	}
+	if (first_and_last_line_check(str, map))
+	{
+		printf("first last\n");
+		return (false);
+	}
 	return (true);
 }
 
-char	**allocate_grid(t_map *map)
+void	allocate_grid(t_map *map)
 {
 	int	i;
-	int	j;
 
 	map->grid = malloc(map->height * sizeof(char *));
 	if (!map->grid)
-		return (NULL);
+		return ;
 	i = 0;
 	while (i < map->height)
 	{
 		map->grid[i] = malloc((map->width + 1) * sizeof(char));
 		i++;
 	}
-	return (map->grid);
+	return ;
 }
 
 void	set_value_to_grid(t_map *map, int width, int height, char c)
 {
-	if (c == '0')
-		map->grid[height][width] = '0';
-	else if (c == '1')
-		map->grid[height][width] = '1';
-	else if ((c == 'N' || c == 'E' || c == 'S' || c == 'W'))
-		map->grid[height][width] = c;
-	else
-		map->grid[height][width] = ' ';
+	// if ((c == 'N' || c == 'E' || c == 'S' || c == 'W') || c == '1'
+	// || c== '0')
+	// 	map->grid[height][width] = c;
+	// else
+	// 	map->grid[height][width] = ' ';
+	map->grid[height][width] = c;
 }
 
 // TODO: check why the function isnt printing rhe whole grid (from first_map_line to height)
@@ -253,6 +255,7 @@ void	populate_grid(t_map *map, int fd)
 		free(current_line);
 		i++;
 	}
+	current_line = NULL;
 }
 
 void	free_map(t_map *map)
@@ -273,4 +276,6 @@ void	free_map(t_map *map)
 		}
 		free(map);
 	}
+	map->grid = NULL;
+	map = NULL;
 }
