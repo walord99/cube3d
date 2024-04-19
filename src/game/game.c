@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:58:14 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/19 14:06:07 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,82 @@ void	key_hook(mlx_key_data_t key_data, void *param)
 	t_game	*game;
 
 	game = (t_game *)param;
+}
+
+void	collision_detection(t_vector movement, t_game *game)
+{
+	double		cameraX;
+	int			mapX;
+	int			mapY;
+	t_vector	sideDist;
+	t_vector	deltaDist;
+	t_vector	newpos;
+	double		perpWallDist;
+	int			stepX;
+	int			stepY;
+	int			hit;
+	int			side;
+	int			x;
+	int			y;
+
+	newpos = add_vector(game->pos, movement);
+	mapX = game->pos.x / 1;
+	mapY = game->pos.y / 1;
+	if (movement.x == 0)
+		deltaDist.x = DBL_MAX;
+	else
+		deltaDist.x = dbl_abs(1 / movement.x);
+	if (movement.y == 0)
+		deltaDist.y = DBL_MAX;
+	else
+		deltaDist.y = dbl_abs(1 / movement.y);
+	if (movement.x < 0)
+	{
+		stepX = -1;
+		sideDist.x = (game->pos.x - mapX - PLAYER_MOVE_BOX) * deltaDist.x;
+	}
+	else
+	{
+		stepX = 1;
+		sideDist.x = (1 + mapX - game->pos.x - PLAYER_MOVE_BOX) * deltaDist.x;
+	}
+	if (movement.y < 0)
+	{
+		stepY = -1;
+		sideDist.y = (game->pos.y - mapY - PLAYER_MOVE_BOX) * deltaDist.y;
+	}
+	else
+	{
+		stepY = 1;
+		sideDist.y = (1 + mapY - game->pos.y - PLAYER_MOVE_BOX) * deltaDist.y;
+	}
+	hit = 0;
+	while (hit == 0)
+	{
+		if (sideDist.x < sideDist.y)
+		{
+			sideDist.x += deltaDist.x;
+			mapX += stepX;
+			side = 0;
+		}
+		else
+		{
+			sideDist.y += deltaDist.y;
+			mapY += stepY;
+			side = 1;
+		}
+		if (get_map_coordinate(mapX, mapY, game->map) != 0)
+			hit = 1;
+	}
+	if (side == 0)
+		perpWallDist = sideDist.x - deltaDist.x;
+	else
+		perpWallDist = sideDist.y - deltaDist.y;
+	double mag = magnetude(movement);
+	if (perpWallDist < mag)
+	{
+		int test = 1;
+	}
 }
 
 void	mouse_hook(double xpos, double ypos, void *param)
@@ -64,33 +140,34 @@ void	loop_hook(void *param)
 	}
 	movement = round_off_floating_point_errors(movement);
 	movement = normalise_vector(movement);
+	collision_detection(movement, game);
 	movement = multiply_vector(movement, move_speed);
-	mapX = (int)game->pos.x;
-	mapY = (int)game->pos.y;
-	temp_pos = add_vector(game->pos, movement);
-	if (movement.x < 0)
-		x_offset = -PLAYER_MOVE_BOX;
-	else
-		x_offset = PLAYER_MOVE_BOX;
-	if (movement.y < 0)
-		y_offset = -PLAYER_MOVE_BOX;
-	else
-		y_offset = PLAYER_MOVE_BOX;
-	if (get_map_coordinate((int)(temp_pos.x + x_offset), mapY, game->map) != 0)
-	{
-		if (x_offset > 0)
-			temp_pos.x -= temp_pos.x - (mapX + 1) + x_offset;
-		else
-			temp_pos.x -= temp_pos.x - mapX + x_offset;
-	}
-	if (get_map_coordinate(mapX, (int)(temp_pos.y + y_offset), game->map) != 0)
-	{
-		if (y_offset > 0)
-			temp_pos.y -= temp_pos.y - (mapY + 1) + y_offset;
-		else
-			temp_pos.y -= temp_pos.y - mapY + y_offset;
-	}
-	game->pos = temp_pos;
+	// mapX = (int)game->pos.x;
+	// mapY = (int)game->pos.y;
+	// temp_pos = add_vector(game->pos, movement);
+	// if (movement.x < 0)
+	// 	x_offset = -PLAYER_MOVE_BOX;
+	// else
+	// 	x_offset = PLAYER_MOVE_BOX;
+	// if (movement.y < 0)
+	// 	y_offset = -PLAYER_MOVE_BOX;
+	// else
+	// 	y_offset = PLAYER_MOVE_BOX;
+	// if (get_map_coordinate((int)(temp_pos.x + x_offset), mapY, game->map) != 0)
+	// {
+	// 	if (x_offset > 0)
+	// 		temp_pos.x -= temp_pos.x - (mapX + 1) + x_offset;
+	// 	else
+	// 		temp_pos.x -= temp_pos.x - mapX + x_offset;
+	// }
+	// if (get_map_coordinate(mapX, (int)(temp_pos.y + y_offset), game->map) != 0)
+	// {
+	// 	if (y_offset > 0)
+	// 		temp_pos.y -= temp_pos.y - (mapY + 1) + y_offset;
+	// 	else
+	// 		temp_pos.y -= temp_pos.y - mapY + y_offset;
+	// }
+	game->pos = add_vector(game->pos, movement);
 	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);

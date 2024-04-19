@@ -30,6 +30,8 @@ ifeq ($(UNAME), Darwin)
 endif
 
 ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
+CASAN			= 	-fsanitize=address
+LASAN			=	-fsanitize=address
 
 all: $(NAME)
 

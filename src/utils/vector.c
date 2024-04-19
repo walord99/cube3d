@@ -6,18 +6,18 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:39:45 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/19 13:59:00 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_vector	rotate_vector(const t_vector v, double angle)
+t_vector	rotate_vector(const t_vector v, double angle_rad)
 {
 	t_vector	result;
 
-	result.x = v.x * cos(angle) - v.y * sin(angle);
-	result.y = v.x * sin(angle) + v.y * cos(angle);
+	result.x = v.x * cos(angle_rad) - v.y * sin(angle_rad);
+	result.y = v.x * sin(angle_rad) + v.y * cos(angle_rad);
 	return (result);
 }
 
@@ -58,4 +58,9 @@ t_vector	normalise_vector(t_vector v)
 	v.x *= inv_sqrt;
 	v.y *= inv_sqrt;
 	return (v);
+}
+
+double magnetude(t_vector v)
+{
+	return sqrt(pow(v.x, 2) + pow(v.y, 2));
 }
