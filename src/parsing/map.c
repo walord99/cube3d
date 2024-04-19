@@ -6,32 +6,11 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/18 19:18:30 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:44:53 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-bool	is_white_space(char c)
-{
-	return (c == ' ' || (c >= 9 && c <= 13));
-}
-
-/* Returns -1 if line is empty
-	else return the index of the first non white character*/
-int	first_non_white(char *line)
-{
-	int	i;
-	int	line_len;
-
-	i = 0;
-	line_len = (int)ft_strlen(line);
-	while (line[i] && is_white_space(line[i]))
-		i++;
-	if (i == line_len)
-		return (-1);
-	return (i);
-}
 
 t_map	*init_map_struct(void)
 {
@@ -65,16 +44,7 @@ bool	is_char_valid(char **str, t_map map)
 	x = 0;
 	while (x < map.height)
 	{
-		// str[x] = ft_strtrim(str[x], "\n");
 		y = 0;
-		len = (int)ft_strlen(str[x]);
-		// printf("length: ==>%i\n", len);
-		// printf("line %i: ----->%s\n", x, str[x]);
-		// if(len > map.width)
-		// {
-		// 	printf("error\n");
-		// 	return(false);
-		// }
 		while (y < map.width)
 		{
 			if (str[x][y] == '1' || str[x][y] == '0'
@@ -186,96 +156,8 @@ bool	is_map_valid(char **str, t_map map)
 	if (!is_char_valid(str, map))
 		return (false);
 	if (colonne_check(str, map))
-	{
-		printf("col check\n");
 		return (false);
-	}
 	if (first_and_last_line_check(str, map))
-	{
-		printf("first last\n");
 		return (false);
-	}
 	return (true);
-}
-
-void	allocate_grid(t_map *map)
-{
-	int	i;
-
-	map->grid = malloc(map->height * sizeof(char *));
-	if (!map->grid)
-		return ;
-	i = 0;
-	while (i < map->height)
-	{
-		map->grid[i] = malloc((map->width + 1) * sizeof(char));
-		i++;
-	}
-	return ;
-}
-
-void	set_value_to_grid(t_map *map, int width, int height, char c)
-{
-	// if ((c == 'N' || c == 'E' || c == 'S' || c == 'W') || c == '1'
-	// || c== '0')
-	// 	map->grid[height][width] = c;
-	// else
-	// 	map->grid[height][width] = ' ';
-	map->grid[height][width] = c;
-}
-
-// TODO: check why the function isnt printing rhe whole grid (from first_map_line to height)
-void	populate_grid(t_map *map, int fd)
-{
-	int		i;
-	char	*current_line;
-	int		width;
-
-	if (!map || map->first_map_line == -1 || !map->grid)
-		return ;
-	i = 0;
-	while (i < map->first_map_line - 1)
-	{
-		get_next_line(fd, true);
-		i++;
-	}
-	i = 0;
-	while (i < map->height)
-	{
-		current_line = get_next_line(fd, true);
-		width = 0;
-		while (width < map->width)
-		{
-			if ((size_t)width < ft_strlen(current_line))
-				set_value_to_grid(map, width, i, current_line[width]);
-			else
-				set_value_to_grid(map, width, i, ' ');
-			width++;
-		}
-		free(current_line);
-		i++;
-	}
-	current_line = NULL;
-}
-
-void	free_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	if (map)
-	{
-		if (map->grid)
-		{
-			while (i < map->height)
-			{
-				free(map->grid[i]);
-				i++;
-			}
-			free(map->grid);
-		}
-		free(map);
-	}
-	map->grid = NULL;
-	map = NULL;
 }

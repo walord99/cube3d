@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/18 19:21:14 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/18 21:29:56 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,54 +60,21 @@ int	file_check(char **argv)
 	return (fd);
 }
 
-bool	is_valid_tex_prefix(char *tex_pref)
+int	handle_error(char *error_msg, char *current_line, int fd)
 {
-	if ((tex_pref[0] == 'N' && tex_pref[1] == 'O') || (tex_pref[0] == 'S'
-			&& tex_pref[1] == 'O') || (tex_pref[0] == 'W' && tex_pref[1] == 'E')
-		|| (tex_pref[0] == 'E' && tex_pref[1] == 'A'))
-		return (tex_pref[2] == ' ');
-	return (false);
-}
-
-bool is_valid_color_char(char c)
-{
-	if(ft_isdigit(c) || c ==',' || c ==' ')
-		return true;
-	else
-		return false;
-}
-
-bool	is_valid_color_str(char *color_pref)
-{
-	bool	res;
-	int		i;
-	int		comma_count;
-
-	res = false;
-	comma_count = 0;
-	if (color_pref[0] == 'F' || color_pref[0] == 'C')
-		res = true;
-	i = 2;
-	while (i < (int) ft_strlen(&color_pref[1]))
-	{
-		if (!is_valid_color_char(color_pref[i]))
-			return (false);
-		if (color_pref[i] == ',')
-			comma_count++;
-		i++;
-	}
-	if (comma_count != 2)
-		return (false);
-	return (res);
+	printf("%s\n", error_msg);
+	free(current_line);
+	close(fd);
+	return (1);
 }
 
 int	read_and_parse_file(int fd, t_map *map)
 {
-	char	*current_line;
-	int		line_counter;
-	int		map_1st_line_idx;
-	int		idx;
-	unsigned int		width;
+	char			*current_line;
+	int				line_counter;
+	int				map_1st_line_idx;
+	int				idx;
+	unsigned int	width;
 
 	current_line = get_next_line(fd, true);
 	line_counter = 1;
@@ -117,30 +84,25 @@ int	read_and_parse_file(int fd, t_map *map)
 		idx = first_non_white(current_line);
 		if (idx == -1)
 		{
-			if(map_1st_line_idx == -1)
+			if (map_1st_line_idx == -1)
 			{
 				current_line = get_next_line(fd, true);
 				line_counter++;
-				continue;
+				continue ;
 			}
 			else
 			{
-				while(current_line)
+				while (current_line)
 				{
-					if(first_non_white(current_line) != -1)
-					{
-						printf("Error: Empty lines are not permitted between or after map lines!\n");
-						free(current_line);
-						close(fd);
-						return 1;
-					}
+					if (first_non_white(current_line) != -1)
+						return (handle_error(ERR_NL, current_line, fd));
 					else
 					{
 						current_line = get_next_line(fd, true);
 						line_counter++;
 					}
 				}
-				break;
+				break ;
 			}
 		}
 		else
@@ -148,26 +110,14 @@ int	read_and_parse_file(int fd, t_map *map)
 			if (current_line[idx] == 'F' && !map->checked_element.f_color)
 			{
 				if (!is_valid_color_str(current_line))
-				{
-					free(current_line);
-					close(fd);
-					printf("Floor color is not valid\n");
-					return 1;
-				}
+					return (handle_error(ERR_F, current_line, fd));
 				else
-				{
 					map->checked_element.f_color = true;
-				}
 			}
 			else if (current_line[idx] == 'C' && !map->checked_element.c_color)
 			{
 				if (!is_valid_color_str(current_line))
-				{
-					free(current_line);
-					close(fd);
-					printf("Ceiling color is not valid\n");
-					return 1;
-				}
+					return (handle_error(ERR_C, current_line, fd));
 				else
 					map->checked_element.c_color = true;
 			}
@@ -186,12 +136,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					&& !map->checked_element.texture_we)
 					map->checked_element.texture_we = true;
 				else
-				{
-					printf("Error, double texture found!\n");
-					free(current_line);
-					close(fd);
-					return 1;
-				}
+					return (handle_error(ERR_DUP_TEX, current_line, fd));
 			}
 			else
 			{
@@ -203,44 +148,29 @@ int	read_and_parse_file(int fd, t_map *map)
 						|| !map->checked_element.texture_we
 						|| !map->checked_element.texture_so
 						|| !map->checked_element.texture_no)
-					{
-						printf("Error: Incomplete elements!\n");
-						free(current_line);
-						close(fd);
-						return 1;
-					}
+						return (handle_error(ERR_INC_ELEM, current_line, fd));
 					else
 					{
 						width = ft_strlen(current_line);
-						if(width > map->width)
+						if (width > map->width)
 							map->width = width;
-						if(map_1st_line_idx == -1)
+						if (map_1st_line_idx == -1)
 							map_1st_line_idx = line_counter;
 					}
 				}
 				else
-				{
-					printf("Error: Map is not closed\n");
-					free(current_line);
-					close(fd);
-					return 1;
-				}
+					return (handle_error(ERR_MAP_NOT_CLOSED, current_line, fd));
 			}
 		}
 		current_line = get_next_line(fd, true);
 		line_counter++;
 	}
 	if (map_1st_line_idx == -1)
-	{
-		free(current_line);
-		printf("Error: Incorrect Map\n");
-		close(fd);
-		return 1;
-	}
+		return (handle_error("Error: Incorrect Map", current_line, fd));
 	map->height = (unsigned int)line_counter - (unsigned int)map_1st_line_idx;
 	map->first_map_line = map_1st_line_idx;
 	free(current_line);
 	current_line = NULL;
 	close(fd);
-	return 0;
+	return (0);
 }

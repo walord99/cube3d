@@ -1,37 +1,38 @@
-NAME			= 	cub3D
-FILES			= 	parsing/map.c  parsing/file.c render/main.c main.c
-SRC_DIR			= 	src
-OBJ_DIR			= 	obj
-SRC				= 	$(addprefix $(SRC_DIR)/, $(FILES))
-OBJ 			= 	$(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
-CC				= 	gcc
+NAME			=	cub3D
+FILES			=	parsing/map.c  parsing/file.c\
+					parsing/color_parse.c  parsing/grid.c  parsing/parsing_utils.c  parsing/texture_parse.c\
+					render/main.c main.c
+SRC_DIR			=	src
+OBJ_DIR			=	obj
+SRC				=	$(addprefix $(SRC_DIR)/, $(FILES))
+OBJ				=	$(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
+CC				=	gcc
 
-HEADER_DIR		= 	includes
-LIB_DIR  		=	libs
-LIBFT_DIR 		= 	$(LIB_DIR)/libft
+HEADER_DIR		=	includes
+LIB_DIR			=	libs
+LIBFT_DIR		=	$(LIB_DIR)/libft
 MLX_DIR			=	$(LIB_DIR)/MLX42
 MLX_BUILD_DIR	=	$(MLX_DIR)/build
 
-MLX				= 	$(MLX_BUILD_DIR)/libmlx42.a
-LIBFT			= 	$(LIBFT_DIR)/libft.a
+MLX				=	$(MLX_BUILD_DIR)/libmlx42.a
+LIBFT			=	$(LIBFT_DIR)/libft.a
 
-INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include
+INCLUDES		=	-I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include
 
-
-UNAME 			= 	$(shell uname -s)
+UNAME			=	$(shell uname -s)
 ifeq ($(UNAME), Linux)
-  LIB_FLAGS		= 	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
+	LIB_FLAGS	=	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
 endif
 ifeq ($(UNAME), Darwin)
-  LIB_FLAGS		= 	-framework Cocoa -framework OpenGL -framework IOKit -L"$(shell brew info glfw | grep files | cut -d " " -f1)/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
+	LIB_FLAGS	=	-framework Cocoa -framework OpenGL -framework IOKit -L"$(shell brew info glfw | grep files | cut -d " " -f1)/lib/" -lglfw -L$(LIBFT_DIR) -lft -L$(MLX_BUILD_DIR) -lmlx42
 endif
 
-ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
+ERROR_FLAGS		=	#-Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(MLX) $(LIBFT)  $(OBJ)
-	@$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
+$(NAME): $(MLX) $(LIBFT) $(OBJ)
+	@$(CC) $(OBJ) $(LIB_FLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
@@ -39,14 +40,14 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	fi
 	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
 
-$(LIBFT): $(LIBFT_DIR)/Makefile
+$(LIBFT): | $(LIBFT_DIR)/Makefile
 	make -C $(LIBFT_DIR)
 
 $(LIBFT_DIR)/Makefile:
 	@git submodule init
 	@git submodule update $(LIBFT_DIR)
 
-$(MLX): $(MLX_DIR)/CMakeLists.txt
+$(MLX): | $(MLX_DIR)/CMakeLists.txt
 	cmake $(MLX_DIR) -B $(MLX_BUILD_DIR)
 	make -C $(MLX_BUILD_DIR)
 
@@ -61,6 +62,6 @@ fclean: clean
 	@make -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 
-re: clean all
+re: fclean all
 
 .PHONY: all clean fclean re
