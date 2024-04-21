@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/19 17:40:36 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/20 22:16:08 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,48 +125,48 @@ int	read_and_parse_file(int fd, t_map *map)
 			{
 				if (current_line[idx] == 'N'
 					&& !map->checked_element.texture_no)
-					{
-						current_line= ft_strtrim(current_line, " \t");
-						current_line = current_line + 2;
-						current_line= ft_strtrim(current_line, " \n");
-						if(!is_valid_tex(current_line))
-							return (handle_error(ERR_TEX_N, current_line, fd));
-						else
-							map->checked_element.texture_no = true;
-					}
+				{
+					current_line = ft_strtrim(current_line, " \t");
+					current_line = current_line + 2;
+					current_line = ft_strtrim(current_line, " \n");
+					if (!is_valid_tex(current_line))
+						return (handle_error(ERR_TEX_N, current_line, fd));
+					else
+						map->checked_element.texture_no = true;
+				}
 				else if (current_line[idx] == 'S'
 					&& !map->checked_element.texture_so)
-					{
-						current_line= ft_strtrim(current_line, " \t");
-						current_line = current_line + 2;
-						current_line= ft_strtrim(current_line, " \n");
-						if(is_valid_tex(current_line))
-							map->checked_element.texture_so = true;
-						else
-							return (handle_error(ERR_TEX_S, current_line, fd));
-					}
+				{
+					current_line = ft_strtrim(current_line, " \t");
+					current_line = current_line + 2;
+					current_line = ft_strtrim(current_line, " \n");
+					if (is_valid_tex(current_line))
+						map->checked_element.texture_so = true;
+					else
+						return (handle_error(ERR_TEX_S, current_line, fd));
+				}
 				else if (current_line[idx] == 'E'
 					&& !map->checked_element.texture_ea)
-					{
-						current_line= ft_strtrim(current_line, " \t");
-						current_line = current_line + 2;
-						current_line= ft_strtrim(current_line, " \n");
-						if(is_valid_tex(current_line))
-							map->checked_element.texture_ea = true;
-						else
-							return (handle_error(ERR_TEX_E, current_line, fd));
-					}
+				{
+					current_line = ft_strtrim(current_line, " \t");
+					current_line = current_line + 2;
+					current_line = ft_strtrim(current_line, " \n");
+					if (is_valid_tex(current_line))
+						map->checked_element.texture_ea = true;
+					else
+						return (handle_error(ERR_TEX_E, current_line, fd));
+				}
 				else if (current_line[idx] == 'W'
 					&& !map->checked_element.texture_we)
-					{
-						current_line= ft_strtrim(current_line, " \t");
-						current_line = current_line + 2;
-						current_line= ft_strtrim(current_line, " \n");
-						if(is_valid_tex(current_line))
-							map->checked_element.texture_we = true;
-						else
-							return (handle_error(ERR_TEX_W, current_line, fd));
-					}
+				{
+					current_line = ft_strtrim(current_line, " \t");
+					current_line = current_line + 2;
+					current_line = ft_strtrim(current_line, " \n");
+					if (is_valid_tex(current_line))
+						map->checked_element.texture_we = true;
+					else
+						return (handle_error(ERR_TEX_W, current_line, fd));
+				}
 				else
 					return (handle_error(ERR_DUP_TEX, current_line, fd));
 			}
@@ -192,10 +192,11 @@ int	read_and_parse_file(int fd, t_map *map)
 				}
 				else
 				{
-					if(!is_valid_tex_prefix(current_line))
-						return (handle_error("Invalid texture prefix", current_line, fd));
+					if (!is_valid_tex_prefix(current_line))
+						return (handle_error(ERR_ELEM, current_line, fd));
 					else
-						return(handle_error(ERR_MAP_NOT_CLOSED,current_line,fd));
+						return (handle_error(ERR_MAP_NOT_CLOSED, current_line,
+								fd));
 				}
 			}
 		}
@@ -203,7 +204,7 @@ int	read_and_parse_file(int fd, t_map *map)
 		line_counter++;
 	}
 	if (map_1st_line_idx == -1)
-		return (handle_error("Error: Incorrect Map", current_line, fd));
+		return (handle_error(ERR_INC_MAP, current_line, fd));
 	map->height = (unsigned int)line_counter - (unsigned int)map_1st_line_idx;
 	map->first_map_line = map_1st_line_idx;
 	free(current_line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/18 22:27:38 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/20 22:10:50 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ char	*preprocess_color_str(char *color_str, bool *res, int *comma_count)
 	char	*color_pref;
 
 	color_pref = ft_strtrim(color_str, " \t");
-	if (color_pref[0] == 'F' || color_pref[0] == 'C')
+	if (color_pref[1] == ' ' && (color_pref[0] == 'F' || color_pref[0] == 'C'))
 		*res = true;
+	else
+		return(NULL);
 	i = 2;
 	while (i < (int)ft_strlen(&color_pref[1]))
 	{

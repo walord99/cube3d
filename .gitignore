@@ -1,6 +1,7 @@
 .DS_Store
-# .vscode
+.vscode
+*.cub
 *.DSYM
 cube3d
-src/main.c
+# src/main.c
 obj/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/18 20:44:53 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/20 21:38:41 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ t_map	*init_map_struct(void)
 	map->width = 0;
 	map->first_map_line = -1;
 	map->has_direction = false;
+	map->spawn_direction = 0;
+	map->spawn_x = -1;
+	map->spawn_y = -1;
 	map->checked_element = (t_element_check){
 		.f_color = false,
 		.c_color = false,
@@ -35,17 +38,17 @@ t_map	*init_map_struct(void)
 	return (map);
 }
 
-bool	is_char_valid(char **str, t_map map)
+bool	is_char_valid(char **str, t_map *map)
 {
 	int	x;
 	int	y;
 	int	len;
 
 	x = 0;
-	while (x < map.height)
+	while (x < map->height)
 	{
 		y = 0;
-		while (y < map.width)
+		while (y < map->width)
 		{
 			if (str[x][y] == '1' || str[x][y] == '0'
 				|| is_white_space(str[x][y]))
@@ -53,12 +56,15 @@ bool	is_char_valid(char **str, t_map map)
 			else if (str[x][y] == 'N' || str[x][y] == 'S' || str[x][y] == 'E'
 				|| str[x][y] == 'W')
 			{
-				if (map.has_direction)
+				if (map->has_direction)
 				{
 					printf("Only one start point is permitted\n");
 					return (false);
 				}
-				map.has_direction++;
+				map->has_direction++;
+				map->spawn_direction = str[x][y];
+				map->spawn_x = y;
+				map->spawn_y = x;
 				y++;
 			}
 			else
@@ -151,13 +157,13 @@ int	colonne_check(char **str, t_map map)
 	return (0);
 }
 
-bool	is_map_valid(char **str, t_map map)
+bool	is_map_valid(char **str, t_map *map)
 {
 	if (!is_char_valid(str, map))
 		return (false);
-	if (colonne_check(str, map))
+	if (colonne_check(str, *map))
 		return (false);
-	if (first_and_last_line_check(str, map))
+	if (first_and_last_line_check(str, *map))
 		return (false);
 	return (true);
 }
