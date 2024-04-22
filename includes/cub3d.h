@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/17 16:14:02 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:50:16 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ t_vector			add_vector(t_vector v1, t_vector v2);
 t_vector			rotate_vector(const t_vector v, double angle);
 t_vector			round_off_floating_point_errors(t_vector v);
 t_vector			normalise_vector(t_vector v);
+double				magnetude(t_vector v);
 
 // rendering funnctions
 void				cast_rays(t_game *game);
