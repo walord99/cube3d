@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_math.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:36:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:40:47 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/17 16:15:35 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,8 @@ double	dbl_abs(double n)
 	return (n);
 }
 
-double	fast_inv_sqrt(double n)
+double	inv_sqrt(double n)
 {
-	long		i;
-	const float	threehalfs = 1.5F;
-
-	float x2, y;
-	x2 = n * 0.5F;
-	y = n;
-	i = *(long *)&y;           // evil floating point bit level hacking
-	i = 0x5f3759df - (i >> 1); // what the fuck?
-	y = *(float *)&i;
-	y = y * (threehalfs - (x2 * y * y));
-	return (y);
+	double square_root = sqrt(n);
+	return 1.0f / square_root;
 }

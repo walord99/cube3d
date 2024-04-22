@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/16 09:57:59 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/17 16:14:02 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void				cast_rays(t_game *game);
 void				init_game(t_game *game);
 
 // math utils
-double				fast_inv_sqrt(double n);
+double				inv_sqrt(double n);
 double				dbl_abs(double n);
 double				deg_to_rad(double deg);
 

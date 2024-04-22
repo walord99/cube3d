@@ -20,7 +20,6 @@ LIBFT			= 	$(LIBFT_DIR)/libft.a
 
 INCLUDES		= 	-I$(HEADER_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include
 
-
 UNAME 			= 	$(shell uname -s)
 ifeq ($(UNAME), Linux)
   LIB_FLAGS		= 	-L$(MLX_BUILD_DIR) -lmlx42 -lglfw -lm -ldl -pthread -L$(LIBFT_DIR) -lft
@@ -30,17 +29,20 @@ ifeq ($(UNAME), Darwin)
 endif
 
 ERROR_FLAGS 	= 	#-Wall -Werror -Wextra
+CASAN			= 	#-fsanitize=address
+LASAN			= 	#-fsanitize=address -static-libasan
+
 
 all: $(NAME)
 
-$(NAME): $(MLX) $(LIBFT)  $(OBJ)
-	@$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME)
+$(NAME): $(MLX) $(LIBFT) $(OBJ)
+	$(CC) $(OBJ) $(LIB_FLAGS) -o $(NAME) $(LASAN)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
    		mkdir -p $(dir $@); \
 	fi
-	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
+	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ $(CASAN) -g 
 
 $(LIBFT): $(LIBFT_DIR)/Makefile
 	make -C $(LIBFT_DIR)

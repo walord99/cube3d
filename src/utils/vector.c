@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:39:45 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/17 16:27:37 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ t_vector	round_off_floating_point_errors(t_vector v)
 t_vector	normalise_vector(t_vector v)
 {
 	double	magnetude_sqrd;
-	double	inv_sqrt;
+	double	inv_square_root;
 
+	if (v.x == 0 && v.y == 0)
+		return v;
 	magnetude_sqrd = pow(v.x, 2) + pow(v.y, 2);
-	inv_sqrt = fast_inv_sqrt(magnetude_sqrd);
-	v.x *= inv_sqrt;
-	v.y *= inv_sqrt;
+	inv_square_root = inv_sqrt(magnetude_sqrd);
+	v.x *= inv_square_root;
+	v.y *= inv_square_root;
 	return (v);
 }
