@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/22 14:50:16 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/22 23:18:35 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #  define M_PI 3.141592653589793
 # endif
 
-# define PLAYER_MOVE_BOX 0.01
+# define PLAYER_MOVE_BOX 0.1
 # define screenWidth 1920
 # define screenHeight 1080
 

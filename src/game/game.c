@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/19 14:06:07 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/22 23:18:44 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	key_hook(mlx_key_data_t key_data, void *param)
 	game = (t_game *)param;
 }
 
-void	collision_detection(t_vector movement, t_game *game)
+t_vector	collision_detection(t_vector movement_dir, t_game *game, t_vector movement)
 {
 	double		cameraX;
 	int			mapX;
@@ -35,18 +35,18 @@ void	collision_detection(t_vector movement, t_game *game)
 	int			x;
 	int			y;
 
-	newpos = add_vector(game->pos, movement);
+	newpos = add_vector(game->pos, movement_dir);
 	mapX = game->pos.x / 1;
 	mapY = game->pos.y / 1;
-	if (movement.x == 0)
-		deltaDist.x = DBL_MAX;
+	if (movement_dir.x == 0)
+		deltaDist.x = INFINITY;
 	else
-		deltaDist.x = dbl_abs(1 / movement.x);
-	if (movement.y == 0)
-		deltaDist.y = DBL_MAX;
+		deltaDist.x = dbl_abs(1 / movement_dir.x);
+	if (movement_dir.y == 0)
+		deltaDist.y = INFINITY;
 	else
-		deltaDist.y = dbl_abs(1 / movement.y);
-	if (movement.x < 0)
+		deltaDist.y = dbl_abs(1 / movement_dir.y);
+	if (movement_dir.x < 0)
 	{
 		stepX = -1;
 		sideDist.x = (game->pos.x - mapX - PLAYER_MOVE_BOX) * deltaDist.x;
@@ -54,9 +54,9 @@ void	collision_detection(t_vector movement, t_game *game)
 	else
 	{
 		stepX = 1;
-		sideDist.x = (1 + mapX - game->pos.x - PLAYER_MOVE_BOX) * deltaDist.x;
+		sideDist.x = (1.0 + mapX - game->pos.x - PLAYER_MOVE_BOX) * deltaDist.x;
 	}
-	if (movement.y < 0)
+	if (movement_dir.y < 0)
 	{
 		stepY = -1;
 		sideDist.y = (game->pos.y - mapY - PLAYER_MOVE_BOX) * deltaDist.y;
@@ -64,7 +64,7 @@ void	collision_detection(t_vector movement, t_game *game)
 	else
 	{
 		stepY = 1;
-		sideDist.y = (1 + mapY - game->pos.y - PLAYER_MOVE_BOX) * deltaDist.y;
+		sideDist.y = (1.0 + mapY - game->pos.y - PLAYER_MOVE_BOX) * deltaDist.y;
 	}
 	hit = 0;
 	while (hit == 0)
@@ -89,10 +89,21 @@ void	collision_detection(t_vector movement, t_game *game)
 	else
 		perpWallDist = sideDist.y - deltaDist.y;
 	double mag = magnetude(movement);
-	if (perpWallDist < mag)
+	printf("d: %f\n", perpWallDist);
+	if (dbl_abs(perpWallDist) < mag)
 	{
-		int test = 1;
+		if (side == 1)
+		{
+			double new_move_angle = atan(movement.x / movement.y);
+			movement.y = cos(new_move_angle) * perpWallDist * stepY;
+		}
+		else
+		{
+			double new_move_angle = atan(movement.y / movement.x);
+			movement.x = cos(new_move_angle) * perpWallDist * stepX;
+		}
 	}
+	return movement;
 }
 
 void	mouse_hook(double xpos, double ypos, void *param)
@@ -103,7 +114,7 @@ void	mouse_hook(double xpos, double ypos, void *param)
 void	loop_hook(void *param)
 {
 	t_game		*game;
-	t_vector	movement;
+	t_vector	movement_dir;
 	double		move_speed;
 	double		rot_speed;
 	int			mapX;
@@ -113,19 +124,19 @@ void	loop_hook(void *param)
 	double		y_offset;
 
 	game = (t_game *)param;
-	movement.x = 0;
-	movement.y = 0;
+	movement_dir.x = 0;
+	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
 	rot_speed = game->mlx->delta_time * 90.0;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-		movement = add_vector(movement, game->look_dir);
+		movement_dir = add_vector(movement_dir, game->look_dir);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-		movement = add_vector(movement, multiply_vector(game->look_dir, -1));
+		movement_dir = add_vector(movement_dir, multiply_vector(game->look_dir, -1));
 	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-		movement = add_vector(movement, rotate_vector(game->look_dir,
+		movement_dir = add_vector(movement_dir, rotate_vector(game->look_dir,
 					deg_to_rad(-90)));
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-		movement = add_vector(movement, rotate_vector(game->look_dir,
+		movement_dir = add_vector(movement_dir, rotate_vector(game->look_dir,
 					deg_to_rad(90)));
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 	{
@@ -138,10 +149,10 @@ void	loop_hook(void *param)
 					* rot_speed));
 		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
 	}
-	movement = round_off_floating_point_errors(movement);
-	movement = normalise_vector(movement);
-	collision_detection(movement, game);
-	movement = multiply_vector(movement, move_speed);
+	movement_dir = round_off_floating_point_errors(movement_dir);
+	movement_dir = normalise_vector(movement_dir);
+	t_vector movement = multiply_vector(movement_dir, move_speed);
+	movement = collision_detection(movement_dir, game, movement);
 	// mapX = (int)game->pos.x;
 	// mapY = (int)game->pos.y;
 	// temp_pos = add_vector(game->pos, movement);
@@ -177,14 +188,14 @@ void	loop_hook(void *param)
 
 void	init_game(t_game *game)
 {
-	game->pos.x = 1.5;
-	game->pos.y = 3.2;
+	game->pos.x = 3.7;
+	game->pos.y = 1.7;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
 	game->plane.x = 1;
 	game->plane.y = 0;
-	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(90));
-	game->plane = rotate_vector(game->plane, deg_to_rad(90));
+	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));
+	game->plane = rotate_vector(game->plane, deg_to_rad(2));
 	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
 	mlx_key_hook(game->mlx, &key_hook, game);
 	mlx_cursor_hook(game->mlx, &mouse_hook, game);
