@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/20 22:16:08 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/04/24 18:43:06 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	handle_error(char *error_msg, char *current_line, int fd)
 	return (1);
 }
 
+// TODO:put in norm this function
 int	read_and_parse_file(int fd, t_map *map)
 {
 	char			*current_line;

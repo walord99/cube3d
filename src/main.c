@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/20 21:41:49 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/04/24 18:20:40 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
         if(read_and_parse_file(fd, map))
             return(1);
         fd = file_check(argv);
-        if (fd == -1)
+        if (fd == -1 )
         {
 			free_map(map);
             close(fd);
@@ -52,6 +52,14 @@ int main(int argc, char **argv)
 			free_map(map);		
 			return(1);
 		}
+        if(!is_map_playable(map))
+		{
+			printf("not playable\n");
+			free_map(map);
+            close(fd);
+            return (2);
+		}
+
     }
     close(fd);
 	free_map(map);

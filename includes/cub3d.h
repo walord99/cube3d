@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/20 22:11:45 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/04/24 19:15:37 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@
 # define ERR_ELEM "ERROR: Invalid or duplicate element!"
 # define ERR_MAP_NOT_CLOSED "ERROR: Map not closed!"
 # define ERR_INC_MAP "ERROR: Incorrect map!"
-# define ERR_TEX_N	"ERROR: path to the north texture is invalid"
-# define ERR_TEX_S	"ERROR: path to the south texture is invalid"
-# define ERR_TEX_E	"ERROR: path to the east texture is invalid"
-# define ERR_TEX_W	"ERROR: path to the west texture is invalid"
+# define ERR_TEX_N "ERROR: path to the north texture is invalid"
+# define ERR_TEX_S "ERROR: path to the south texture is invalid"
+# define ERR_TEX_E "ERROR: path to the east texture is invalid"
+# define ERR_TEX_W "ERROR: path to the west texture is invalid"
+# define ERR_FL "ERROR: First line has incorrect character\n"
+# define ERR_LL "ERROR: Last line has incorrect character\n"
 
 typedef struct s_vector
 {
@@ -88,8 +90,6 @@ typedef struct s_map
 	char			spawn_direction;
 }					t_map;
 
-
-
 int					first_non_white(char *line);
 bool				is_white_space(char c);
 bool				is_map_valid(char **str, t_map *map);
@@ -104,4 +104,5 @@ int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
 bool				is_valid_tex(char *path_to_tex);
+bool				is_map_playable(t_map *map);
 #endif

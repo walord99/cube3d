@@ -1,5 +1,5 @@
 NAME			=	cub3D
-FILES			=	parsing/map.c  parsing/file.c\
+FILES			=	parsing/map.c  parsing/file.c  parsing/floodfill.c\
 					parsing/color_parse.c  parsing/grid.c  parsing/parsing_utils.c  parsing/texture_parse.c\
 					render/main.c main.c
 SRC_DIR			=	src
@@ -63,5 +63,8 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+leaks:
+	make && valgrind --leak-check=full ./$(NAME) map.cub
 
 .PHONY: all clean fclean re

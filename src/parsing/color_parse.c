@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/20 22:10:50 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/04/24 18:25:24 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*preprocess_color_str(char *color_str, bool *res, int *comma_count)
 	if (color_pref[1] == ' ' && (color_pref[0] == 'F' || color_pref[0] == 'C'))
 		*res = true;
 	else
-		return(NULL);
+		return (NULL);
 	i = 2;
 	while (i < (int)ft_strlen(&color_pref[1]))
 	{
@@ -47,11 +47,13 @@ bool	validate_color_components(char *color_str)
 	char	**colors;
 	int		i;
 
+	i = 0;
 	colors = ft_split(color_str, ',');
-	for (i = 0; i < 3; i++)
+	while (i < 3)
 	{
 		if (0 > ft_atoi(colors[i]) || ft_atoi(colors[i]) > 255)
 			return (false);
+		i++;
 	}
 	return (true);
 }
