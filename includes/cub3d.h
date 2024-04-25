@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/24 19:15:37 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:12:41 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@
 # define ERR_C "ERROR: Ceiling color is not valid"
 # define ERR_F "ERROR:Floor color is not valid"
 # define ERR_NL "ERROR: Empty lines are not permitted between or after map lines!"
-# define ERR_DUP_TEX "ERROR: double texture found!"
-# define ERR_INC_ELEM "ERROR: Incomplete elements!"
-# define ERR_ELEM "ERROR: Invalid or duplicate element!"
-# define ERR_MAP_NOT_CLOSED "ERROR: Map not closed!"
+# define ERR_DUP_ELEM "ERROR: duplicate element found!"
+# define ERR_INV_ELEM "ERROR: Invalid elements!"
 # define ERR_INC_MAP "ERROR: Incorrect map!"
 # define ERR_TEX_N "ERROR: path to the north texture is invalid"
 # define ERR_TEX_S "ERROR: path to the south texture is invalid"
@@ -49,6 +47,7 @@
 # define ERR_TEX_W "ERROR: path to the west texture is invalid"
 # define ERR_FL "ERROR: First line has incorrect character\n"
 # define ERR_LL "ERROR: Last line has incorrect character\n"
+# define ERR_SP "ERROR: Only one start point is permitted\n"
 
 typedef struct s_vector
 {
@@ -77,6 +76,12 @@ typedef struct s_element_check
 	bool			texture_ea;
 }					t_element_check;
 
+typedef struct s_textures
+{
+	mlx_texture_t	*texture_test;
+	mlx_image_t		*img_test;
+	int				type;
+}					t_textures;
 typedef struct s_map
 {
 	unsigned int	height;
@@ -88,6 +93,8 @@ typedef struct s_map
 	int				spawn_x;
 	int				spawn_y;
 	char			spawn_direction;
+	mlx_t			*mlx;
+	t_textures		*textures;
 }					t_map;
 
 int					first_non_white(char *line);
@@ -103,6 +110,16 @@ t_map				*init_map_struct(void);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
-bool				is_valid_tex(char *path_to_tex);
+// bool				is_valid_tex(char *path_to_tex);
+bool	is_valid_tex(t_map *map, char *path_to_tex);
 bool				is_map_playable(t_map *map);
+bool				print_and_return(char *msg, int status);
+void				free_map(t_map *map);
+bool				validate_grid_characters(char **str, t_map *map);
+bool				handle_start_points(char **str, t_map *map);
+int					check_col_start(char **str, int x, int y);
+int					check_col_end(char **str, int x, int end);
+int					check_first_and_last_line(char **str, t_map map);
+int					find_first_non_whitespace(char *line);
+int					find_last_non_whitespace(char *line, int width);
 #endif

@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/24 18:43:06 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:13:25 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					current_line = ft_strtrim(current_line, " \t");
 					current_line = current_line + 2;
 					current_line = ft_strtrim(current_line, " \n");
-					if (!is_valid_tex(current_line))
+					if (!is_valid_tex(map, current_line))
 						return (handle_error(ERR_TEX_N, current_line, fd));
 					else
 						map->checked_element.texture_no = true;
@@ -141,7 +141,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					current_line = ft_strtrim(current_line, " \t");
 					current_line = current_line + 2;
 					current_line = ft_strtrim(current_line, " \n");
-					if (is_valid_tex(current_line))
+					if (is_valid_tex(map, current_line))
 						map->checked_element.texture_so = true;
 					else
 						return (handle_error(ERR_TEX_S, current_line, fd));
@@ -152,7 +152,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					current_line = ft_strtrim(current_line, " \t");
 					current_line = current_line + 2;
 					current_line = ft_strtrim(current_line, " \n");
-					if (is_valid_tex(current_line))
+					if (is_valid_tex(map, current_line))
 						map->checked_element.texture_ea = true;
 					else
 						return (handle_error(ERR_TEX_E, current_line, fd));
@@ -163,13 +163,13 @@ int	read_and_parse_file(int fd, t_map *map)
 					current_line = ft_strtrim(current_line, " \t");
 					current_line = current_line + 2;
 					current_line = ft_strtrim(current_line, " \n");
-					if (is_valid_tex(current_line))
+					if (is_valid_tex(map, current_line))
 						map->checked_element.texture_we = true;
 					else
 						return (handle_error(ERR_TEX_W, current_line, fd));
 				}
 				else
-					return (handle_error(ERR_DUP_TEX, current_line, fd));
+					return (handle_error(ERR_DUP_ELEM, current_line, fd));
 			}
 			else
 			{
@@ -181,7 +181,7 @@ int	read_and_parse_file(int fd, t_map *map)
 						|| !map->checked_element.texture_we
 						|| !map->checked_element.texture_so
 						|| !map->checked_element.texture_no)
-						return (handle_error(ERR_INC_ELEM, current_line, fd));
+						return (handle_error(ERR_INV_ELEM, current_line, fd));
 					else
 					{
 						width = ft_strlen(current_line);
@@ -193,11 +193,22 @@ int	read_and_parse_file(int fd, t_map *map)
 				}
 				else
 				{
-					if (!is_valid_tex_prefix(current_line))
-						return (handle_error(ERR_ELEM, current_line, fd));
+					if (!is_valid_tex_prefix(current_line)
+						&& current_line[idx] != 'F' && current_line[idx] != 'C')
+					{
+						if (map_1st_line_idx != -1
+							&& map_1st_line_idx <= line_counter)
+						{
+							ft_printf_fd("Column [%d] is not closed\n", 2,
+								map_1st_line_idx + 1);
+							return (1);
+						}
+						else
+							return (handle_error(ERR_INV_ELEM, current_line,
+									fd));
+					}
 					else
-						return (handle_error(ERR_MAP_NOT_CLOSED, current_line,
-								fd));
+						return (handle_error(ERR_DUP_ELEM, current_line, fd));
 				}
 			}
 		}

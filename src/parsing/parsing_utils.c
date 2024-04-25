@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:42:38 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/18 20:43:14 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:54:24 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,22 @@ int	first_non_white(char *line)
 	return (i);
 }
 
-void	free_map(t_map *map)
+int	find_first_non_whitespace(char *line)
 {
-	int	i;
+	int	start;
 
-	i = 0;
-	if (map)
-	{
-		if (map->grid)
-		{
-			while (i < map->height)
-			{
-				free(map->grid[i]);
-				i++;
-			}
-			free(map->grid);
-		}
-		free(map);
-	}
-	map->grid = NULL;
-	map = NULL;
+	start = 0;
+	while (line[start] && is_white_space(line[start]))
+		start++;
+	return (start);
+}
+
+int	find_last_non_whitespace(char *line, int width)
+{
+	int	end;
+
+	end = width - 1;
+	while (end >= 0 && is_white_space(line[end]))
+		end--;
+	return (end);
 }

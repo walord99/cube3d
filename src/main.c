@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/24 18:20:40 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:53:16 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
     }
     close(fd);
-	free_map(map);
+	// free_map(map);
     return (0);
 }
 

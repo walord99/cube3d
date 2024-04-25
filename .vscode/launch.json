@@ -7,7 +7,7 @@
       "request": "launch",
       "args": ["/Users/yothmani/Desktop/cube3d/map.cub"],
       "cwd": "/Users/yothmani/Desktop/cube3d/src/parsing",
-      "program": "cub3d"
+      "program": "/Users/yothmani/Desktop/cube3d/cub3D"
     }
   ]
 }
