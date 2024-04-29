@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/04/25 16:13:25 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:22:25 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,14 @@ int	check_file_extension(char *file_name)
 	return (0);
 }
 
-int	file_check(char **argv)
+int	arg_check(int argc, char **argv)
 {
 	int	fd;
-
+	 if (argc != 2)
+    {
+        printf(ERR_ARGC);
+        return (1);
+    }
 	if (check_file_extension(argv[1]))
 	{
 		ft_printf_fd(ERR_BADFILE, 2);
@@ -62,7 +66,7 @@ int	file_check(char **argv)
 
 int	handle_error(char *error_msg, char *current_line, int fd)
 {
-	printf("%s\n", error_msg);
+	ft_printf_fd("%s\n", 2, error_msg);
 	free(current_line);
 	close(fd);
 	return (1);
@@ -78,6 +82,12 @@ int	read_and_parse_file(int fd, t_map *map)
 	unsigned int	width;
 
 	current_line = get_next_line(fd, true);
+	if(!current_line)
+	{
+		free(current_line);
+		close(fd);
+		return(1);
+	}
 	line_counter = 1;
 	map_1st_line_idx = -1;
 	while (current_line)
@@ -103,7 +113,6 @@ int	read_and_parse_file(int fd, t_map *map)
 						line_counter++;
 					}
 				}
-				break ;
 			}
 		}
 		else

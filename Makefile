@@ -1,6 +1,6 @@
 NAME			=	cub3D
 FILES			=	parsing/map.c  parsing/file.c  parsing/floodfill.c\
-					parsing/map_utils.c  parsing/error_handler.c\
+					parsing/map_utils.c  parsing/error_handler.c parsing/parser.c\
 					parsing/color_parse.c  parsing/grid.c  parsing/parsing_utils.c  parsing/texture_parse.c\
 					render/main.c main.c
 SRC_DIR			=	src

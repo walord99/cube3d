@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:42:38 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/25 14:54:24 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:19:09 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	first_non_white(char *line)
 int	find_first_non_whitespace(char *line)
 {
 	int	start;
-
+	if(line == NULL)
+		return(0);
 	start = 0;
 	while (line[start] && is_white_space(line[start]))
 		start++;

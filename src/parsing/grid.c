@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:44:23 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/24 18:47:09 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:51:41 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	allocate_grid(t_map *map)
 {
 	int	i;
 
-	map->grid = malloc(map->height * sizeof(char *));
+	map->grid = ft_calloc(map->height, sizeof(char *));
 	if (!map->grid)
 		return ;
 	i = 0;
 	while (i < map->height)
 	{
-		map->grid[i] = malloc((map->width + 1) * sizeof(char));
+		map->grid[i] = ft_calloc((map->width + 1), sizeof(char));
 		i++;
 	}
 	return ;

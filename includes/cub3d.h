@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/25 16:12:41 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:31:40 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@
 # define screenHeight 1080
 
 # define MIN_HEIGHT 3
+# define MAX_HEIGHT 200
 # define MIN_WIDTH 3
+# define MAX_WIDTH 200
 # define ERR_ARGC "ERROR: Invalid arguments. Usage: ./cub3D <file.cub>\n"
 # define ERR_BADFILE "ERROR: Bad file extension\n"
 # define ERR_C "ERROR: Ceiling color is not valid"
@@ -105,13 +107,13 @@ bool				is_valid_tex_prefix(char *tex_pref);
 bool				is_valid_color_str(char *color_pref);
 int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
-int					file_check(char **argv);
+int					arg_check(int argc, char **argv);
+void				parse(int argc, char **argv, t_map *map, int *fd);
 t_map				*init_map_struct(void);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
-// bool				is_valid_tex(char *path_to_tex);
-bool	is_valid_tex(t_map *map, char *path_to_tex);
+bool				is_valid_tex(t_map *map, char *path_to_tex);
 bool				is_map_playable(t_map *map);
 bool				print_and_return(char *msg, int status);
 void				free_map(t_map *map);
