@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/30 02:09:01 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:47:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,55 +28,18 @@ int	clamp(int range_start, int range_end, int num)
 	return (num);
 }
 
-t_dbl_vector	collision_detection(t_game *game,
-		t_dbl_vector movement)
+t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement, t_dbl_vector movement_dir)
 {
-	int			mapX;
-	int			mapY;
-	t_dbl_vector	newpos;
-	t_dbl_vector	relpos;
-	int			sideX;
-	int			sideY;
+	t_raycaster ray_info;
+	t_dbl_vector newpos;
+	t_dbl_vector hitloc;
 
+	movement_dir.y = -1;
+	movement_dir.x = -1;
+	ray_info.rayDir = normalise_vector(movement_dir);
 	newpos = add_vector(game->pos, movement);
-	mapX = (int)newpos.x;
-	mapY = (int)newpos.y;
-	sideX = 0;
-	sideY = 0;
-	relpos.x = newpos.x - mapX;
-	relpos.y = newpos.y - mapY;
-	if (relpos.x < PLAYER_MOVE_BOX)
-		sideX = -1;
-	else if (relpos.x > 1 - PLAYER_MOVE_BOX)
-	{
-		sideX = 1;
-		relpos.x = dbl_abs(relpos.x - 1);
-	}
-	if (relpos.y < PLAYER_MOVE_BOX)
-		sideY = -1;
-	else if (relpos.y > 1 - PLAYER_MOVE_BOX)
-	{
-		sideY = 1;
-		relpos.y = dbl_abs(relpos.y - 1);
-	}
-
-	if (get_map_coordinate(mapX + sideX, mapY, game->map))
-		newpos.x = dbl_abs(PLAYER_MOVE_BOX - clamp(0, 1, sideX)) + mapX;
-	if (get_map_coordinate(mapX, mapY + sideY, game->map))
-		newpos.y = dbl_abs(PLAYER_MOVE_BOX - clamp(0, 1, sideY)) + mapY;
-
-	if (abs(sideX) == abs(sideY))
-	{
-		if (get_map_coordinate(mapX + sideX, mapY + sideY, game->map))
-		{
-			if (relpos.x < relpos.y)
-			{
-				newpos.y = dbl_abs(PLAYER_MOVE_BOX - clamp(0, 1, sideY)) + mapY;
-			}
-			else
-				newpos.x = dbl_abs(PLAYER_MOVE_BOX - clamp(0, 1, sideX)) + mapX;
-		}
-	}
+	hitloc = cast_ray(&ray_info, game, PLAYER_MOVE_BOX);
+	
 
 	return (newpos);
 }
@@ -129,35 +92,7 @@ void	loop_hook(void *param)
 	movement_dir = round_off_floating_point_errors(movement_dir);
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
-	game->pos =  collision_detection(game, movement);
-	// mapX = (int)game->pos.x;
-	// mapY = (int)game->pos.y;
-	// temp_pos = add_vector(game->pos, movement);
-	// if (movement.x < 0)
-	// 	x_offset = -PLAYER_MOVE_BOX;
-	// else
-	// 	x_offset = PLAYER_MOVE_BOX;
-	// if (movement.y < 0)
-	// 	y_offset = -PLAYER_MOVE_BOX;
-	// else
-	// 	y_offset = PLAYER_MOVE_BOX;
-	// if (get_map_coordinate((int)(temp_pos.x + x_offset), mapY,
-	//		game->map) != 0)
-	// {
-	// 	if (x_offset > 0)
-	// 		temp_pos.x -= temp_pos.x - (mapX + 1) + x_offset;
-	// 	else
-	// 		temp_pos.x -= temp_pos.x - mapX + x_offset;
-	// }
-	// if (get_map_coordinate(mapX, (int)(temp_pos.y + y_offset),
-	//		game->map) != 0)
-	// {
-	// 	if (y_offset > 0)
-	// 		temp_pos.y -= temp_pos.y - (mapY + 1) + y_offset;
-	// 	else
-	// 		temp_pos.y -= temp_pos.y - mapY + y_offset;
-	// }
-	
+	game->pos =  collision_detection(game, movement, movement_dir);
 	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);
@@ -170,10 +105,10 @@ void	init_game(t_game *game)
 	// t_dbl_vector mov;
 	// mov.x = 0;
 	// mov.y = 0;
-	game->pos.x = 5;
-	game->pos.y = 5;
-	game->look_dir.x = 0;
-	game->look_dir.y = -1;
+	game->pos.x = 2;
+	game->pos.y = 3.1;
+	game->look_dir.x = 1;
+	game->look_dir.y = 1;
 	game->plane.x = 1;
 	game->plane.y = 0;
 	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));

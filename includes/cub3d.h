@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/30 02:44:26 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:05:08 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,19 +124,21 @@ t_dbl_vector		normalise_vector(t_dbl_vector v);
 double				magnetude(t_dbl_vector v);
 
 // raycasting
-void				cast_ray(t_raycaster *ri, t_game *game);
+t_dbl_vector		cast_ray(t_raycaster *ri, t_game *game, double offset);
 
 // rendering funnctions
 void				draw(t_game *game);
 
 // game functions
 void				init_game(t_game *game);
-t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement);
+t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
+						t_dbl_vector movement_dir);
 int					get_map_coordinate(int x, int y, int *map);
 
 // math utils
 double				inv_sqrt(double n);
 double				dbl_abs(double n);
 double				deg_to_rad(double deg);
+int					clamp(int range_start, int range_end, int num);
 
 #endif
