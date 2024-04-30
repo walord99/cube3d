@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_accessor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:26 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/16 09:51:29 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/29 20:06:06 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int get_map_coordinate(int x, int y, int *map)
 {
-    return map[x * 10 + y];
+    return map[x + 10 * y];
 }

@@ -6,40 +6,40 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/22 14:50:31 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/30 02:00:34 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_vector	rotate_vector(const t_vector v, double angle_rad)
+t_dbl_vector	rotate_vector(const t_dbl_vector v, double angle_rad)
 {
-	t_vector	result;
+	t_dbl_vector	result;
 
 	result.x = v.x * cos(angle_rad) - v.y * sin(angle_rad);
 	result.y = v.x * sin(angle_rad) + v.y * cos(angle_rad);
 	return (result);
 }
 
-t_vector	add_vector(t_vector v1, t_vector v2)
+t_dbl_vector	add_vector(t_dbl_vector v1, t_dbl_vector v2)
 {
-	t_vector	result;
+	t_dbl_vector	result;
 
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
 	return (result);
 }
 
-t_vector	multiply_vector(t_vector v, double mult)
+t_dbl_vector	multiply_vector(t_dbl_vector v, double mult)
 {
-	t_vector	result;
+	t_dbl_vector	result;
 
 	result.x = v.x * mult;
 	result.y = v.y * mult;
 	return (result);
 }
 
-t_vector	round_off_floating_point_errors(t_vector v)
+t_dbl_vector	round_off_floating_point_errors(t_dbl_vector v)
 {
 	if (v.x < 0.001 && v.x > -0.001)
 		v.x = 0;
@@ -48,7 +48,7 @@ t_vector	round_off_floating_point_errors(t_vector v)
 	return (v);
 }
 
-t_vector	normalise_vector(t_vector v)
+t_dbl_vector	normalise_vector(t_dbl_vector v)
 {
 	double	magnetude_sqrd;
 	double	inv_square_root;
@@ -62,7 +62,7 @@ t_vector	normalise_vector(t_vector v)
 	return (v);
 }
 
-double magnetude(t_vector v)
+double magnetude(t_dbl_vector v)
 {
 	return sqrt(pow(v.x, 2) + pow(v.y, 2));
 }

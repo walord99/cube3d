@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/22 23:18:35 by bplante          ###   ########.fr       */
+/*   Updated: 2024/04/30 02:44:26 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #  define M_PI 3.141592653589793
 # endif
 
-# define PLAYER_MOVE_BOX 0.1
+# define PLAYER_MOVE_BOX 0.2
 # define screenWidth 1920
 # define screenHeight 1080
 
@@ -37,18 +37,46 @@
 # define ERR_ARGC "Error: Invalid arguments. Usage: ./cub3D <file.cub>\n"
 # define ERR_BADFILE "Error: Bad file extension\n"
 
-typedef struct s_vector
+typedef struct s_dbl_vector
 {
 	double			x;
 	double			y;
-}					t_vector;
+}					t_dbl_vector;
+
+typedef struct s_int_vector
+{
+	int				x;
+	int				y;
+}					t_int_vector;
+
+typedef struct s_raycaster
+{
+	t_int_vector	map_pos;
+	t_int_vector	step;
+	t_dbl_vector	rayDir;
+	t_dbl_vector	sideDist;
+	t_dbl_vector	deltaDist;
+	double			perpWallDist;
+	double			wallX;
+	int				side;
+}					t_raycaster;
+
+typedef struct s_draw_info
+{
+	t_int_vector	screen_pos;
+	double			cameraX;
+	int				lineHeight;
+	int				drawStart;
+	int				drawEnd;
+	int				texX;
+}					t_draw_info;
 
 typedef struct s_game
 {
 	int				*map;
-	t_vector		pos;
-	t_vector		look_dir;
-	t_vector		plane;
+	t_dbl_vector	pos;
+	t_dbl_vector	look_dir;
+	t_dbl_vector	plane;
 	mlx_t			*mlx;
 	mlx_image_t		*rendered;
 }					t_game;
@@ -88,24 +116,27 @@ char				**allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
 
 // vector functions
-t_vector			multiply_vector(t_vector v, double mult);
-t_vector			add_vector(t_vector v1, t_vector v2);
-t_vector			rotate_vector(const t_vector v, double angle);
-t_vector			round_off_floating_point_errors(t_vector v);
-t_vector			normalise_vector(t_vector v);
-double				magnetude(t_vector v);
+t_dbl_vector		multiply_vector(t_dbl_vector v, double mult);
+t_dbl_vector		add_vector(t_dbl_vector v1, t_dbl_vector v2);
+t_dbl_vector		rotate_vector(const t_dbl_vector v, double angle);
+t_dbl_vector		round_off_floating_point_errors(t_dbl_vector v);
+t_dbl_vector		normalise_vector(t_dbl_vector v);
+double				magnetude(t_dbl_vector v);
+
+// raycasting
+void				cast_ray(t_raycaster *ri, t_game *game);
 
 // rendering funnctions
-void				cast_rays(t_game *game);
+void				draw(t_game *game);
 
 // game functions
 void				init_game(t_game *game);
+t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement);
+int					get_map_coordinate(int x, int y, int *map);
 
 // math utils
 double				inv_sqrt(double n);
 double				dbl_abs(double n);
 double				deg_to_rad(double deg);
-
-int					get_map_coordinate(int x, int y, int *map);
 
 #endif
