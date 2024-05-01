@@ -3,8 +3,8 @@
 NO textures/texture-pattern.png
 SO textures/texture-pattern.png
 
-C 99,25,90
-F 220,100,80
+C 9,89,09
+F 9       ,      9     , 0
 
 
 EA textures/texture-pattern.png

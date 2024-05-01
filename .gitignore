@@ -4,5 +4,6 @@
 *.cub
 *.DSYM
 cube3d
+cub3D
 # src/main.c
 obj/
