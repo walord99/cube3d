@@ -6,13 +6,14 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:26 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/29 20:06:06 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 16:48:16 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int get_map_coordinate(int x, int y, int *map)
+int get_map_coordinate(int x, int y, t_map *map)
 {
-    return map[x + 10 * y];
+
+    return map->grid[y][x] == '1';
 }

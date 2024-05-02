@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 15:05:13 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 16:13:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	get_delta_dist(t_raycaster *ri)
 		ri->deltaDist.y = dbl_abs(1 / ri->rayDir.y);
 }
 
-void	get_step_and_side(t_raycaster *ri, int *map)
+void	get_step_and_side(t_raycaster *ri, t_map *map)
 {
 	if (ri->rayDir.x < 0)
 	{
@@ -52,7 +52,7 @@ void	get_step_and_side(t_raycaster *ri, int *map)
 	}
 }
 
-void	dda_loop(t_raycaster *ri, int *map)
+void	dda_loop(t_raycaster *ri, t_map *map)
 {
 	while (true)
 	{
@@ -73,7 +73,7 @@ void	dda_loop(t_raycaster *ri, int *map)
 	}
 }
 
-t_dbl_vector	cast_ray(t_raycaster *ri, int *map)
+t_dbl_vector	cast_ray(t_raycaster *ri, t_map *map)
 {
 	t_dbl_vector	hit_loc;
 

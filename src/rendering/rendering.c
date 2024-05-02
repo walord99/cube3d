@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 14:14:03 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 16:51:50 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	draw(t_game *game)
 		di.cameraX = 2 * di.screen_pos.x / (double)screenWidth - 1;
 		ray_info.rayDir = add_vector(game->look_dir, multiply_vector(game->plane,
 					di.cameraX));
-		cast_ray(&ray_info, game->map);
+		cast_ray(&ray_info, &game->map);
 		di.lineHeight = screenHeight / ray_info.perpWallDist;
 		di.drawStart = -di.lineHeight / 2 + screenHeight / 2;
 		if (di.drawStart < 0)

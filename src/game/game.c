@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 15:40:43 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 16:51:46 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	key_hook(mlx_key_data_t key_data, void *param)
 	game = (t_game *)param;
 }
 
-int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, int *map)
+int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_map *map)
 {
 	int		i;
 	double	shortest_len;
@@ -66,7 +66,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 
 	move_len = magnetude(movement);
 	init_aabb_rays(ray_info, game->pos, game->AABB_corners, movement_dir);
-	shortest_ray = cast_aabb_rays(ray_info, hitloc, game->map);
+	shortest_ray = cast_aabb_rays(ray_info, hitloc, &game->map);
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return (add_vector(game->pos, movement));
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
@@ -91,7 +91,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 		movement.y = move_len * movement_dir.y;
 	}
 	init_aabb_rays(ray_info, newpos, game->AABB_corners, movement_dir);
-	shortest_ray = cast_aabb_rays(ray_info, hitloc, game->map);
+	shortest_ray = cast_aabb_rays(ray_info, hitloc, &game->map);
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return add_vector(newpos, movement);
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
