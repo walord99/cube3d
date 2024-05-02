@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/30 14:05:08 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:25:10 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_raycaster
 {
 	t_int_vector	map_pos;
 	t_int_vector	step;
+	t_dbl_vector	start_pos;
 	t_dbl_vector	rayDir;
 	t_dbl_vector	sideDist;
 	t_dbl_vector	deltaDist;
@@ -75,6 +76,7 @@ typedef struct s_game
 {
 	int				*map;
 	t_dbl_vector	pos;
+	t_dbl_vector	AABB_corners[4];
 	t_dbl_vector	look_dir;
 	t_dbl_vector	plane;
 	mlx_t			*mlx;
@@ -124,7 +126,7 @@ t_dbl_vector		normalise_vector(t_dbl_vector v);
 double				magnetude(t_dbl_vector v);
 
 // raycasting
-t_dbl_vector		cast_ray(t_raycaster *ri, t_game *game, double offset);
+t_dbl_vector		cast_ray(t_raycaster *ri, int *map);
 
 // rendering funnctions
 void				draw(t_game *game);
@@ -140,5 +142,10 @@ double				inv_sqrt(double n);
 double				dbl_abs(double n);
 double				deg_to_rad(double deg);
 int					clamp(int range_start, int range_end, int num);
+
+// mlx hooks
+void				loop_hook(void *param);
+void				mouse_hook(double xpos, double ypos, void *param);
+void				key_hook(mlx_key_data_t key_data, void *param);
 
 #endif

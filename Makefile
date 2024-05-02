@@ -1,7 +1,7 @@
 NAME			= 	cub3D
 FILES			= 	parsing/map.c  parsing/file.c  main.c \
 					game/game.c rendering/rendering.c utils/vector.c utils/more_math.c \
-					utils/map_accessor.c raycasting/raycasting.c
+					utils/map_accessor.c raycasting/raycasting.c game/game_init.c
 
 SRC_DIR			= 	src
 OBJ_DIR			= 	obj

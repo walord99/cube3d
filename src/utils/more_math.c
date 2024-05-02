@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:36:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/17 16:15:35 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 14:24:25 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,13 @@ double	inv_sqrt(double n)
 {
 	double square_root = sqrt(n);
 	return 1.0f / square_root;
+}
+
+int	clamp(int range_start, int range_end, int num)
+{
+	if (num < range_start)
+		return (range_start);
+	if (num > range_end)
+		return (range_end);
+	return (num);
 }
