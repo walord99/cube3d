@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 15:17:37 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 15:40:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,31 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	shortest_ray = cast_aabb_rays(ray_info, hitloc, game->map);
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return (add_vector(game->pos, movement));
+	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
+	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
+		newpos.y -= 0.000000001;
+	else if (ray_info[shortest_ray].side == 0 && ray_info[shortest_ray].step.x > 0)
+		newpos.x -= 0.000000001;
+	if (ray_info[shortest_ray].side == 1)
+	{
+		movement_dir.x = ray_info[shortest_ray].step.x;
+		movement_dir.y = 0;
+		move_len = dbl_abs(movement.x) - dbl_abs(game->pos.x - newpos.x);
+		movement.x = move_len * movement_dir.x;
+		movement.y = 0;
+	}
+	else
+	{
+		movement_dir.x = 0;
+		movement_dir.y = ray_info[shortest_ray].step.y;
+		move_len = dbl_abs(movement.y) - dbl_abs(game->pos.y - newpos.y);
+		movement.x = 0;
+		movement.y = move_len * movement_dir.y;
+	}
+	init_aabb_rays(ray_info, newpos, game->AABB_corners, movement_dir);
+	shortest_ray = cast_aabb_rays(ray_info, hitloc, game->map);
+	if (ray_info[shortest_ray].perpWallDist > move_len)
+		return add_vector(newpos, movement);
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
 	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
 		newpos.y -= 0.000000001;

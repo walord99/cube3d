@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 14:23:50 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 15:42:10 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	init_game(t_game *game)
 	// t_dbl_vector mov;
 	// mov.x = 0;
 	// mov.y = 0;
-	game->pos.x = 2;
-	game->pos.y = 2;
+	game->pos.x = 2.5;
+	game->pos.y = 2.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
 	game->plane.x = 1;
