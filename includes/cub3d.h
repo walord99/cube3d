@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 16:50:17 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/03 09:14:56 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define ERR_DUP_ELEM "ERROR: duplicate element found!"
 # define ERR_INV_ELEM "ERROR: Invalid elements!"
 # define ERR_INC_MAP "ERROR: Incorrect map!"
+# define ERR_EMPTY_MAP "ERROR: Empty map!"
 # define ERR_TEX_N "ERROR: path to the north texture is invalid"
 # define ERR_TEX_S "ERROR: path to the south texture is invalid"
 # define ERR_TEX_E "ERROR: path to the east texture is invalid"
@@ -140,7 +141,7 @@ int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
 int					arg_check(int argc, char **argv);
 void				parse(int argc, char **argv, t_map *map, int *fd);
-void				init_map_struct(t_map *map);
+t_map				*init_map_struct(void);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
@@ -155,6 +156,16 @@ int					check_col_end(char **str, int x, int end);
 int					check_first_and_last_line(char **str, t_map map);
 int					find_first_non_whitespace(char *line);
 int					find_last_non_whitespace(char *line, int width);
+int					element_parse(t_map *map, char *current_line, int *fd,
+						int *idx);
+int					handle_error(char *error_msg, char *current_line, int fd);
+void				get_map_dimensions(t_map *map, char *current_line,
+						int *map_start_idx, int *line_counter);
+int					verify_checked_elements(t_map *map, char *current_line,
+						int *fd);
+int					process_map_line(char *current_line, int *line_counter,
+						int *map_start_idx, int *fd);
+bool				is_line_empty_or_whitespace(char *current_line);
 
 // vector functions
 t_dbl_vector		multiply_vector(t_dbl_vector v, double mult);

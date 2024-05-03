@@ -1,5 +1,5 @@
 NAME			=	cub3D
-FILES			=	parsing/map.c  parsing/file.c  parsing/floodfill.c\
+FILES			=	parsing/map.c  parsing/file.c  parsing/floodfill.c parsing/element_utils.c parsing/elements_parser.c \
 					parsing/map_utils.c  parsing/error_handler.c parsing/parser.c\
 					parsing/color_parse.c  parsing/grid.c  parsing/parsing_utils.c  parsing/texture_parse.c main.c \
 					game/game.c rendering/rendering.c utils/vector.c utils/more_math.c \
