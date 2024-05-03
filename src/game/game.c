@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 21:12:43 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/03 19:15:40 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 
 void	mouse_hook(double xpos, double ypos, void *param)
 {
-	//printf("x: %f\ny: %f\n", xpos, ypos);
+// 	t_game *game = (t_game *)param;
+// 	printf("x: %fy: %f\n", xpos, ypos);
+// 	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);
 }
 
 void	loop_hook(void *param)
@@ -115,8 +117,10 @@ void	loop_hook(void *param)
 
 	game = (t_game *)param;
 	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
+	game->mouse_pos.x = game->mouse_pos.x - screenWidth / 2;
+	game->mouse_pos.y = game->mouse_pos.y - screenHeight / 2;
 	printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
-	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);
+	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);	
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
@@ -145,6 +149,9 @@ void	loop_hook(void *param)
 					* rot_speed));
 		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
 	}
+
+	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
+	game->plane = rotate_vector(game->plane, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
 	movement_dir = round_off_floating_point_errors(movement_dir);
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
