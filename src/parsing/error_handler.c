@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:11 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/25 14:54:44 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:45:01 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	free_map(t_map *map)
 			}
 			free(map->grid);
 		}
-		free(map);
 	}
 	map->grid = NULL;
 	map = NULL;
