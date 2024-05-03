@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42quebec.com>     +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 18:31:29 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/03 19:31:36 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_game
 	t_dbl_vector	AABB_corners[4];
 	t_dbl_vector	look_dir;
 	t_dbl_vector	plane;
+	t_int_vector	mouse_pos;
 	mlx_t			*mlx;
 	mlx_image_t		*rendered;
 	t_map			map;

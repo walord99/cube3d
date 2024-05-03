@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/03 10:52:40 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:31:19 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	key_hook(mlx_key_data_t key_data, void *param)
-{
-	t_game	*game;
-
-	game = (t_game *)param;
-}
 
 int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_map *map)
 {
@@ -70,10 +63,10 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return (add_vector(game->pos, movement));
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
-	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
-		newpos.y -= 0.000000001;
-	else if (ray_info[shortest_ray].side == 0 && ray_info[shortest_ray].step.x > 0)
-		newpos.x -= 0.000000001;
+	if (ray_info[shortest_ray].side == 1)
+		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
+	else if (ray_info[shortest_ray].side == 0)
+		newpos.x -= 0.000000001 * ray_info[shortest_ray].step.x;
 	if (ray_info[shortest_ray].side == 1)
 	{
 		movement_dir.x = ray_info[shortest_ray].step.x;
@@ -95,16 +88,18 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return add_vector(newpos, movement);
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
-	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
-		newpos.y -= 0.000000001;
-	else if (ray_info[shortest_ray].side == 0 && ray_info[shortest_ray].step.x > 0)
-		newpos.x -= 0.000000001;
+	if (ray_info[shortest_ray].side == 1)
+		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
+	else if (ray_info[shortest_ray].side == 0)
+		newpos.x -= 0.000000001 * ray_info[shortest_ray].step.x;
 	return (newpos);
 }
 
 void	mouse_hook(double xpos, double ypos, void *param)
 {
-	// printf("x: %f\ny: %f\n", xpos, ypos);
+// 	t_game *game = (t_game *)param;
+// 	printf("x: %fy: %f\n", xpos, ypos);
+// 	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);
 }
 
 void	loop_hook(void *param)
@@ -121,10 +116,17 @@ void	loop_hook(void *param)
 	t_dbl_vector	movement;
 
 	game = (t_game *)param;
+	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
+	game->mouse_pos.x = game->mouse_pos.x - screenWidth / 2;
+	game->mouse_pos.y = game->mouse_pos.y - screenHeight / 2;
+	printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
+	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);	
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
 	rot_speed = game->mlx->delta_time * 90.0;
+	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(game->mlx);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		movement_dir = add_vector(movement_dir, game->look_dir);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
@@ -147,8 +149,9 @@ void	loop_hook(void *param)
 					* rot_speed));
 		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
 	}
-	if(mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE)) //TODO:added to avoid using mouse during tests.
-		mlx_close_window(game->mlx);
+
+	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
+	game->plane = rotate_vector(game->plane, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
 	movement_dir = round_off_floating_point_errors(movement_dir);
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
