@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/29 16:25:29 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:45:11 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,44 +46,8 @@ int	check_tex_extension(char *path_to_tex)
 	return (0);
 }
 
-// int	load_texture(t_map *map, char *path_to_tex)
-// {
-// 	map->textures->texture_test = mlx_load_png(path_to_tex);
-// 	if (!map->textures->texture_test)
-// 	{
-// 		printf("HERE\n");
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-// void tex_to_img(t_map *map)
-// {
-// 	map->textures->img_test = mlx_texture_to_image(map->mlx, map->textures->texture_test);
-// }
-
-// void resize_img(t_map *map)
-// {
-// 	mlx_resize_image(map->textures->img_test, 50, 50);
-// }
-
-// int create_texture(t_map *map, char*path_to_tex)
-// {
-// 	map->mlx = mlx_init(100,100,"cub3d", false);
-// 	if(!map->mlx)
-// 		return 1;
-// 	if (load_texture(map, path_to_tex))
-// 		return (1);
-// 	tex_to_img(map);
-// 	resize_img(map);
-// 	return(0);
-// }
-
 bool	is_valid_tex(t_map *map, char *path_to_tex)
 {
-	// if(create_texture(map, path_to_tex)) 
-	// 	return(false);
-	// if (load_texture(map, path_to_tex))
-	// 	return (false);
 	if (check_tex_extension(path_to_tex))
 		return (false);
 	return (true);
