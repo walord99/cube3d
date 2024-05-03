@@ -6,18 +6,11 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 20:17:37 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 21:12:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	key_hook(mlx_key_data_t key_data, void *param)
-{
-	t_game	*game;
-
-	game = (t_game *)param;
-}
 
 int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_map *map)
 {
@@ -104,7 +97,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 
 void	mouse_hook(double xpos, double ypos, void *param)
 {
-	// printf("x: %f\ny: %f\n", xpos, ypos);
+	//printf("x: %f\ny: %f\n", xpos, ypos);
 }
 
 void	loop_hook(void *param)
@@ -121,10 +114,15 @@ void	loop_hook(void *param)
 	t_dbl_vector	movement;
 
 	game = (t_game *)param;
+	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
+	printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
+	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
 	rot_speed = game->mlx->delta_time * 90.0;
+	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(game->mlx);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		movement_dir = add_vector(movement_dir, game->look_dir);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))

@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 16:51:15 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 21:14:54 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	init_game(t_game *game)
 	// game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));
 	// game->plane = rotate_vector(game->plane, deg_to_rad(2));
 	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
+	//mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	// collision_detection(game, );
-	mlx_key_hook(game->mlx, &key_hook, game);
-	mlx_cursor_hook(game->mlx, &mouse_hook, game);
+	//mlx_cursor_hook(game->mlx, &mouse_hook, game);
 	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_loop(game->mlx);
 }
