@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 09:50:30 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:31:29 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ bool				is_valid_color_str(char *color_pref);
 int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
 int					arg_check(int argc, char **argv);
-int				parse(int argc, char **argv, t_map *map, int *fd);
-t_map				*init_map_struct(t_map *map);
+int					parse(int argc, char **argv, t_map *map, int *fd);
+void				init_map_struct(t_map *map);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
