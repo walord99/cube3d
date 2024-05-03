@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 16:51:46 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/02 20:17:37 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return (add_vector(game->pos, movement));
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
-	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
-		newpos.y -= 0.000000001;
-	else if (ray_info[shortest_ray].side == 0 && ray_info[shortest_ray].step.x > 0)
-		newpos.x -= 0.000000001;
+	if (ray_info[shortest_ray].side == 1)
+		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
+	else if (ray_info[shortest_ray].side == 0)
+		newpos.x -= 0.000000001 * ray_info[shortest_ray].step.x;
 	if (ray_info[shortest_ray].side == 1)
 	{
 		movement_dir.x = ray_info[shortest_ray].step.x;
@@ -95,10 +95,10 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return add_vector(newpos, movement);
 	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
-	if (ray_info[shortest_ray].side == 1 && ray_info[shortest_ray].step.y > 0)
-		newpos.y -= 0.000000001;
-	else if (ray_info[shortest_ray].side == 0 && ray_info[shortest_ray].step.x > 0)
-		newpos.x -= 0.000000001;
+	if (ray_info[shortest_ray].side == 1)
+		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
+	else if (ray_info[shortest_ray].side == 0)
+		newpos.x -= 0.000000001 * ray_info[shortest_ray].step.x;
 	return (newpos);
 }
 
