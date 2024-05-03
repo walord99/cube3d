@@ -5,9 +5,9 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "lldb",
       "request": "launch",
-      "args": [],
+      "args": ["/Users/yothmani/Desktop/cube3d/map2.cub"],
       "cwd": "/Users/yothmani/Desktop/cube3d/src/parsing",
-      "program": "/Users/yothmani/Desktop/cube3d/src/parsing/build/Debug/outDebug"
+      "program": "cub3D"
     }
   ]
 }

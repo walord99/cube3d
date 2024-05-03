@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/02 17:01:35 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/03 10:05:36 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	main(int argc, char **argv)
 	if (fd < 0)
 		return (1);
 	init_map_struct(&game.map);
-	parse(argc, argv, &game.map, &fd);
+	if(parse(argc, argv, &game.map, &fd))
+		return 1;
 	close(fd);
 	init_game(&game);
 	return (0);

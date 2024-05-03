@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 09:14:56 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/03 09:50:30 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ bool				is_valid_color_str(char *color_pref);
 int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
 int					arg_check(int argc, char **argv);
-void				parse(int argc, char **argv, t_map *map, int *fd);
-t_map				*init_map_struct(void);
+int				parse(int argc, char **argv, t_map *map, int *fd);
+t_map				*init_map_struct(t_map *map);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);

@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 17:30:24 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/29 17:30:56 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/03 10:46:03 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ void	grid_parse(t_map *map)
 	}
 }
 
-void	parse(int argc, char **argv, t_map *map, int *fd)
+int	parse(int argc, char **argv, t_map *map, int *fd)
 {
 	if (file_check(argc, argv, fd, map))
-		return ;
+		return 1;
 	allocate_grid(map);
 	populate_grid(map, *fd);
 	grid_parse(map);
+	return 0;
 }
