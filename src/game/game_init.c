@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42quebec.com>     +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/03 19:11:45 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/05 01:18:38 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	init_game(t_game *game)
 	game->look_dir.y = -1;
 	game->plane.x = 1;
 	game->plane.y = 0;
+	game->rendered = NULL;
 	init_player_move_box(game);
 	// game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));
 	// game->plane = rotate_vector(game->plane, deg_to_rad(2));

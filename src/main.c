@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/03 10:05:36 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:50:25 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ int	main(int argc, char **argv)
 		return 1;
 	close(fd);
 	init_game(&game);
+	mlx_delete_image(game.mlx, game.rendered);
+	mlx_terminate(game.mlx);
 	return (0);
 }
