@@ -6,11 +6,44 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/06 10:40:45 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 16:24:11 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void fill_square(mlx_image_t *img, uint32_t color, t_int_vector start, t_int_vector end)
+{
+	int temp = start.y;
+	while(start.x != end.x)
+	{
+		start.y = temp;
+		while(start.y != end.y)
+		{
+			mlx_put_pixel(img, start.x, start.y, color);
+			start.y++;
+		}
+		start.x++;
+	}
+}
+
+mlx_image_t *create_floor_ceil_image(t_game *game)
+{
+	mlx_image_t *fc_img = mlx_new_image(game->mlx, screenWidth, screenHeight);
+	t_int_vector start;
+	t_int_vector end;
+	start.x = 0;
+	start.y = 0;
+	end.x = screenWidth;
+	end.y = screenHeight / 2;
+	fill_square(fc_img, game->map.cieling, start, end);
+	start.y = screenHeight / 2;
+	start.x = 0;
+	end.x = screenWidth;
+	end.y = screenHeight;
+	fill_square(fc_img, game->map.floor, start, end);
+	return fc_img;
+}
 
 void init_player_move_box(t_game *game)
 {
@@ -42,6 +75,9 @@ void	init_game(t_game *game)
 	// mlx_set_setting(MLX_FULLSCREEN, true);
 	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
+	game->fc_img = create_floor_ceil_image(game);
+	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
+	game->fc_img->instances[0].z = 0;
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	// collision_detection(game, );
 	mlx_loop_hook(game->mlx, &loop_hook, game);

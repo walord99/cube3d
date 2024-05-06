@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 12:43:58 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:45:26 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_map
 	uint32_t		floor;
 	uint32_t		cieling;
 	t_textures		*textures;
+	mlx_texture_t   *texturesss[4];
 }					t_map;
 
 typedef struct s_game
@@ -131,6 +132,7 @@ typedef struct s_game
 	t_int_vector	mouse_pos;
 	mlx_t			*mlx;
 	mlx_image_t		*rendered;
+	mlx_image_t		*fc_img;
 	t_map			map;
 }					t_game;
 
