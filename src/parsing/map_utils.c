@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42quebec.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:41:42 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/25 15:12:47 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:35:46 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ bool	handle_start_points(char **str, t_map *map)
 			{
 				if (map->has_direction)
 					return (print_and_return(ERR_SP, false));
-				map->has_direction++;
+				map->has_direction = true;
 				map->spawn_direction = str[x][y];
 				map->spawn_x = y;
 				map->spawn_y = x;
