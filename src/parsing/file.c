@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/03 09:11:11 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:45:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int	read_and_parse_file(int fd, t_map *map)
 	char			*current_line;
 	int				line_counter;
 	int				map_start_idx;
-	int				idx;
-	unsigned int	width;
+	int				idx = 0;
+	//unsigned int	width;
 
 	current_line = get_next_line(fd, true);
 	if (!current_line)

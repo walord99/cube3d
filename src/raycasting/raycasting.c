@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/02 16:13:58 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:41:48 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	get_delta_dist(t_raycaster *ri)
 {
-	t_dbl_vector	deltaDist;
-
 	if (ri->rayDir.x == 0)
 		ri->deltaDist.x = DBL_MAX;
 	else
@@ -26,7 +24,7 @@ void	get_delta_dist(t_raycaster *ri)
 		ri->deltaDist.y = dbl_abs(1 / ri->rayDir.y);
 }
 
-void	get_step_and_side(t_raycaster *ri, t_map *map)
+void	get_step_and_side(t_raycaster *ri)
 {
 	if (ri->rayDir.x < 0)
 	{
@@ -80,7 +78,7 @@ t_dbl_vector	cast_ray(t_raycaster *ri, t_map *map)
 	ri->map_pos.x = ri->start_pos.x / 1;
 	ri->map_pos.y = ri->start_pos.y / 1;
 	get_delta_dist(ri);
-	get_step_and_side(ri, map);
+	get_step_and_side(ri);
 	dda_loop(ri, map);
 	if (ri->side == 0)
 		ri->perpWallDist = ri->sideDist.x - ri->deltaDist.x;

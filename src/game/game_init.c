@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/05 01:18:38 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:40:45 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	init_game(t_game *game)
 	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	// collision_detection(game, );
-	mlx_cursor_hook(game->mlx, &mouse_hook, game);
 	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_loop(game->mlx);
 }

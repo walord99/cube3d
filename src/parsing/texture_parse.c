@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 11:45:11 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:49:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	check_tex_extension(char *path_to_tex)
 
 bool	is_valid_tex(t_map *map, char *path_to_tex)
 {
+	(void)map;
 	if (check_tex_extension(path_to_tex))
 		return (false);
 	return (true);

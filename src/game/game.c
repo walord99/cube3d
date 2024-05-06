@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/03 19:31:19 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:40:40 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,24 +95,12 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	return (newpos);
 }
 
-void	mouse_hook(double xpos, double ypos, void *param)
-{
-// 	t_game *game = (t_game *)param;
-// 	printf("x: %fy: %f\n", xpos, ypos);
-// 	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);
-}
-
 void	loop_hook(void *param)
 {
 	t_game			*game;
 	t_dbl_vector	movement_dir;
 	double			move_speed;
 	double			rot_speed;
-	int				mapX;
-	int				mapY;
-	t_dbl_vector	temp_pos;
-	double			x_offset;
-	double			y_offset;
 	t_dbl_vector	movement;
 
 	game = (t_game *)param;

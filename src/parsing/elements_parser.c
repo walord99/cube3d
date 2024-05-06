@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   elements_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 14:12:39 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:38:07 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	element_parse(t_map *map, char *current_line, int *fd, int *idx)
 
 int	verify_checked_elements(t_map *map, char *current_line, int *fd)
 {
-	int	width;
+	//int	width;
 
 	if (!map->checked_element.c_color || !map->checked_element.f_color
 		|| !map->checked_element.texture_ea || !map->checked_element.texture_we
