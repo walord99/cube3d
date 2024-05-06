@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 17:30:24 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 10:46:03 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:08:38 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,29 @@ int	file_check(int argc, char **argv, int *fd, t_map *map)
 	return (0);
 }
 
-void	grid_parse(t_map *map)
+int	grid_parse(t_map *map)
 {
 	if (!is_map_valid(map->grid, map))
 	{
 		free_map(map);
-		return ;
+		return (1);
 	}
 	if (!is_map_playable(map))
 	{
-		printf("not playable\n");
+		ft_printf_fd(ERR_FLOOD, 2);
 		free_map(map);
-		return ;
+		return (1);
 	}
+	return (0);
 }
 
 int	parse(int argc, char **argv, t_map *map, int *fd)
 {
 	if (file_check(argc, argv, fd, map))
-		return 1;
+		return (1);
 	allocate_grid(map);
 	populate_grid(map, *fd);
-	grid_parse(map);
-	return 0;
+	if (grid_parse(map))
+		return (1);
+	return (0);
 }

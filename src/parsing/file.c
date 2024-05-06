@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 12:47:23 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:45:16 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,24 @@ int	handle_error(char *error_msg, char *current_line, int fd)
 	return (1);
 }
 
+void	get_color(t_map *map, char *current_line, char *color_prefix)
+{
+	char	*new_current_line;
+	char	**split;
+
+	new_current_line = ft_strtrim(current_line, color_prefix);
+	split = ft_split(new_current_line, ',');
+	map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),
+			ft_atoi(split[2]), 255);
+}
+
 // TODO:put in norm this function
 
 int	read_and_parse_file(int fd, t_map *map)
 {
-	char			*current_line;
-	int				line_counter;
-	int				map_start_idx;
-	// int				idx = 0;
+	char	*current_line;
+	int		line_counter;
+	int		map_start_idx;
 
 	current_line = get_next_line(fd, true);
 	if (!current_line)
@@ -119,9 +129,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					return (handle_error(ERR_F, current_line, fd));
 				else
 				{
-					char *new_current_line = ft_strtrim(current_line, "F");
-					char **split = ft_split(new_current_line, ',');
-					map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),ft_atoi(split[2]), 255);
+					get_color(map,current_line,"F");
 					map->checked_element.f_color = true;
 				}
 			}
@@ -131,9 +139,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					return (handle_error(ERR_C, current_line, fd));
 				else
 				{
-					char *new_current_line = ft_strtrim(current_line, "C");
-					char **split = ft_split(new_current_line, ',');
-					map->cieling = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),ft_atoi(split[2]), 255);
+					get_color(map, current_line, "C");
 					map->checked_element.c_color = true;
 				}
 			}

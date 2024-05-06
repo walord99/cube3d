@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 12:43:58 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:36:32 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 #  define M_PI 3.141592653589793
 # endif
 
-# define PLAYER_MOVE_BOX 0.1
+# define PLAYER_MOVE_BOX 0.4
 # define screenWidth 1920
 # define screenHeight 1080
 
@@ -52,6 +52,7 @@
 # define ERR_FL "ERROR: First line has incorrect character\n"
 # define ERR_LL "ERROR: Last line has incorrect character\n"
 # define ERR_SP "ERROR: Only one start point is permitted\n"
+#define ERR_FLOOD "ERROR: Map is not playable!\n"
 
 typedef struct s_dbl_vector
 {
