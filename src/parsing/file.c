@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 11:45:55 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:47:23 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,24 @@ int	read_and_parse_file(int fd, t_map *map)
 				if (!is_valid_color_str(current_line))
 					return (handle_error(ERR_F, current_line, fd));
 				else
+				{
+					char *new_current_line = ft_strtrim(current_line, "F");
+					char **split = ft_split(new_current_line, ',');
+					map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),ft_atoi(split[2]), 255);
 					map->checked_element.f_color = true;
+				}
 			}
 			else if (*current_line == 'C' && !map->checked_element.c_color)
 			{
 				if (!is_valid_color_str(current_line))
 					return (handle_error(ERR_C, current_line, fd));
 				else
+				{
+					char *new_current_line = ft_strtrim(current_line, "C");
+					char **split = ft_split(new_current_line, ',');
+					map->cieling = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),ft_atoi(split[2]), 255);
 					map->checked_element.c_color = true;
+				}
 			}
 			else if (is_valid_tex_prefix(current_line))
 			{
@@ -150,6 +160,7 @@ int	read_and_parse_file(int fd, t_map *map)
 				}
 			}
 		}
+		free(current_line);
 		current_line = get_next_line(fd, true);
 		line_counter++;
 	}

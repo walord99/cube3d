@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 11:48:34 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:43:58 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ typedef struct s_map
 	int				spawn_y;
 	char			spawn_direction;
 	mlx_t			*mlx;
+	uint32_t		floor;
+	uint32_t		cieling;
 	t_textures		*textures;
 }					t_map;
 
@@ -179,6 +181,7 @@ double				magnetude(t_dbl_vector v);
 t_dbl_vector		cast_ray(t_raycaster *ri, t_map *map);
 
 // rendering funnctions
+uint32_t	rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
 
 // game functions
