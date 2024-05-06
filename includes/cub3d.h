@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 19:31:36 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 11:48:34 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,7 @@ int					check_col_end(char **str, int x, int end);
 int					check_first_and_last_line(char **str, t_map map);
 int					find_first_non_whitespace(char *line);
 int					find_last_non_whitespace(char *line, int width);
-int					element_parse(t_map *map, char *current_line, int *fd,
-						int *idx);
+int					element_parse(t_map *map, char *current_line, int *fd);
 int					handle_error(char *error_msg, char *current_line, int fd);
 void				get_map_dimensions(t_map *map, char *current_line,
 						int *map_start_idx, int *line_counter);

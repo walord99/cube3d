@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   elements_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 10:38:07 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 11:43:48 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ char	*double_trim(char *current_line)
 	return (current_line);
 }
 
-int	element_parse(t_map *map, char *current_line, int *fd, int *idx)
+int	element_parse(t_map *map, char *current_line, int *fd)
 {
-	if (current_line[*idx] == 'N' && !map->checked_element.texture_no)
+	if (*current_line == 'N' && !map->checked_element.texture_no)
 	{
 		current_line = double_trim(current_line);
 		if (!is_valid_tex(map, current_line))
@@ -39,7 +39,7 @@ int	element_parse(t_map *map, char *current_line, int *fd, int *idx)
 		else
 			map->checked_element.texture_no = true;
 	}
-	else if (current_line[*idx] == 'S' && !map->checked_element.texture_so)
+	else if (*current_line == 'S' && !map->checked_element.texture_so)
 	{
 		current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))
@@ -47,7 +47,7 @@ int	element_parse(t_map *map, char *current_line, int *fd, int *idx)
 		else
 			return (handle_error(ERR_TEX_S, current_line, *fd));
 	}
-	else if (current_line[*idx] == 'E' && !map->checked_element.texture_ea)
+	else if (*current_line == 'E' && !map->checked_element.texture_ea)
 	{
 		current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))
@@ -55,7 +55,7 @@ int	element_parse(t_map *map, char *current_line, int *fd, int *idx)
 		else
 			return (handle_error(ERR_TEX_E, current_line, *fd));
 	}
-	else if (current_line[*idx] == 'W' && !map->checked_element.texture_we)
+	else if (*current_line == 'W' && !map->checked_element.texture_we)
 	{
 		current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))

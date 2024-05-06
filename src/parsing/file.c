@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 10:45:33 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 11:45:55 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ int	read_and_parse_file(int fd, t_map *map)
 	char			*current_line;
 	int				line_counter;
 	int				map_start_idx;
-	int				idx = 0;
-	//unsigned int	width;
+	// int				idx = 0;
 
 	current_line = get_next_line(fd, true);
 	if (!current_line)
@@ -114,14 +113,14 @@ int	read_and_parse_file(int fd, t_map *map)
 		}
 		else
 		{
-			if (current_line[idx] == 'F' && !map->checked_element.f_color)
+			if (*current_line == 'F' && !map->checked_element.f_color)
 			{
 				if (!is_valid_color_str(current_line))
 					return (handle_error(ERR_F, current_line, fd));
 				else
 					map->checked_element.f_color = true;
 			}
-			else if (current_line[idx] == 'C' && !map->checked_element.c_color)
+			else if (*current_line == 'C' && !map->checked_element.c_color)
 			{
 				if (!is_valid_color_str(current_line))
 					return (handle_error(ERR_C, current_line, fd));
@@ -130,12 +129,12 @@ int	read_and_parse_file(int fd, t_map *map)
 			}
 			else if (is_valid_tex_prefix(current_line))
 			{
-				if (element_parse(map, current_line, &fd, &idx))
+				if (element_parse(map, current_line, &fd))
 					return (1);
 			}
 			else
 			{
-				if (current_line[idx] == '1')
+				if (*current_line == '1')
 				{
 					if (verify_checked_elements(map, current_line, &fd))
 						return (1);

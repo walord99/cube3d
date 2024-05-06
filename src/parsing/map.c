@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 16:49:59 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 11:48:11 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void init_map_struct(t_map *map)
+void	init_map_struct(t_map *map)
 {
 	map->grid = NULL;
 	map->height = 0;
@@ -43,9 +43,9 @@ bool	is_char_valid(char **str, t_map *map)
 
 int	colonne_check(char **str, t_map map)
 {
-	int	x;
-	int	y;
-	int	end;
+	unsigned int	x;
+	unsigned int	y;
+	int				end;
 
 	if (!str)
 		return (0);
