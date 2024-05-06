@@ -1,7 +1,7 @@
 
 
-NO textures/texture-pattern.png
-SO textures/texture-pattern.png
+NO includes/textures/rock.png
+SO includes/textures/rock.png
 
 C 0,0,0
 
@@ -9,8 +9,8 @@ F 255,255,255
 
 
 
-EA textures/texture-pattern.png
-WE textures/texture-pattern.png
+EA includes/textures/rock.png
+WE includes/textures/rock.png
 
 
 

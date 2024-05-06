@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 11:43:48 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:45:11 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ char	*double_trim(char *current_line)
 	return (current_line);
 }
 
+
+//TODO:organize this function
 int	element_parse(t_map *map, char *current_line, int *fd)
 {
 	if (*current_line == 'N' && !map->checked_element.texture_no)
 	{
-		current_line = double_trim(current_line);
+		char *new = ft_strtrim(current_line, " \n");
+		if(create_texture(map, new + 3))
+			return (handle_error(ERR_TEX_N, current_line, *fd));
+		free(new);
+		char *new_current_line = double_trim(current_line);
 		if (!is_valid_tex(map, current_line))
 			return (handle_error(ERR_TEX_N, current_line, *fd));
 		else
@@ -41,7 +47,11 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 	}
 	else if (*current_line == 'S' && !map->checked_element.texture_so)
 	{
-		current_line = double_trim(current_line);
+		char *new = ft_strtrim(current_line, " \n");
+		if(create_texture(map, new + 3))
+			return (handle_error(ERR_TEX_S, current_line, *fd));
+		free(new);
+		char *new_current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))
 			map->checked_element.texture_so = true;
 		else
@@ -49,7 +59,11 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 	}
 	else if (*current_line == 'E' && !map->checked_element.texture_ea)
 	{
-		current_line = double_trim(current_line);
+		char *new = ft_strtrim(current_line, " \n");
+		if(create_texture(map, new + 3))
+			return (handle_error(ERR_TEX_E, current_line, *fd));
+		free(new);
+		char *new_current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))
 			map->checked_element.texture_ea = true;
 		else
@@ -57,7 +71,11 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 	}
 	else if (*current_line == 'W' && !map->checked_element.texture_we)
 	{
-		current_line = double_trim(current_line);
+		char *new = ft_strtrim(current_line, " \n");
+		if(create_texture(map, new + 3))
+			return (handle_error(ERR_TEX_W, current_line, *fd));
+		free(new);
+		char *new_current_line = double_trim(current_line);
 		if (is_valid_tex(map, current_line))
 			map->checked_element.texture_we = true;
 		else
@@ -68,8 +86,6 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 
 int	verify_checked_elements(t_map *map, char *current_line, int *fd)
 {
-	//int	width;
-
 	if (!map->checked_element.c_color || !map->checked_element.f_color
 		|| !map->checked_element.texture_ea || !map->checked_element.texture_we
 		|| !map->checked_element.texture_so || !map->checked_element.texture_no)

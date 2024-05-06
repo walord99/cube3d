@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 13:45:16 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:54:38 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	arg_check(int argc, char **argv)
 	if (argc != 2)
 	{
 		printf(ERR_ARGC);
-		return (-1);
+		return (-2);
 	}
 	if (check_file_extension(argv[1]))
 	{
