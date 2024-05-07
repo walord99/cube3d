@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   elements_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 16:45:11 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:25:45 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 			return (handle_error(ERR_TEX_N, current_line, *fd));
 		free(new);
 		char *new_current_line = double_trim(current_line);
-		if (!is_valid_tex(map, current_line))
+		if (!is_valid_tex(map, new_current_line))
 			return (handle_error(ERR_TEX_N, current_line, *fd));
 		else
 			map->checked_element.texture_no = true;
@@ -52,7 +52,7 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 			return (handle_error(ERR_TEX_S, current_line, *fd));
 		free(new);
 		char *new_current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
+		if (is_valid_tex(map, new_current_line))
 			map->checked_element.texture_so = true;
 		else
 			return (handle_error(ERR_TEX_S, current_line, *fd));
@@ -64,7 +64,7 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 			return (handle_error(ERR_TEX_E, current_line, *fd));
 		free(new);
 		char *new_current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
+		if (is_valid_tex(map, new_current_line))
 			map->checked_element.texture_ea = true;
 		else
 			return (handle_error(ERR_TEX_E, current_line, *fd));
@@ -76,7 +76,7 @@ int	element_parse(t_map *map, char *current_line, int *fd)
 			return (handle_error(ERR_TEX_W, current_line, *fd));
 		free(new);
 		char *new_current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
+		if (is_valid_tex(map, new_current_line))
 			map->checked_element.texture_we = true;
 		else
 			return (handle_error(ERR_TEX_W, current_line, *fd));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 16:38:07 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/07 12:27:41 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,32 +108,34 @@ typedef struct s_textures
 
 typedef struct s_map
 {
-	unsigned int		height;
-	unsigned int		width;
-	int					first_map_line;
-	char				**grid;
-	bool				has_direction;
-	t_element_check		checked_element;
-	int					spawn_x;
-	int					spawn_y;
-	char				spawn_direction;
-	mlx_t				*mlx;
-	uint32_t			floor;
-	uint32_t			cieling;
-	struct s_textures	textures;
-}						t_map;
+	unsigned int	height;
+	unsigned int	width;
+	int				first_map_line;
+	char			**grid;
+	bool			has_direction;
+	t_element_check	checked_element;
+	int				spawn_x;
+	int				spawn_y;
+	char			spawn_direction;
+	mlx_t			*mlx;
+	uint32_t		floor;
+	uint32_t		cieling;
+	t_textures		*textures;
+	mlx_texture_t   *texturesss[4];
+}					t_map;
 
 typedef struct s_game
 {
-	t_dbl_vector		pos;
-	t_dbl_vector		AABB_corners[4];
-	t_dbl_vector		look_dir;
-	t_dbl_vector		plane;
-	t_int_vector		mouse_pos;
-	mlx_t				*mlx;
-	mlx_image_t			*rendered;
-	t_map				map;
-}						t_game;
+	t_dbl_vector	pos;
+	t_dbl_vector	AABB_corners[4];
+	t_dbl_vector	look_dir;
+	t_dbl_vector	plane;
+	t_int_vector	mouse_pos;
+	mlx_t			*mlx;
+	mlx_image_t		*rendered;
+	mlx_image_t		*fc_img;
+	t_map			map;
+}					t_game;
 
 int						first_non_white(char *line);
 bool					is_white_space(char c);

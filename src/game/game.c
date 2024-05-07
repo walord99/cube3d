@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/06 10:40:40 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:58:38 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ void	loop_hook(void *param)
 	game->pos = collision_detection(game, movement, movement_dir);
 	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
-	game->rendered = mlx_new_image(game->mlx, screenWidth, screenWidth);
+	game->rendered = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	draw(game);
 	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
+	game->rendered->instances[0].z = 1;
 }
