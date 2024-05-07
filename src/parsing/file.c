@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 15:54:38 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:56:45 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,45 +47,7 @@ int	check_file_extension(char *file_name)
 	return (0);
 }
 
-int	arg_check(int argc, char **argv)
-{
-	int	fd;
-
-	if (argc != 2)
-	{
-		printf(ERR_ARGC);
-		return (-2);
-	}
-	if (check_file_extension(argv[1]))
-	{
-		ft_printf_fd(ERR_BADFILE, 2);
-		return (-1);
-	}
-	fd = open_file(argv[1]);
-	return (fd);
-}
-
-int	handle_error(char *error_msg, char *current_line, int fd)
-{
-	ft_printf_fd("%s\n", 2, error_msg);
-	free(current_line);
-	close(fd);
-	return (1);
-}
-
-void	get_color(t_map *map, char *current_line, char *color_prefix)
-{
-	char	*new_current_line;
-	char	**split;
-
-	new_current_line = ft_strtrim(current_line, color_prefix);
-	split = ft_split(new_current_line, ',');
-	map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),
-			ft_atoi(split[2]), 255);
-}
-
 // TODO:put in norm this function
-
 int	read_and_parse_file(int fd, t_map *map)
 {
 	char	*current_line;
@@ -129,7 +91,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					return (handle_error(ERR_F, current_line, fd));
 				else
 				{
-					get_color(map,current_line,"F");
+					get_floor_color(map,current_line);
 					map->checked_element.f_color = true;
 				}
 			}
@@ -139,7 +101,7 @@ int	read_and_parse_file(int fd, t_map *map)
 					return (handle_error(ERR_C, current_line, fd));
 				else
 				{
-					get_color(map, current_line, "C");
+					get_cieling_color(map, current_line);
 					map->checked_element.c_color = true;
 				}
 			}

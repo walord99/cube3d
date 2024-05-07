@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   element_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 12:38:56 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 14:05:08 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:53:15 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,42 @@ bool	is_line_empty_or_whitespace(char *current_line)
 
 	idx = first_non_white(current_line);
 	return (idx == -1);
+}
+
+char	*double_trim(char *current_line)
+{
+	current_line = ft_strtrim(current_line, " \t");
+	current_line = current_line + 2;
+	current_line = ft_strtrim(current_line, " \n");
+	current_line = ft_strtrim(current_line, " \t");
+	current_line = current_line + 2;
+	current_line = ft_strtrim(current_line, " \n");
+	current_line = ft_strtrim(current_line, " \t");
+	current_line = current_line + 2;
+	current_line = ft_strtrim(current_line, " \n");
+	current_line = ft_strtrim(current_line, " \t");
+	current_line = current_line + 2;
+	current_line = ft_strtrim(current_line, " \n");
+	return (current_line);
+}
+
+int	verify_checked_elements(t_map *map, char *current_line, int *fd)
+{
+	if (!map->checked_element.c_color || !map->checked_element.f_color
+		|| !map->checked_element.texture_ea || !map->checked_element.texture_we
+		|| !map->checked_element.texture_so || !map->checked_element.texture_no)
+		return (handle_error(ERR_INV_ELEM, current_line, *fd));
+	return (0);
+}
+
+void	get_map_dimensions(t_map *map, char *current_line, int *map_start_idx,
+		int *line_counter)
+{
+	int	width;
+
+	width = ft_strlen(current_line);
+	if (width > map->width)
+		map->width = width;
+	if (*map_start_idx == -1)
+		*map_start_idx = *line_counter;
 }
