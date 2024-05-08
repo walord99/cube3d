@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 23:28:01 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 17:10:03 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,35 @@
 # include "libft.h"
 # include <ctype.h>
 # include <fcntl.h>
-# include <float.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
+// # include <float.h>
 
 # ifndef M_PI
 #  define M_PI 3.141592653589793
 # endif
 
-# define PLAYER_MOVE_BOX 0.1
-# define screenWidth 1920
-# define screenHeight 1080
+# define DBL_MAX __DBL_MAX__
+# define PLAYER_MOVE_BOX 0.4
+# define SCREENWIDTH 1920
+# define SCREENHEIGHT 1080
 
 # define MIN_HEIGHT 3
 # define MAX_HEIGHT 200
 # define MIN_WIDTH 3
 # define MAX_WIDTH 200
+
+// ERROR MESSAGES
 # define ERR_ARGC "ERROR: Invalid arguments. Usage: ./cub3D <file.cub>\n"
 # define ERR_BADFILE "ERROR: Bad file extension\n"
 # define ERR_C "ERROR: Ceiling color is not valid"
 # define ERR_F "ERROR:Floor color is not valid"
-# define ERR_NL "ERROR: Empty lines are not permitted between or after map lines!"
+# define ERR_NL \
+	"ERROR: Empty lines are not permitted \
+between or after map lines!"
 # define ERR_DUP_ELEM "ERROR: duplicate element found!"
 # define ERR_INV_ELEM "ERROR: Invalid elements!"
 # define ERR_INC_MAP "ERROR: Incorrect map!"
@@ -52,6 +57,13 @@
 # define ERR_FL "ERROR: First line has incorrect character\n"
 # define ERR_LL "ERROR: Last line has incorrect character\n"
 # define ERR_SP "ERROR: Only one start point is permitted\n"
+# define ERR_FLOOD "ERROR: Map is not playable!\n"
+
+// DIRECTIONS
+# define NO 0
+# define EA 1
+# define SO 2
+# define WE 3
 
 typedef struct s_dbl_vector
 {
@@ -110,6 +122,7 @@ typedef struct s_map
 	unsigned int	height;
 	unsigned int	width;
 	int				first_map_line;
+	int				fd;
 	char			**grid;
 	bool			has_direction;
 	t_element_check	checked_element;
@@ -119,8 +132,7 @@ typedef struct s_map
 	mlx_t			*mlx;
 	uint32_t		floor;
 	uint32_t		cieling;
-	t_textures		*textures;
-	mlx_texture_t	*texturesss[4];
+	mlx_texture_t	*textures[4];
 }					t_map;
 
 typedef struct s_minimap
@@ -143,6 +155,7 @@ typedef struct s_game
 	t_map			map;
 }					t_game;
 
+// PARSING FUNCTIONS
 int					first_non_white(char *line);
 bool				is_white_space(char c);
 bool				is_map_valid(char **str, t_map *map);
@@ -153,7 +166,7 @@ int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
 int					arg_check(int argc, char **argv);
 int					parse(int argc, char **argv, t_map *map, int *fd);
-void				init_map_struct(t_map *map);
+void				init_map_struct(t_map *map, int fd);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
@@ -177,6 +190,28 @@ int					verify_checked_elements(t_map *map, char *current_line,
 int					process_map_line(char *current_line, int *line_counter,
 						int *map_start_idx, int *fd);
 bool				is_line_empty_or_whitespace(char *current_line);
+int					create_texture(t_map *map, char *path_to_tex,
+						int direction);
+char				*double_trim(char *current_line);
+void				get_floor_color(t_map *map, char *current_line);
+void				get_cieling_color(t_map *map, char *current_line);
+
+int					between_lines_check(char *current_line, int *line_counter,
+						int *fd);
+int					full_color_check(t_map *map, char *current_line, int fd,
+						char color_pref);
+void				advance_to_next_line(char **current_line, int *line_counter,
+						int fd);
+void				finalize_map_processing(t_map *map, char *current_line,
+						int grid_idx, int line_counter);
+int					process_map(t_map *map, char *current_line,
+						int *line_counter, int *grid_idx);
+int					last_check(t_map *map, char *current_line, int line_counter,
+						int grid_idx);
+int					full_color_check(t_map *map, char *current_line, int fd,
+						char color_pref);
+int					full_tex_check(t_map *map, char *current_line,
+						int *line_counter, int *grid_idx);
 
 // vector functions
 t_dbl_vector		multiply_vector(t_dbl_vector v, double mult);

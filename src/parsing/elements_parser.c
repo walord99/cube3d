@@ -3,88 +3,128 @@
 /*                                                        :::      ::::::::   */
 /*   elements_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 11:43:48 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/07 13:53:08 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	*double_trim(char *current_line)
+int	north_texture_process(t_map *map, char *current_line, int *fd)
 {
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	return (current_line);
+	char	*trimmed;
+	char	*new_current_line;
+
+	trimmed = ft_strtrim(current_line, " \n");
+	new_current_line = double_trim(current_line);
+	if (create_texture(map, trimmed + 3, NO))
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_N, current_line, *fd));
+	}
+	free(trimmed);
+	if (!is_valid_tex(map, new_current_line))
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_N, current_line, *fd));
+	}
+	else
+		map->checked_element.texture_no = true;
+	return (0);
+}
+
+int	south_texture_process(t_map *map, char *current_line, int *fd)
+{
+	char	*trimmed;
+	char	*new_current_line;
+
+	trimmed = ft_strtrim(current_line, " \n");
+	new_current_line = double_trim(current_line);
+	if (create_texture(map, trimmed + 3, SO))
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_S, current_line, *fd));
+	}
+	free(trimmed);
+	if (is_valid_tex(map, new_current_line))
+		map->checked_element.texture_so = true;
+	else
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_S, current_line, *fd));
+	}
+	return (0);
+}
+
+int	east_texture_process(t_map *map, char *current_line, int *fd)
+{
+	char	*trimmed;
+	char	*new_current_line;
+
+	trimmed = ft_strtrim(current_line, " \n");
+	new_current_line = double_trim(current_line);
+	if (create_texture(map, trimmed + 3, EA))
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_E, current_line, *fd));
+	}
+	free(trimmed);
+	if (is_valid_tex(map, new_current_line))
+		map->checked_element.texture_ea = true;
+	else
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_E, current_line, *fd));
+	}
+	return (0);
+}
+
+int	west_texture_process(t_map *map, char *current_line, int *fd)
+{
+	char	*trimmed;
+	char	*new_current_line;
+
+	trimmed = ft_strtrim(current_line, " \n");
+	new_current_line = double_trim(current_line);
+	if (create_texture(map, trimmed + 3, WE))
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_W, current_line, *fd));
+	}
+	free(trimmed);
+	if (is_valid_tex(map, new_current_line))
+		map->checked_element.texture_we = true;
+	else
+	{
+		free(trimmed);
+		return (handle_error(ERR_TEX_W, current_line, *fd));
+	}
+	return (0);
 }
 
 int	element_parse(t_map *map, char *current_line, int *fd)
 {
 	if (*current_line == 'N' && !map->checked_element.texture_no)
 	{
-		current_line = double_trim(current_line);
-		if (!is_valid_tex(map, current_line))
-			return (handle_error(ERR_TEX_N, current_line, *fd));
-		else
-			map->checked_element.texture_no = true;
+		if (north_texture_process(map, current_line, fd))
+			return (1);
 	}
 	else if (*current_line == 'S' && !map->checked_element.texture_so)
 	{
-		current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
-			map->checked_element.texture_so = true;
-		else
-			return (handle_error(ERR_TEX_S, current_line, *fd));
+		if (south_texture_process(map, current_line, fd))
+			return (1);
 	}
 	else if (*current_line == 'E' && !map->checked_element.texture_ea)
 	{
-		current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
-			map->checked_element.texture_ea = true;
-		else
-			return (handle_error(ERR_TEX_E, current_line, *fd));
+		if (east_texture_process(map, current_line, fd))
+			return (1);
 	}
 	else if (*current_line == 'W' && !map->checked_element.texture_we)
 	{
-		current_line = double_trim(current_line);
-		if (is_valid_tex(map, current_line))
-			map->checked_element.texture_we = true;
-		else
-			return (handle_error(ERR_TEX_W, current_line, *fd));
+		if (west_texture_process(map, current_line, fd))
+			return (1);
 	}
 	return (0);
-}
-
-int	verify_checked_elements(t_map *map, char *current_line, int *fd)
-{
-	//int	width;
-
-	if (!map->checked_element.c_color || !map->checked_element.f_color
-		|| !map->checked_element.texture_ea || !map->checked_element.texture_we
-		|| !map->checked_element.texture_so || !map->checked_element.texture_no)
-		return (handle_error(ERR_INV_ELEM, current_line, *fd));
-	return (0);
-}
-
-void	get_map_dimensions(t_map *map, char *current_line, int *map_start_idx,
-		int *line_counter)
-{
-	int	width;
-
-	width = ft_strlen(current_line);
-	if (width > map->width)
-		map->width = width;
-	if (*map_start_idx == -1)
-		*map_start_idx = *line_counter;
 }

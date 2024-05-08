@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/06 12:48:25 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:01:35 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 	fd = arg_check(argc, argv);
 	if (fd < 0)
 		return (1);
-	init_map_struct(&game.map);
+	init_map_struct(&game.map, fd);
 	if(parse(argc, argv, &game.map, &fd))
 		return 1;
 	close(fd);

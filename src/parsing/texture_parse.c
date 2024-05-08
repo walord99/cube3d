@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 10:49:58 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:36 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,27 @@ int	check_tex_extension(char *path_to_tex)
 		return (1);
 	if (ft_strncmp(".png", &path_to_tex[dot_position], 4))
 		return (1);
+	return (0);
+}
+
+int	load_texture(t_map *map, char *path_to_tex, int direction)
+{
+	map->textures[direction] = mlx_load_png(path_to_tex);
+	if (!map->textures[direction])
+		return (1);
+	return (0);
+}
+
+int	create_texture(t_map *map, char *path_to_tex, int direction)
+{
+	map->mlx = mlx_init(100, 100, "cub3d", false);
+	if (!map->mlx)
+		return (1);
+	if (load_texture(map, path_to_tex, direction))
+	{
+		ft_printf_fd("BAD PATH\n", 2);
+		return (1);
+	}
 	return (0);
 }
 

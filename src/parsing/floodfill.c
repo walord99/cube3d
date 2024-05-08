@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:14:59 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 09:11:42 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:14 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,30 @@ bool	floodfill(t_map *map, bool **is_explored, int i, int j)
 	return (is_playable);
 }
 
+bool	is_door_closed(char **str, t_map *map)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < map->height)
+	{
+		y = 0;
+		while (y < map->width)
+		{
+			if (str[x][y] == '-' && (str[x][y + 1] != '1' || str[x][y
+					- 1] != '1'))
+				return (false);
+			if (str[x][y] == '|' && (str[x + 1][y] != '1' || str[x
+					- 1][y] != '1'))
+				return (false);
+			y++;
+		}
+		x++;
+	}
+	return (true);
+}
+
 bool	is_map_playable(t_map *map)
 {
 	int		x;
@@ -78,6 +102,8 @@ bool	is_map_playable(t_map *map)
 	y = map->spawn_y;
 	is_explored = allocate_grid_to_explore(map->height, map->width);
 	if (!is_explored)
+		return (false);
+	if (!is_door_closed(map->grid, map))
 		return (false);
 	is_playable = floodfill(map, is_explored, y, x);
 	free_explored_grid((void **)is_explored);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:11 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/03 18:45:01 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/07 13:54:12 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,12 @@ void	free_map(t_map *map)
 	}
 	map->grid = NULL;
 	map = NULL;
+}
+
+int	handle_error(char *error_msg, char *current_line, int fd)
+{
+	ft_printf_fd("%s\n", 2, error_msg);
+	free(current_line);
+	close(fd);
+	return (1);
 }
