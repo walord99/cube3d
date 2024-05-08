@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/06 15:58:38 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/07 23:29:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	loop_hook(void *param)
 	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
 	game->mouse_pos.x = game->mouse_pos.x - screenWidth / 2;
 	game->mouse_pos.y = game->mouse_pos.y - screenHeight / 2;
-	printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
+	//printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
 	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);	
 	movement_dir.x = 0;
 	movement_dir.y = 0;
@@ -144,10 +144,11 @@ void	loop_hook(void *param)
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
 	game->pos = collision_detection(game, movement, movement_dir);
-	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
+	//printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	draw(game);
 	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
 	game->rendered->instances[0].z = 1;
+	draw_minimap(game);
 }

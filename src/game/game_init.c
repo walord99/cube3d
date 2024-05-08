@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/06 16:24:11 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/07 23:31:58 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,14 @@ void	init_game(t_game *game)
 	game->plane.x = 1;
 	game->plane.y = 0;
 	game->rendered = NULL;
+	game->minimap.render = NULL;
 	init_player_move_box(game);
 	// game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));
 	// game->plane = rotate_vector(game->plane, deg_to_rad(2));
 	// mlx_set_setting(MLX_FULLSCREEN, true);
 	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
+	//game->minimap->instances[0].z = 3;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;

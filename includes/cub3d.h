@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 14:01:12 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/08 11:56:08 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,15 @@ typedef struct s_map
 	mlx_t			*mlx;
 	uint32_t		floor;
 	uint32_t		cieling;
-	// t_textures		*textures;
 	mlx_texture_t	*textures[4];
 }					t_map;
 
+typedef struct s_minimap
+{
+	mlx_image_t		*render;
+	t_dbl_vector	norm_rot[2];
+	double			look_angle;
+}					t_minimap;
 typedef struct s_game
 {
 	t_dbl_vector	pos;
@@ -139,6 +144,7 @@ typedef struct s_game
 	mlx_t			*mlx;
 	mlx_image_t		*rendered;
 	mlx_image_t		*fc_img;
+	t_minimap		minimap;
 	t_map			map;
 }					t_game;
 
@@ -196,6 +202,7 @@ t_dbl_vector		cast_ray(t_raycaster *ri, t_map *map);
 // rendering funnctions
 uint32_t			rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
+void				draw_minimap(t_game *game);
 
 // game functions
 void				init_game(t_game *game);
