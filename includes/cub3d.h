@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 16:45:26 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/07 23:28:01 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,15 @@ typedef struct s_map
 	uint32_t		floor;
 	uint32_t		cieling;
 	t_textures		*textures;
-	mlx_texture_t   *texturesss[4];
+	mlx_texture_t	*texturesss[4];
 }					t_map;
 
+typedef struct s_minimap
+{
+	mlx_image_t		*render;
+	t_dbl_vector	norm_rot[2];
+	double			look_angle;
+}					t_minimap;
 typedef struct s_game
 {
 	t_dbl_vector	pos;
@@ -133,6 +139,7 @@ typedef struct s_game
 	mlx_t			*mlx;
 	mlx_image_t		*rendered;
 	mlx_image_t		*fc_img;
+	t_minimap		minimap;
 	t_map			map;
 }					t_game;
 
@@ -183,8 +190,9 @@ double				magnetude(t_dbl_vector v);
 t_dbl_vector		cast_ray(t_raycaster *ri, t_map *map);
 
 // rendering funnctions
-uint32_t	rbga_builder(int r, int g, int b, int a);
+uint32_t			rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
+void				draw_minimap(t_game *game);
 
 // game functions
 void				init_game(t_game *game);
