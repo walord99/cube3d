@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 12:48:04 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:36 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ int	load_texture(t_map *map, char *path_to_tex, int direction)
 	return (0);
 }
 
-int create_texture(t_map *map, char*path_to_tex, int direction)
+int	create_texture(t_map *map, char *path_to_tex, int direction)
 {
-	map->mlx = mlx_init(100,100,"cub3d", false);
-	if(!map->mlx)
-		return 1;
+	map->mlx = mlx_init(100, 100, "cub3d", false);
+	if (!map->mlx)
+		return (1);
 	if (load_texture(map, path_to_tex, direction))
 	{
 		ft_printf_fd("BAD PATH\n", 2);
 		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 bool	is_valid_tex(t_map *map, char *path_to_tex)

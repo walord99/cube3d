@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/07 23:43:12 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:29:01 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	draw_minimap(t_game *game)
 	mlx_delete_image(game->mlx, game->minimap.render);
 	game->minimap.norm_rot[0] = rotate_vector(game->look_dir, deg_to_rad(90));
 	game->minimap.norm_rot[1] = rotate_vector(game->look_dir, deg_to_rad(180));
-	game->minimap.render = mlx_new_image(game->mlx, screenHeight / 4 + 5, screenHeight / 4 + 5);
-	midPointCircleFill(screenHeight / 4 / 2, screenHeight / 4 / 2, screenHeight / 4 / 2, game);
-	mlx_image_to_window(game->mlx, game->minimap.render, screenWidth - screenHeight / 4, 0);
+	game->minimap.render = mlx_new_image(game->mlx, SCREENHEIGHT / 4 + 5, SCREENHEIGHT / 4 + 5);
+	midPointCircleFill(SCREENHEIGHT / 4 / 2, SCREENHEIGHT / 4 / 2, SCREENHEIGHT / 4 / 2, game);
+	mlx_image_to_window(game->mlx, game->minimap.render, SCREENWIDTH - SCREENHEIGHT / 4, 0);
 	game->minimap.render->instances[0].z = 2;
 }
 
@@ -103,19 +103,19 @@ void	draw(t_game *game)
 
 	di.screen_pos.x = 0;
 	ray_info.start_pos = game->pos;
-	while (di.screen_pos.x < screenWidth)
+	while (di.screen_pos.x < SCREENWIDTH)
 	{
-		di.cameraX = 2 * di.screen_pos.x / (double)screenWidth - 1;
+		di.cameraX = 2 * di.screen_pos.x / (double)SCREENWIDTH - 1;
 		ray_info.rayDir = add_vector(game->look_dir,
 				multiply_vector(game->plane, di.cameraX));
 		cast_ray(&ray_info, &game->map);
-		di.lineHeight = screenHeight / ray_info.perpWallDist;
-		di.drawStart = -di.lineHeight / 2 + screenHeight / 2;
+		di.lineHeight = SCREENHEIGHT / ray_info.perpWallDist;
+		di.drawStart = -di.lineHeight / 2 + SCREENHEIGHT / 2;
 		if (di.drawStart < 0)
 			di.drawStart = 0;
-		di.drawEnd = di.lineHeight / 2 + screenHeight / 2;
-		if (di.drawEnd >= screenHeight)
-			di.drawEnd = screenHeight - 1;
+		di.drawEnd = di.lineHeight / 2 + SCREENHEIGHT / 2;
+		if (di.drawEnd >= SCREENHEIGHT)
+			di.drawEnd = SCREENHEIGHT - 1;
 		di.screen_pos.y = di.drawStart;
 		di.texX = (int)(ray_info.wallX * 255);
 		if (ray_info.side == 0 && ray_info.rayDir.x > 0)

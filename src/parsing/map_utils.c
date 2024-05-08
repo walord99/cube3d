@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:41:42 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 13:44:02 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:46:27 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ bool	validate_grid_characters(char **str, t_map *map)
 		y = 0;
 		while (y < map->width)
 		{
-			if (str[x][y] == '1' || str[x][y] == '0' || str[x][y] == '|' || str[x][y] == '-'
-				|| is_white_space(str[x][y]))
+			if (str[x][y] == '1' || str[x][y] == '0' || str[x][y] == '|'
+				|| str[x][y] == '-' || is_white_space(str[x][y]))
 				y++;
 			else if (str[x][y] == 'N' || str[x][y] == 'S' || str[x][y] == 'E'
 				|| str[x][y] == 'W')

@@ -6,17 +6,18 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/06 11:48:11 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:01:26 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	init_map_struct(t_map *map)
+void	init_map_struct(t_map *map, int fd)
 {
 	map->grid = NULL;
 	map->height = 0;
 	map->width = 0;
+	map->fd = fd;
 	map->first_map_line = -1;
 	map->has_direction = false;
 	map->spawn_direction = 0;

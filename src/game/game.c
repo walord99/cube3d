@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/07 23:29:43 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:28:14 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ void	loop_hook(void *param)
 
 	game = (t_game *)param;
 	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
-	game->mouse_pos.x = game->mouse_pos.x - screenWidth / 2;
-	game->mouse_pos.y = game->mouse_pos.y - screenHeight / 2;
+	game->mouse_pos.x = game->mouse_pos.x - SCREENWIDTH / 2;
+	game->mouse_pos.y = game->mouse_pos.y - SCREENHEIGHT / 2;
 	//printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
-	mlx_set_mouse_pos(game->mlx, screenWidth / 2, screenHeight / 2);	
+	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);	
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
@@ -146,7 +146,7 @@ void	loop_hook(void *param)
 	game->pos = collision_detection(game, movement, movement_dir);
 	//printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
-	game->rendered = mlx_new_image(game->mlx, screenWidth, screenHeight);
+	game->rendered = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	draw(game);
 	mlx_image_to_window(game->mlx, game->rendered, 0, 0);
 	game->rendered->instances[0].z = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/07 23:31:58 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:27:40 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void fill_square(mlx_image_t *img, uint32_t color, t_int_vector start, t_int_vec
 
 mlx_image_t *create_floor_ceil_image(t_game *game)
 {
-	mlx_image_t *fc_img = mlx_new_image(game->mlx, screenWidth, screenHeight);
+	mlx_image_t *fc_img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	t_int_vector start;
 	t_int_vector end;
 	start.x = 0;
 	start.y = 0;
-	end.x = screenWidth;
-	end.y = screenHeight / 2;
+	end.x = SCREENWIDTH;
+	end.y = SCREENHEIGHT / 2;
 	fill_square(fc_img, game->map.cieling, start, end);
-	start.y = screenHeight / 2;
+	start.y = SCREENHEIGHT / 2;
 	start.x = 0;
-	end.x = screenWidth;
-	end.y = screenHeight;
+	end.x = SCREENWIDTH;
+	end.y = SCREENHEIGHT;
 	fill_square(fc_img, game->map.floor, start, end);
 	return fc_img;
 }
@@ -75,7 +75,7 @@ void	init_game(t_game *game)
 	// game->plane = rotate_vector(game->plane, deg_to_rad(2));
 	// mlx_set_setting(MLX_FULLSCREEN, true);
 	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	game->mlx = mlx_init(screenWidth, screenHeight, "cub3d", false);
+	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
 	//game->minimap->instances[0].z = 3;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:01:57 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/07 13:56:45 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/08 15:16:07 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,97 +47,71 @@ int	check_file_extension(char *file_name)
 	return (0);
 }
 
-// TODO:put in norm this function
+int	full_element_check(t_map *map, char *current_line, int *line_counter,
+		int *grid_idx)
+{
+	int		fd;
+	char	color_pref;
+
+	fd = map->fd;
+	if (*current_line == 'F' || *current_line == 'C')
+	{
+		color_pref = *current_line;
+		if (full_color_check(map, current_line, fd, color_pref))
+			return (1);
+	}
+	else
+	{
+		if (full_tex_check(map, current_line, line_counter, grid_idx))
+			return (1);
+	}
+	return (0);
+}
+
+int	handle_empty_line(char **current_line, int *line_counter, t_map *map,
+		int *grid_idx)
+{
+	int	fd;
+
+	fd = map->fd;
+	if (*grid_idx == -1)
+	{
+		advance_to_next_line(current_line, line_counter, fd);
+		return (0);
+	}
+	else
+	{
+		if (between_lines_check(*current_line, line_counter, &fd))
+			return (1);
+	}
+	return (0);
+}
+
 int	read_and_parse_file(int fd, t_map *map)
 {
 	char	*current_line;
 	int		line_counter;
-	int		map_start_idx;
+	int		grid_idx;
 
 	current_line = get_next_line(fd, true);
 	if (!current_line)
 		return (handle_error(ERR_EMPTY_MAP, current_line, fd));
 	line_counter = 1;
-	map_start_idx = -1;
+	grid_idx = -1;
 	while (current_line)
 	{
 		if (is_line_empty_or_whitespace(current_line))
 		{
-			if (map_start_idx == -1)
-			{
-				current_line = get_next_line(fd, true);
-				line_counter++;
-				continue ;
-			}
-			else
-			{
-				while (current_line)
-				{
-					if (first_non_white(current_line) != -1)
-						return (handle_error(ERR_NL, current_line, fd));
-					else
-					{
-						current_line = get_next_line(fd, true);
-						line_counter++;
-					}
-				}
-			}
+			if (handle_empty_line(&current_line, &line_counter, map, &grid_idx))
+				return (1);
+			continue ;
 		}
 		else
 		{
-			if (*current_line == 'F' && !map->checked_element.f_color)
-			{
-				if (!is_valid_color_str(current_line))
-					return (handle_error(ERR_F, current_line, fd));
-				else
-				{
-					get_floor_color(map,current_line);
-					map->checked_element.f_color = true;
-				}
-			}
-			else if (*current_line == 'C' && !map->checked_element.c_color)
-			{
-				if (!is_valid_color_str(current_line))
-					return (handle_error(ERR_C, current_line, fd));
-				else
-				{
-					get_cieling_color(map, current_line);
-					map->checked_element.c_color = true;
-				}
-			}
-			else if (is_valid_tex_prefix(current_line))
-			{
-				if (element_parse(map, current_line, &fd))
-					return (1);
-			}
-			else
-			{
-				if (*current_line == '1')
-				{
-					if (verify_checked_elements(map, current_line, &fd))
-						return (1);
-					else
-						get_map_dimensions(map, current_line, &map_start_idx,
-							&line_counter);
-				}
-				else
-				{
-					if (process_map_line(current_line, &line_counter,
-							&map_start_idx, &fd))
-						return (1);
-				}
-			}
+			if (full_element_check(map, current_line, &line_counter, &grid_idx))
+				return (1);
 		}
-		free(current_line);
-		current_line = get_next_line(fd, true);
-		line_counter++;
+		advance_to_next_line(&current_line, &line_counter, fd);
 	}
-	if (map_start_idx == -1)
-		return (handle_error(ERR_INC_MAP, current_line, fd));
-	map->height = (unsigned int)line_counter - (unsigned int)map_start_idx;
-	map->first_map_line = map_start_idx;
-	free(current_line);
-	current_line = NULL;
-	close(fd);
-	return (0);
+	return (last_check(map, current_line, line_counter, grid_idx));
 }

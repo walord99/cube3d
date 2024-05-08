@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:42:38 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/02 11:43:21 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:10:02 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ int	find_last_non_whitespace(char *line, int width)
 	while (end >= 0 && is_white_space(line[end]))
 		end--;
 	return (end);
+}
+
+void	advance_to_next_line(char **current_line, int *line_counter, int fd)
+{
+	free(*current_line);
+	*current_line = get_next_line(fd, true);
+	(*line_counter)++;
 }
