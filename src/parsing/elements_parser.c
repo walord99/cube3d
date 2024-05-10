@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   elements_parser.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 13:53:08 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/08 17:15:16 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	north_texture_process(t_map *map, char *current_line, int *fd)
 	free(trimmed);
 	if (!is_valid_tex(map, new_current_line))
 	{
-		free(trimmed);
 		return (handle_error(ERR_TEX_N, current_line, *fd));
 	}
 	else
@@ -52,7 +51,6 @@ int	south_texture_process(t_map *map, char *current_line, int *fd)
 		map->checked_element.texture_so = true;
 	else
 	{
-		free(trimmed);
 		return (handle_error(ERR_TEX_S, current_line, *fd));
 	}
 	return (0);
@@ -75,7 +73,6 @@ int	east_texture_process(t_map *map, char *current_line, int *fd)
 		map->checked_element.texture_ea = true;
 	else
 	{
-		free(trimmed);
 		return (handle_error(ERR_TEX_E, current_line, *fd));
 	}
 	return (0);
@@ -98,7 +95,6 @@ int	west_texture_process(t_map *map, char *current_line, int *fd)
 		map->checked_element.texture_we = true;
 	else
 	{
-		free(trimmed);
 		return (handle_error(ERR_TEX_W, current_line, *fd));
 	}
 	return (0);
