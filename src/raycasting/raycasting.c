@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/06 10:41:48 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/10 15:58:03 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	get_step_and_side(t_raycaster *ri)
 	}
 }
 
+void	dda_continue(t_raycaster *ri, t_map *map)
+{
+}
+
 void	dda_loop(t_raycaster *ri, t_map *map)
 {
 	while (true)
@@ -66,20 +70,39 @@ void	dda_loop(t_raycaster *ri, t_map *map)
 			ri->map_pos.y += ri->step.y;
 			ri->side = 1;
 		}
-		if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, map))
+		if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, map) == '|')
+		{
+			if (ri->sideDist.x - ri->deltaDist.x / 2 < ri->sideDist.y)
+			{
+				ri->sideDist.x -= ri->deltaDist.x / 2;
+				ri->sideDist.x += ri->deltaDist.x;
+				return ;
+			}
+		}
+		if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, map) == '-')
+		{
+			if (ri->sideDist.y - ri->deltaDist.y / 2 < ri->sideDist.x)
+			{
+				ri->sideDist.y -= ri->deltaDist.y / 2;
+				ri->sideDist.y += ri->deltaDist.y;
+				return ;
+			}
+		}
+		else if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, map) == '1')
 			return ;
 	}
 }
 
-t_dbl_vector	cast_ray(t_raycaster *ri, t_map *map)
+t_dbl_vector	cast_ray(t_raycaster *ri, t_game *game)
 {
 	t_dbl_vector	hit_loc;
+	t_door			*door;
 
 	ri->map_pos.x = ri->start_pos.x / 1;
 	ri->map_pos.y = ri->start_pos.y / 1;
 	get_delta_dist(ri);
 	get_step_and_side(ri);
-	dda_loop(ri, map);
+	dda_loop(ri, &game->map);
 	if (ri->side == 0)
 		ri->perpWallDist = ri->sideDist.x - ri->deltaDist.x;
 	else
@@ -90,16 +113,47 @@ t_dbl_vector	cast_ray(t_raycaster *ri, t_map *map)
 		ri->wallX = ri->start_pos.x + ri->perpWallDist * ri->rayDir.x;
 	if (ri->side == 1)
 	{
-		ri->map_pos.y -= ri->step.y * clamp(0, 1, -ri->step.y);
 		hit_loc.x = ri->wallX;
-		hit_loc.y = ri->map_pos.y;
+		hit_loc.y = ri->map_pos.y - ri->step.y * clamp(0, 1, -ri->step.y);
 	}
 	else
 	{
-		ri->map_pos.x -= ri->step.x * clamp(0, 1, -ri->step.x);
 		hit_loc.y = ri->wallX;
-		hit_loc.x = ri->map_pos.x;
+		hit_loc.x = ri->map_pos.x - ri->step.x * clamp(0, 1, -ri->step.x);
 	}
 	ri->wallX -= floor(ri->wallX);
-	return (hit_loc);
+	door = get_door(ri->map_pos.x, ri->map_pos.y, game);
+	if (door != NULL && ri->wallX < door->open_track)
+	{
+		if (ri->side == 0)
+			ri->sideDist.x -= ri->deltaDist.x / 2;
+		else
+			ri->sideDist.y -= ri->deltaDist.y / 2;
+		dda_loop(ri, &game->map);
+		if (ri->side == 0)
+			ri->perpWallDist = ri->sideDist.x - ri->deltaDist.x;
+		else
+			ri->perpWallDist = ri->sideDist.y - ri->deltaDist.y;
+		if (ri->side == 0)
+			ri->wallX = ri->start_pos.y + ri->perpWallDist * ri->rayDir.y;
+		else
+			ri->wallX = ri->start_pos.x + ri->perpWallDist * ri->rayDir.x;
+		if (ri->side == 1)
+		{
+			hit_loc.x = ri->wallX;
+			hit_loc.y = ri->map_pos.y - ri->step.y * clamp(0, 1, -ri->step.y);
+		}
+		else
+		{
+			hit_loc.y = ri->wallX;
+			hit_loc.x = ri->map_pos.x - ri->step.x * clamp(0, 1, -ri->step.x);
+		}
+		ri->wallX -= floor(ri->wallX);
+	}
+	else if (ri->map_pos.x == 6 && ri->map_pos.y == 1 && ri->side == 0
+		&& ri->step.x == 1)
+	{
+		ri->wallX = ri->wallX * -1 + 1;
+	}
+	return hit_loc;
 }

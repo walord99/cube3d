@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 17:10:03 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/10 15:29:21 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,13 @@ typedef struct s_minimap
 {
 	mlx_image_t		*render;
 	t_dbl_vector	norm_rot[2];
-	double			look_angle;
 }					t_minimap;
+
+typedef struct s_door
+{
+	double			open_track;
+	t_int_vector	map_pos;
+}					t_door;
 typedef struct s_game
 {
 	t_dbl_vector	pos;
@@ -153,6 +158,7 @@ typedef struct s_game
 	mlx_image_t		*fc_img;
 	t_minimap		minimap;
 	t_map			map;
+	t_door			**doors;
 }					t_game;
 
 // PARSING FUNCTIONS
@@ -220,20 +226,24 @@ t_dbl_vector		rotate_vector(const t_dbl_vector v, double angle);
 t_dbl_vector		round_off_floating_point_errors(t_dbl_vector v);
 t_dbl_vector		normalise_vector(t_dbl_vector v);
 double				magnetude(t_dbl_vector v);
+t_int_vector		new_int_vector(int x, int y);
 
 // raycasting
-t_dbl_vector		cast_ray(t_raycaster *ri, t_map *map);
+t_dbl_vector		cast_ray(t_raycaster *ri, t_game *game);
 
 // rendering funnctions
 uint32_t			rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
 void				draw_minimap(t_game *game);
+void				fill_square(mlx_image_t *img, uint32_t color,
+						t_int_vector start, t_int_vector end);
 
 // game functions
 void				init_game(t_game *game);
 t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
-int					get_map_coordinate(int x, int y, t_map *map);
+char				get_map_coordinate(int x, int y, t_map *map);
+t_door				*get_door(int x, int y, t_game *game);
 
 // math utils
 double				inv_sqrt(double n);

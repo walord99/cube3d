@@ -6,11 +6,19 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/04/30 02:00:34 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/08 17:02:46 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_int_vector new_int_vector(int x, int y)
+{
+	t_int_vector v;
+	v.x = x;
+	v.y = y;
+	return v;
+}
 
 t_dbl_vector	rotate_vector(const t_dbl_vector v, double angle_rad)
 {

@@ -6,13 +6,26 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/08 17:11:04 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/10 15:42:14 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_map *map)
+t_door	*get_door(int x, int y, t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (game->doors[i] != NULL)
+	{
+		if (game->doors[i]->map_pos.x == x && game->doors[i]->map_pos.y == y)
+			return (game->doors[i]);
+		i++;
+	}
+	return (NULL);
+}
+int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_game *game)
 {
 	int		i;
 	double	shortest_len;
@@ -23,7 +36,7 @@ int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_map *map)
 	shortest_index = 0;
 	while (i < 4)
 	{
-		hitloc[i] = cast_ray(&rays[i], map);
+		hitloc[i] = cast_ray(&rays[i], game);
 		if (rays[i].perpWallDist < shortest_len)
 		{
 			shortest_index = i;
@@ -59,10 +72,11 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 
 	move_len = magnetude(movement);
 	init_aabb_rays(ray_info, game->pos, game->AABB_corners, movement_dir);
-	shortest_ray = cast_aabb_rays(ray_info, hitloc, &game->map);
+	shortest_ray = cast_aabb_rays(ray_info, hitloc, game);
 	if (ray_info[shortest_ray].perpWallDist > move_len)
 		return (add_vector(game->pos, movement));
-	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
+	newpos = add_vector(hitloc[shortest_ray],
+			multiply_vector(game->AABB_corners[shortest_ray], -1));
 	if (ray_info[shortest_ray].side == 1)
 		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
 	else if (ray_info[shortest_ray].side == 0)
@@ -84,10 +98,11 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 		movement.y = move_len * movement_dir.y;
 	}
 	init_aabb_rays(ray_info, newpos, game->AABB_corners, movement_dir);
-	shortest_ray = cast_aabb_rays(ray_info, hitloc, &game->map);
+	shortest_ray = cast_aabb_rays(ray_info, hitloc, game);
 	if (ray_info[shortest_ray].perpWallDist > move_len)
-		return add_vector(newpos, movement);
-	newpos = add_vector(hitloc[shortest_ray], multiply_vector(game->AABB_corners[shortest_ray], -1));
+		return (add_vector(newpos, movement));
+	newpos = add_vector(hitloc[shortest_ray],
+			multiply_vector(game->AABB_corners[shortest_ray], -1));
 	if (ray_info[shortest_ray].side == 1)
 		newpos.y -= 0.000000001 * ray_info[shortest_ray].step.y;
 	else if (ray_info[shortest_ray].side == 0)
@@ -107,8 +122,8 @@ void	loop_hook(void *param)
 	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
 	game->mouse_pos.x = game->mouse_pos.x - SCREENWIDTH / 2;
 	game->mouse_pos.y = game->mouse_pos.y - SCREENHEIGHT / 2;
-	//printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
-	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);	
+	// printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
+	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
@@ -137,14 +152,15 @@ void	loop_hook(void *param)
 					* rot_speed));
 		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
 	}
-
-	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
-	game->plane = rotate_vector(game->plane, deg_to_rad(game->mouse_pos.x * rot_speed / 20));
+	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(game->mouse_pos.x
+				* rot_speed / 20));
+	game->plane = rotate_vector(game->plane, deg_to_rad(game->mouse_pos.x
+				* rot_speed / 20));
 	movement_dir = round_off_floating_point_errors(movement_dir);
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
 	game->pos = collision_detection(game, movement, movement_dir);
-	//printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
+	printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	draw(game);

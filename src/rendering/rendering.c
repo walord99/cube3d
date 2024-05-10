@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/08 17:10:54 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/10 15:30:57 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@ void	get_pixel_color(int x, int y, int cx, int cy, t_game *game)
 {
 	t_dbl_vector	relpos;
 	t_dbl_vector	pos;
-	t_dbl_vector	*rot_pre = game->minimap.norm_rot;
+	t_dbl_vector	*rot_pre;
 
+	rot_pre = game->minimap.norm_rot;
 	relpos.x = (x - cx) * 0.05;
 	relpos.y = (y - cy) * 0.05;
-	pos = add_vector(add_vector(multiply_vector(rot_pre[0], relpos.x), multiply_vector(rot_pre[1], relpos.y)), game->pos);
-	if (get_map_coordinate((int)pos.x, (int)pos.y, &game->map))
-		mlx_put_pixel(game->minimap.render, x, y, rbga_builder(255, 255, 255, 255));
+	pos = add_vector(add_vector(multiply_vector(rot_pre[0], relpos.x),
+				multiply_vector(rot_pre[1], relpos.y)), game->pos);
+	if (get_map_coordinate((int)pos.x, (int)pos.y, &game->map) == '1')
+		mlx_put_pixel(game->minimap.render, x, y, rbga_builder(255, 255, 255,
+				255));
 	else
 		mlx_put_pixel(game->minimap.render, x, y, rbga_builder(0, 0, 0, 255));
 }
@@ -108,7 +111,7 @@ void	draw(t_game *game)
 		di.cameraX = 2 * di.screen_pos.x / (double)SCREENWIDTH - 1;
 		ray_info.rayDir = add_vector(game->look_dir,
 				multiply_vector(game->plane, di.cameraX));
-		cast_ray(&ray_info, &game->map);
+		cast_ray(&ray_info, game);
 		di.lineHeight = SCREENHEIGHT / ray_info.perpWallDist;
 		di.drawStart = -di.lineHeight / 2 + SCREENHEIGHT / 2;
 		if (di.drawStart < 0)
