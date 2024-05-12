@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/10 15:29:21 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:29:27 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_raycaster
 	double			perpWallDist;
 	double			wallX;
 	int				side;
+	bool			do_doors;
 }					t_raycaster;
 
 typedef struct s_draw_info

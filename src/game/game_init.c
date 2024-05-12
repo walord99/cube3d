@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/10 15:58:40 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:26:15 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	create_door_array(t_game *game)
 			{
 				door = ft_calloc(1, sizeof(t_door));
 				door->map_pos = (t_int_vector){.x = x, .y = y};
-				door->open_track = 0.5;
+				door->open_track = 0;
 				doors = ft_lstadd_back(doors, (void *)door);
 			}
 			y++;
@@ -108,8 +108,8 @@ void	init_game(t_game *game)
 	game->minimap.render = NULL;
 	create_door_array(game);
 	init_player_move_box(game);
-	// game->look_dir = rotate_vector(game->look_dir, deg_to_rad(2));
-	// game->plane = rotate_vector(game->plane, deg_to_rad(2));
+	 game->look_dir = rotate_vector(game->look_dir, deg_to_rad(-90));
+	 game->plane = rotate_vector(game->plane, deg_to_rad(-90));
 	// mlx_set_setting(MLX_FULLSCREEN, true);
 	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
@@ -120,5 +120,6 @@ void	init_game(t_game *game)
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
 	// collision_detection(game, );
 	mlx_loop_hook(game->mlx, &loop_hook, game);
+	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
 	mlx_loop(game->mlx);
 }

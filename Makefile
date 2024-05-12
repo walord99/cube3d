@@ -31,7 +31,7 @@ ifeq ($(UNAME), Darwin)
 endif
 
 GMON			= 	#-pg
-ERROR_FLAGS 	= 	-Wall -Werror -Wextra -Wno-sign-compare
+ERROR_FLAGS 	= 	-Wall -Werror -Wextra -Wno-sign-compare -Wno-unused
 CASAN			= 	#-fsanitize=address
 LASAN			= 	#-fsanitize=address -static-libasan
 

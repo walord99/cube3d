@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/10 15:30:57 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:06:42 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	draw(t_game *game)
 	while (di.screen_pos.x < SCREENWIDTH)
 	{
 		di.cameraX = 2 * di.screen_pos.x / (double)SCREENWIDTH - 1;
+		ray_info.do_doors = true;
 		ray_info.rayDir = add_vector(game->look_dir,
 				multiply_vector(game->plane, di.cameraX));
 		cast_ray(&ray_info, game);
