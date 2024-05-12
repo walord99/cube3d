@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/12 14:47:50 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:57:28 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,13 +151,22 @@ t_dbl_vector	cast_ray(t_raycaster *ri, t_game *game)
 			{
 				if (ri->side == 0)
 				{
-					ri->wallX = ri->wallX + door->open_track * -ri->step.x;
+					if (ri->step.x > 0)
+						ri->wallX = ri->wallX + door->open_track * -ri->step.x;
+					else
+						ri->wallX = ri->wallX + door->open_track * ri->step.x;
 					hit_loc.x += 0.5 * ri->step.x;
 				}
 				else
-					hit_loc.x += 0.5 * ri->step.y;
-				door = NULL;
+				{
 
+					if (ri->step.y > 0)
+						ri->wallX = ri->wallX + door->open_track * -ri->step.y;
+					else
+						ri->wallX = ri->wallX + door->open_track * ri->step.y;
+					hit_loc.x += 0.5 * ri->step.y;
+				}
+				door = NULL;
 			}
 		}
 		else
