@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/13 13:54:46 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/13 16:09:42 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_draw_info
 	int				drawEnd;
 	int				texX;
 	int				texY;
-	mlx_texture_t	*tex;
+	mlx_texture_t	*texture;
 }					t_draw_info;
 
 typedef struct s_element_check
@@ -247,6 +247,8 @@ t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
 char				get_map_coordinate(int x, int y, t_map *map);
 t_door				*get_door(int x, int y, t_game *game);
+
+void				rotate_player(t_game *game, double rot);
 
 // math utils
 double				inv_sqrt(double n);

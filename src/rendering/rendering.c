@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/13 13:52:37 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/13 16:00:28 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ mlx_texture_t *get_texture(t_game *game, t_raycaster *ri)
 	if (ri->side == 0)
 	{
 		if (ri->rayDir.x > 0)
-			return game->map.textures[WE];
-		return game->map.textures[EA];
+			return game->map.textures[EA];
+		return game->map.textures[WE];
 	}
 	else if (ri->rayDir.y > 0)
 		return game->map.textures[SO];
@@ -142,7 +142,7 @@ void	draw(t_game *game)
 		ray_info.rayDir = add_vector(game->look_dir,
 				multiply_vector(game->plane, di.cameraX));
 		cast_ray(&ray_info, game);
-		di.tex = get_texture(game, &ray_info);
+		di.texture = get_texture(game, &ray_info);
 		di.lineHeight = SCREENHEIGHT / ray_info.perpWallDist;
 		di.drawStart = -di.lineHeight / 2 + SCREENHEIGHT / 2;
 		if (di.drawStart < 0)
@@ -151,19 +151,19 @@ void	draw(t_game *game)
 		if (di.drawEnd >= SCREENHEIGHT)
 			di.drawEnd = SCREENHEIGHT - 1;
 		di.screen_pos.y = di.drawStart;
-		di.texX = (int)(ray_info.wallX * (double)di.tex->width);
+		di.texX = (int)(ray_info.wallX * (double)di.texture->width);
 		if (ray_info.side == 0 && ray_info.rayDir.x > 0)
-			di.texX = di.tex->width - di.texX - 1;
+			di.texX = di.texture->width - di.texX - 1;
 		if (ray_info.side == 1 && ray_info.rayDir.y < 0)
-			di.texX = di.tex->width - di.texX - 1;
-		step = 1.0 * di.tex->height / di.lineHeight;
+			di.texX = di.texture->width - di.texX - 1;
+		step = 1.0 * di.texture->height / di.lineHeight;
 		texPos = (di.drawStart - SCREENHEIGHT / 2 + di.lineHeight / 2) * step;
 		while (di.screen_pos.y <= di.drawEnd)
 		{
 			di.texY = (int)texPos;// & (game->map.textures[1]->height - 1);
 			texPos += step;
 			mlx_put_pixel(game->rendered, di.screen_pos.x, di.screen_pos.y,
-				get_texture_color(di.texX, di.texY, game->map.textures[1]));
+				get_texture_color(di.texX, di.texY, di.texture));
 			di.screen_pos.y++;
 		}
 		di.screen_pos.x++;

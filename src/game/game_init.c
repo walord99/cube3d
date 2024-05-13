@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/12 14:26:15 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/13 16:13:50 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,19 @@ void	init_game(t_game *game)
 	game->plane.y = 0;
 	game->rendered = NULL;
 	game->minimap.render = NULL;
+	if(game->map.spawn_direction == 'S')
+		rotate_player(game, deg_to_rad(180));
+	else if (game->map.spawn_direction == 'E')
+		rotate_player(game, 90);
+	else if (game->map.spawn_direction == 'W')
+		rotate_player(game, -90);
 	create_door_array(game);
 	init_player_move_box(game);
-	 game->look_dir = rotate_vector(game->look_dir, deg_to_rad(-90));
-	 game->plane = rotate_vector(game->plane, deg_to_rad(-90));
-	// mlx_set_setting(MLX_FULLSCREEN, true);
-	// mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
-	// game->minimap->instances[0].z = 3;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_HIDDEN);
-	// collision_detection(game, );
 	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
 	mlx_loop(game->mlx);

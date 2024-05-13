@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/12 14:39:01 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/13 16:10:54 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,14 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	return (newpos);
 }
 
-void door_handler(t_game *game)
+void	door_handler(t_game *game)
 {
-	t_dbl_vector relpos;
-	double mag_sqrd;
-	int i = 0;
-	while(game->doors[i])
+	t_dbl_vector	relpos;
+	double			mag_sqrd;
+	int				i;
+
+	i = 0;
+	while (game->doors[i])
 	{
 		relpos.x = game->doors[i]->map_pos.x + 0.5 - game->pos.x;
 		relpos.y = game->doors[i]->map_pos.y + 0.5 - game->pos.y;
@@ -137,6 +139,15 @@ void door_handler(t_game *game)
 	}
 }
 
+void	rotate_player(t_game *game, double rot)
+{
+	double	rad;
+
+	rad = deg_to_rad(rot);
+	game->look_dir = rotate_vector(game->look_dir, rad);
+	game->plane = rotate_vector(game->plane, rad);
+}
+
 void	loop_hook(void *param)
 {
 	t_game			*game;
@@ -146,19 +157,14 @@ void	loop_hook(void *param)
 	t_dbl_vector	movement;
 
 	game = (t_game *)param;
-	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
-	//mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
-	game->mouse_pos.x = SCREENWIDTH / 2;
-	game->mouse_pos.y = SCREENHEIGHT / 2;
+	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
 	game->mouse_pos.x = game->mouse_pos.x - SCREENWIDTH / 2;
 	game->mouse_pos.y = game->mouse_pos.y - SCREENHEIGHT / 2;
-	// printf("x: %i y:%i\n", game->mouse_pos.x, game->mouse_pos.y);
 	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
-	// game->doors[0]->open_track -= 0.003;
 	movement_dir.x = 0;
 	movement_dir.y = 0;
 	move_speed = game->mlx->delta_time * 3.0;
-	rot_speed = game->mlx->delta_time * 90.0;
+	rot_speed = game->mlx->delta_time * 90;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
@@ -183,17 +189,12 @@ void	loop_hook(void *param)
 					* rot_speed));
 		game->plane = rotate_vector(game->plane, deg_to_rad(-1 * rot_speed));
 	}
-	game->look_dir = rotate_vector(game->look_dir, deg_to_rad(game->mouse_pos.x
-				* rot_speed / 20));
-	game->plane = rotate_vector(game->plane, deg_to_rad(game->mouse_pos.x
-				* rot_speed / 20));
-//	movement_dir = add_vector(movement_dir, game->look_dir);
+	rotate_player(game, deg_to_rad(game->mouse_pos.x * rot_speed / 10));
 	movement_dir = round_off_floating_point_errors(movement_dir);
 	movement_dir = normalise_vector(movement_dir);
 	movement = multiply_vector(movement_dir, move_speed);
 	game->pos = collision_detection(game, movement, movement_dir);
 	door_handler(game);
-	//printf("x:%f\ty:%f\n", game->pos.x, game->pos.y);
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	draw(game);
