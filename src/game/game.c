@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 16:41:39 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 16:51:59 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_door	*get_door(int x, int y, t_game *game)
 	}
 	return (NULL);
 }
+
 int	cast_aabb_rays(t_raycaster *rays, t_dbl_vector *hitloc, t_game *game)
 {
 	int		i;
@@ -62,15 +63,6 @@ void	init_aabb_rays(t_raycaster *rays, t_dbl_vector pos,
 	}
 }
 
-struct				s_c2
-{
-	t_dbl_vector	*mov;
-	t_dbl_vector	*mov_dir;
-	t_raycaster		*shortest;
-	t_dbl_vector	new_pos;
-	double			*move_len;
-};
-
 void	float_fix(t_raycaster *shortest, t_dbl_vector *newpos)
 {
 	if (shortest->side == 1)
@@ -79,7 +71,7 @@ void	float_fix(t_raycaster *shortest, t_dbl_vector *newpos)
 		newpos->x -= 0.0001 * shortest->step.x;
 }
 
-void	collision_2(t_game *game, struct s_c2 a)
+void	collision_2(t_game *game, t_c2 a)
 {
 	if (a.shortest->side == 1)
 	{
@@ -116,7 +108,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	newpos = add_vector(hitloc[shortest_ray],
 			multiply_vector(game->aabb_corners[shortest_ray], -1));
 	float_fix(&ray_info[shortest_ray], &newpos);
-	collision_2(game, (struct s_c2){.mov = &movement, .mov_dir = &movement_dir,
+	collision_2(game, (t_c2){.mov = &movement, .mov_dir = &movement_dir,
 		.move_len = &move_len, .new_pos = newpos,
 		.shortest = &ray_info[shortest_ray]});
 	init_aabb_rays(ray_info, newpos, game->aabb_corners, movement_dir);

@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 14:47:27 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 16:56:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	create_door_array(t_game *game)
 		y = 0;
 		while (y < game->map.height)
 		{
-			tile = get_map_coordinate(x, y, &game->map);
+			tile = get_map_loc(x, y, &game->map);
 			if (tile == '|' || tile == '-')
 			{
 				door = ft_calloc(1, sizeof(t_door));

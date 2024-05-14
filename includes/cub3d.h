@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/14 14:29:48 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 16:56:33 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,15 @@ typedef struct s_game
 	t_door			**doors;
 }					t_game;
 
+typedef struct s_c2
+{
+	t_dbl_vector	*mov;
+	t_dbl_vector	*mov_dir;
+	t_raycaster		*shortest;
+	t_dbl_vector	new_pos;
+	double			*move_len;
+}					t_c2;
+
 // PARSING FUNCTIONS
 int					first_non_white(char *line);
 bool				is_white_space(char c);
@@ -247,7 +256,7 @@ void				fill_square(mlx_image_t *img, uint32_t color,
 void				init_game(t_game *game);
 t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
-char				get_map_coordinate(int x, int y, t_map *map);
+char				get_map_loc(int x, int y, t_map *map);
 t_door				*get_door(int x, int y, t_game *game);
 
 void				rotate_player(t_game *game, double rot);

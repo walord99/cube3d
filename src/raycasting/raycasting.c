@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 13:58:20 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 17:07:42 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,26 @@ void	get_delta_dist(t_raycaster *ri)
 
 void	get_step_and_side(t_raycaster *ri)
 {
-	double	relpos;
 
 	if (ri->ray_dir.x < 0)
 	{
 		ri->step.x = -1;
-		relpos = ri->start_pos.x - ri->map_pos.x;
-		ri->side_dist.x = relpos * ri->delta_dist.x;
+		ri->side_dist.x = (ri->start_pos.x - ri->map_pos.x) * ri->delta_dist.x;
 	}
 	else
 	{
 		ri->step.x = 1;
-		relpos = 1 + ri->map_pos.x - ri->start_pos.x;
-		ri->side_dist.x = relpos * ri->delta_dist.x;
+		ri->side_dist.x = (1 + ri->map_pos.x - ri->start_pos.x) * ri->delta_dist.x;
 	}
 	if (ri->ray_dir.y < 0)
 	{
 		ri->step.y = -1;
-		relpos = ri->start_pos.y - ri->map_pos.y;
-		ri->side_dist.y = relpos * ri->delta_dist.y;
+		ri->side_dist.y = (ri->start_pos.y - ri->map_pos.y) * ri->delta_dist.y;
 	}
 	else
 	{
 		ri->step.y = 1;
-		relpos = 1 + ri->map_pos.y - ri->start_pos.y;
-		ri->side_dist.y = relpos * ri->delta_dist.y;
+		ri->side_dist.y = (1 + ri->map_pos.y - ri->start_pos.y) * ri->delta_dist.y;
 	}
 }
 
@@ -73,7 +68,7 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 			ri->side = 1;
 		}
 		door = get_door(ri->map_pos.x, ri->map_pos.y, game);
-		if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, &game->map) == '|'
+		if (get_map_loc(ri->map_pos.x, ri->map_pos.y, &game->map) == '|'
 			&& ri->do_doors)
 		{
 			if (ri->side_dist.x - ri->delta_dist.x / 2 < ri->side_dist.y)
@@ -84,7 +79,7 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 				return ;
 			}
 		}
-		else if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y,
+		else if (get_map_loc(ri->map_pos.x, ri->map_pos.y,
 				&game->map) == '-' && ri->do_doors)
 		{
 			if (ri->side_dist.y - ri->delta_dist.y / 2 < ri->side_dist.x)
@@ -95,7 +90,7 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 				return ;
 			}
 		}
-		else if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y,
+		else if (get_map_loc(ri->map_pos.x, ri->map_pos.y,
 				&game->map) == '1' || (door && door->open_track < 1))
 			return ;
 	}

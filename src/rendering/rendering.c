@@ -6,13 +6,14 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 14:45:32 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 17:04:44 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	get_pixel_color(int x, int y, int cx, int cy, t_game *game)
+void	get_pixel_color(t_int_vector pixel_pos, t_int_vector center,
+		t_game *game)
 {
 	t_dbl_vector	relpos;
 	t_dbl_vector	pos;
@@ -20,32 +21,33 @@ void	get_pixel_color(int x, int y, int cx, int cy, t_game *game)
 	char			tile;
 
 	rot_pre = game->minimap.norm_rot;
-	relpos.x = (x - cx) * 0.05;
-	relpos.y = (y - cy) * 0.05;
+	relpos.x = (pixel_pos.x - center.x) * 0.05;
+	relpos.y = (pixel_pos.y - center.y) * 0.05;
 	pos = add_vector(add_vector(multiply_vector(rot_pre[0], relpos.x),
 				multiply_vector(rot_pre[1], relpos.y)), game->pos);
-	tile = get_map_coordinate((int)pos.x, (int)pos.y, &game->map);
+	tile = get_map_loc((int)pos.x, (int)pos.y, &game->map);
 	if (tile == '1')
-		mlx_put_pixel(game->minimap.render, x, y, rbga_builder(0, 0, 0, 255));
+		mlx_put_pixel(game->minimap.render, pixel_pos.x, pixel_pos.y,
+			rbga_builder(0, 0, 0, 255));
 	else if (tile == '-' || tile == '|')
-		mlx_put_pixel(game->minimap.render, x, y, rbga_builder(0, 0, 0, 150));
-	
+		mlx_put_pixel(game->minimap.render, pixel_pos.x, pixel_pos.y,
+			rbga_builder(0, 0, 0, 150));
 }
 
-void	itterate_fill(int x, int y, int cx, int cy, t_game *game)
+void	itterate_fill(t_int_vector pos, t_int_vector center, t_game *game)
 {
 	int	dir;
 
 	dir = -1;
-	if (x < cx)
+	if (pos.x < center.x)
 		dir = 1;
-	while (x != cx)
+	while (pos.x != center.x)
 	{
-		get_pixel_color(x, y, cx, cy, game);
-		x += dir;
+		get_pixel_color(pos, center, game);
+		pos.x += dir;
 	}
 	if (dir == 1)
-		get_pixel_color(x, y, cx, cy, game);
+		get_pixel_color(pos, center, game);
 }
 
 void	mid_point_circle_fill(int center_x, int center_y, int r, t_game *game)
@@ -65,14 +67,22 @@ void	mid_point_circle_fill(int center_x, int center_y, int r, t_game *game)
 	d = r2 - 1;
 	while (y <= x)
 	{
-		itterate_fill(center_x - x, center_y - y, center_x, center_y, game);
-		itterate_fill(center_x + x, center_y - y, center_x, center_y, game);
-		itterate_fill(center_x - x, center_y + y, center_x, center_y, game);
-		itterate_fill(center_x + x, center_y + y, center_x, center_y, game);
-		itterate_fill(center_x - y, center_y - x, center_x, center_y, game);
-		itterate_fill(center_x + y, center_y - x, center_x, center_y, game);
-		itterate_fill(center_x - y, center_y + x, center_x, center_y, game);
-		itterate_fill(center_x + y, center_y + x, center_x, center_y, game);
+		itterate_fill((t_int_vector){.x = center_x - x, .y = center_y - y},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x + x, .y = center_y - y},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x - x, .y = center_y + y},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x + x, .y = center_y + y},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x - y, .y = center_y - x},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x + y, .y = center_y - x},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x - y, .y = center_y + x},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
+		itterate_fill((t_int_vector){.x = center_x + y, .y = center_y + x},
+			(t_int_vector){.x = center_x, .y = center_y}, game);
 		d += dy;
 		dy -= 4;
 		y++;
@@ -119,10 +129,12 @@ uint32_t	get_texture_color(int x, int y, mlx_texture_t *tex)
 
 mlx_texture_t	*get_texture(t_game *game, t_raycaster *ri)
 {
-	char tile = get_map_coordinate(ri->map_pos.x, ri->map_pos.y, &game->map);
+	char	tile;
+
+	tile = get_map_loc(ri->map_pos.x, ri->map_pos.y, &game->map);
 	if (tile == '-' || tile == '|')
 	{
-		return game->map.textures[DOOR];
+		return (game->map.textures[DOOR]);
 	}
 	if (ri->side == 0)
 	{
@@ -180,7 +192,7 @@ void	render_wall(t_game *game)
 	}
 }
 
-void draw(t_game *game)
+void	draw(t_game *game)
 {
 	mlx_delete_image(game->mlx, game->rendered);
 	game->rendered = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
