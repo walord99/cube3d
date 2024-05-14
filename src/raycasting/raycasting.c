@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/12 14:57:28 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 11:27:56 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	get_delta_dist(t_raycaster *ri)
 		ri->deltaDist.y = dbl_abs(1 / ri->rayDir.y);
 }
 
-void	get_step_and_side(t_raycaster *ri, t_game *game)
+void	get_step_and_side(t_raycaster *ri)
 {
 	double	relpos;
 
@@ -54,9 +54,9 @@ void	get_step_and_side(t_raycaster *ri, t_game *game)
 	}
 }
 
-void	dda_continue(t_raycaster *ri, t_map *map)
-{
-}
+// void	dda_continue(t_raycaster *ri, t_map *map)
+// {
+// }
 
 void	dda_loop(t_raycaster *ri, t_game *game)
 {
@@ -114,7 +114,7 @@ t_dbl_vector	cast_ray(t_raycaster *ri, t_game *game)
 	ri->map_pos.x = ri->start_pos.x / 1;
 	ri->map_pos.y = ri->start_pos.y / 1;
 	get_delta_dist(ri);
-	get_step_and_side(ri, game);
+	get_step_and_side(ri);
 	while (door)
 	{
 		dda_loop(ri, game);
