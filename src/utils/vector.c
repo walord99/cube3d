@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/08 17:02:46 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 13:49:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_int_vector new_int_vector(int x, int y)
+t_int_vector	new_int_vector(int x, int y)
 {
-	t_int_vector v;
+	t_int_vector	v;
+
 	v.x = x;
 	v.y = y;
-	return v;
+	return (v);
 }
 
 t_dbl_vector	rotate_vector(const t_dbl_vector v, double angle_rad)
@@ -62,7 +63,7 @@ t_dbl_vector	normalise_vector(t_dbl_vector v)
 	double	inv_square_root;
 
 	if (v.x == 0 && v.y == 0)
-		return v;
+		return (v);
 	magnetude_sqrd = pow(v.x, 2) + pow(v.y, 2);
 	inv_square_root = inv_sqrt(magnetude_sqrd);
 	v.x *= inv_square_root;
@@ -70,7 +71,7 @@ t_dbl_vector	normalise_vector(t_dbl_vector v)
 	return (v);
 }
 
-double magnetude(t_dbl_vector v)
+double	magnetude(t_dbl_vector v)
 {
-	return sqrt(pow(v.x, 2) + pow(v.y, 2));
+	return (sqrt(pow(v.x, 2) + pow(v.y, 2)));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/13 16:13:50 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 14:47:27 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,20 @@ mlx_image_t	*create_floor_ceil_image(t_game *game)
 
 void	init_player_move_box(t_game *game)
 {
-	game->AABB_corners[0].x = -PLAYER_MOVE_BOX;
-	game->AABB_corners[0].y = -PLAYER_MOVE_BOX;
-	game->AABB_corners[1].x = PLAYER_MOVE_BOX;
-	game->AABB_corners[1].y = -PLAYER_MOVE_BOX;
-	game->AABB_corners[2].x = PLAYER_MOVE_BOX;
-	game->AABB_corners[2].y = PLAYER_MOVE_BOX;
-	game->AABB_corners[3].x = -PLAYER_MOVE_BOX;
-	game->AABB_corners[3].y = PLAYER_MOVE_BOX;
+	game->aabb_corners[0].x = -PLAYER_MOVE_BOX;
+	game->aabb_corners[0].y = -PLAYER_MOVE_BOX;
+	game->aabb_corners[1].x = PLAYER_MOVE_BOX;
+	game->aabb_corners[1].y = -PLAYER_MOVE_BOX;
+	game->aabb_corners[2].x = PLAYER_MOVE_BOX;
+	game->aabb_corners[2].y = PLAYER_MOVE_BOX;
+	game->aabb_corners[3].x = -PLAYER_MOVE_BOX;
+	game->aabb_corners[3].y = PLAYER_MOVE_BOX;
 }
 
 void	init_game(t_game *game)
 {
-	// t_dbl_vector mov;
-	// mov.x = 0;
-	// mov.y = 0;
+	mlx_image_t	*dot;
+
 	game->pos.x = game->map.spawn_x + 0.5;
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
@@ -106,7 +105,7 @@ void	init_game(t_game *game)
 	game->plane.y = 0;
 	game->rendered = NULL;
 	game->minimap.render = NULL;
-	if(game->map.spawn_direction == 'S')
+	if (game->map.spawn_direction == 'S')
 		rotate_player(game, deg_to_rad(180));
 	else if (game->map.spawn_direction == 'E')
 		rotate_player(game, 90);
@@ -115,6 +114,13 @@ void	init_game(t_game *game)
 	create_door_array(game);
 	init_player_move_box(game);
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
+	create_texture(&game->map, "includes/textures/arrow.png", ARROW);
+	create_texture(&game->map, "includes/textures/door.png", DOOR);
+	dot = mlx_texture_to_image(game->mlx, game->map.textures[ARROW]);
+	mlx_image_to_window(game->mlx, dot, SCREENWIDTH - SCREENHEIGHT / 4 / 2,
+		SCREENHEIGHT / 4 / 2);
+	mlx_resize_image(dot, 20, 20);
+	dot->instances[0].z = 4;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/13 16:09:42 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/14 14:29:48 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ between or after map lines!"
 # define EA 1
 # define SO 2
 # define WE 3
+# define DOOR 4
+# define ARROW 5
+# define CIRCLE 6
 
 typedef struct s_dbl_vector
 {
@@ -82,11 +85,11 @@ typedef struct s_raycaster
 	t_int_vector	map_pos;
 	t_int_vector	step;
 	t_dbl_vector	start_pos;
-	t_dbl_vector	rayDir;
-	t_dbl_vector	sideDist;
-	t_dbl_vector	deltaDist;
-	double			perpWallDist;
-	double			wallX;
+	t_dbl_vector	ray_dir;
+	t_dbl_vector	side_dist;
+	t_dbl_vector	delta_dist;
+	double			perp_wall_dist;
+	double			wall_x;
 	int				side;
 	bool			do_doors;
 }					t_raycaster;
@@ -94,12 +97,12 @@ typedef struct s_raycaster
 typedef struct s_draw_info
 {
 	t_int_vector	screen_pos;
-	double			cameraX;
-	int				lineHeight;
-	int				drawStart;
-	int				drawEnd;
-	int				texX;
-	int				texY;
+	double			camera_x;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	int				tex_x;
+	int				tex_y;
 	mlx_texture_t	*texture;
 }					t_draw_info;
 
@@ -135,7 +138,7 @@ typedef struct s_map
 	mlx_t			*mlx;
 	uint32_t		floor;
 	uint32_t		cieling;
-	mlx_texture_t	*textures[4];
+	mlx_texture_t	*textures[7];
 }					t_map;
 
 typedef struct s_minimap
@@ -152,7 +155,7 @@ typedef struct s_door
 typedef struct s_game
 {
 	t_dbl_vector	pos;
-	t_dbl_vector	AABB_corners[4];
+	t_dbl_vector	aabb_corners[4];
 	t_dbl_vector	look_dir;
 	t_dbl_vector	plane;
 	t_int_vector	mouse_pos;
@@ -237,7 +240,6 @@ t_dbl_vector		cast_ray(t_raycaster *ri, t_game *game);
 // rendering funnctions
 uint32_t			rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
-void				draw_minimap(t_game *game);
 void				fill_square(mlx_image_t *img, uint32_t color,
 						t_int_vector start, t_int_vector end);
 

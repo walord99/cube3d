@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:42:50 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 11:27:56 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:58:20 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,45 @@
 
 void	get_delta_dist(t_raycaster *ri)
 {
-	if (ri->rayDir.x == 0)
-		ri->deltaDist.x = DBL_MAX;
+	if (ri->ray_dir.x == 0)
+		ri->delta_dist.x = DBL_MAX;
 	else
-		ri->deltaDist.x = dbl_abs(1 / ri->rayDir.x);
-	if (ri->rayDir.y == 0)
-		ri->deltaDist.y = DBL_MAX;
+		ri->delta_dist.x = dbl_abs(1 / ri->ray_dir.x);
+	if (ri->ray_dir.y == 0)
+		ri->delta_dist.y = DBL_MAX;
 	else
-		ri->deltaDist.y = dbl_abs(1 / ri->rayDir.y);
+		ri->delta_dist.y = dbl_abs(1 / ri->ray_dir.y);
 }
 
 void	get_step_and_side(t_raycaster *ri)
 {
 	double	relpos;
 
-	if (ri->rayDir.x < 0)
+	if (ri->ray_dir.x < 0)
 	{
 		ri->step.x = -1;
 		relpos = ri->start_pos.x - ri->map_pos.x;
-		ri->sideDist.x = (relpos)*ri->deltaDist.x;
+		ri->side_dist.x = relpos * ri->delta_dist.x;
 	}
 	else
 	{
 		ri->step.x = 1;
 		relpos = 1 + ri->map_pos.x - ri->start_pos.x;
-		ri->sideDist.x = (relpos)*ri->deltaDist.x;
+		ri->side_dist.x = relpos * ri->delta_dist.x;
 	}
-	if (ri->rayDir.y < 0)
+	if (ri->ray_dir.y < 0)
 	{
 		ri->step.y = -1;
 		relpos = ri->start_pos.y - ri->map_pos.y;
-		ri->sideDist.y = (relpos)*ri->deltaDist.y;
+		ri->side_dist.y = relpos * ri->delta_dist.y;
 	}
 	else
 	{
 		ri->step.y = 1;
 		relpos = 1 + ri->map_pos.y - ri->start_pos.y;
-		ri->sideDist.y = (relpos)*ri->deltaDist.y;
+		ri->side_dist.y = relpos * ri->delta_dist.y;
 	}
 }
-
-// void	dda_continue(t_raycaster *ri, t_map *map)
-// {
-// }
 
 void	dda_loop(t_raycaster *ri, t_game *game)
 {
@@ -64,15 +60,15 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 
 	while (true)
 	{
-		if (ri->sideDist.x < ri->sideDist.y)
+		if (ri->side_dist.x < ri->side_dist.y)
 		{
-			ri->sideDist.x += ri->deltaDist.x;
+			ri->side_dist.x += ri->delta_dist.x;
 			ri->map_pos.x += ri->step.x;
 			ri->side = 0;
 		}
 		else
 		{
-			ri->sideDist.y += ri->deltaDist.y;
+			ri->side_dist.y += ri->delta_dist.y;
 			ri->map_pos.y += ri->step.y;
 			ri->side = 1;
 		}
@@ -80,10 +76,10 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 		if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y, &game->map) == '|'
 			&& ri->do_doors)
 		{
-			if (ri->sideDist.x - ri->deltaDist.x / 2 < ri->sideDist.y)
+			if (ri->side_dist.x - ri->delta_dist.x / 2 < ri->side_dist.y)
 			{
-				ri->sideDist.x -= ri->deltaDist.x / 2;
-				ri->sideDist.x += ri->deltaDist.x;
+				ri->side_dist.x -= ri->delta_dist.x / 2;
+				ri->side_dist.x += ri->delta_dist.x;
 				ri->side = 0;
 				return ;
 			}
@@ -91,10 +87,10 @@ void	dda_loop(t_raycaster *ri, t_game *game)
 		else if (get_map_coordinate(ri->map_pos.x, ri->map_pos.y,
 				&game->map) == '-' && ri->do_doors)
 		{
-			if (ri->sideDist.y - ri->deltaDist.y / 2 < ri->sideDist.x)
+			if (ri->side_dist.y - ri->delta_dist.y / 2 < ri->side_dist.x)
 			{
-				ri->sideDist.y -= ri->deltaDist.y / 2;
-				ri->sideDist.y += ri->deltaDist.y;
+				ri->side_dist.y -= ri->delta_dist.y / 2;
+				ri->side_dist.y += ri->delta_dist.y;
 				ri->side = 1;
 				return ;
 			}
@@ -119,51 +115,51 @@ t_dbl_vector	cast_ray(t_raycaster *ri, t_game *game)
 	{
 		dda_loop(ri, game);
 		if (ri->side == 0)
-			ri->perpWallDist = ri->sideDist.x - ri->deltaDist.x;
+			ri->perp_wall_dist = ri->side_dist.x - ri->delta_dist.x;
 		else
-			ri->perpWallDist = ri->sideDist.y - ri->deltaDist.y;
+			ri->perp_wall_dist = ri->side_dist.y - ri->delta_dist.y;
 		if (ri->side == 0)
-			ri->wallX = ri->start_pos.y + ri->perpWallDist * ri->rayDir.y;
+			ri->wall_x = ri->start_pos.y + ri->perp_wall_dist * ri->ray_dir.y;
 		else
-			ri->wallX = ri->start_pos.x + ri->perpWallDist * ri->rayDir.x;
+			ri->wall_x = ri->start_pos.x + ri->perp_wall_dist * ri->ray_dir.x;
 		if (ri->side == 1)
 		{
-			hit_loc.x = ri->wallX;
+			hit_loc.x = ri->wall_x;
 			hit_loc.y = ri->map_pos.y - ri->step.y * clamp(0, 1, -ri->step.y);
 		}
 		else
 		{
-			hit_loc.y = ri->wallX;
+			hit_loc.y = ri->wall_x;
 			hit_loc.x = ri->map_pos.x - ri->step.x * clamp(0, 1, -ri->step.x);
 		}
-		ri->wallX -= floor(ri->wallX);
+		ri->wall_x -= floor(ri->wall_x);
 		door = get_door(ri->map_pos.x, ri->map_pos.y, game);
 		if (door != NULL && ri->do_doors)
 		{
-			if (ri->wallX < door->open_track)
+			if (ri->wall_x < door->open_track)
 			{
 				if (ri->side == 0)
-					ri->sideDist.x -= ri->deltaDist.x / 2;
+					ri->side_dist.x -= ri->delta_dist.x / 2;
 				else
-					ri->sideDist.y -= ri->deltaDist.y / 2;
+					ri->side_dist.y -= ri->delta_dist.y / 2;
 			}
 			else
 			{
 				if (ri->side == 0)
 				{
 					if (ri->step.x > 0)
-						ri->wallX = ri->wallX + door->open_track * -ri->step.x;
+						ri->wall_x = ri->wall_x + door->open_track *-ri->step.x;
 					else
-						ri->wallX = ri->wallX + door->open_track * ri->step.x;
+						ri->wall_x = ri->wall_x + door->open_track * ri->step.x;
 					hit_loc.x += 0.5 * ri->step.x;
 				}
 				else
 				{
-
 					if (ri->step.y > 0)
-						ri->wallX = ri->wallX + door->open_track * -ri->step.y;
+						ri->wall_x = ri->wall_x + door->open_track *
+							-ri->step.y;
 					else
-						ri->wallX = ri->wallX + door->open_track * ri->step.y;
+						ri->wall_x = ri->wall_x + door->open_track * ri->step.y;
 					hit_loc.x += 0.5 * ri->step.y;
 				}
 				door = NULL;
