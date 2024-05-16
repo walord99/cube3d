@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   element_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 12:38:56 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 13:53:15 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/16 09:08:21 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,24 @@ bool	is_line_empty_or_whitespace(char *current_line)
 
 char	*double_trim(char *current_line)
 {
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	current_line = ft_strtrim(current_line, " \t");
-	current_line = current_line + 2;
-	current_line = ft_strtrim(current_line, " \n");
-	return (current_line);
+	char	*trimmed_line;
+	char	*double_trimmed_line;
+	char	*final_trimmed_line;
+
+	trimmed_line = ft_strtrim(current_line, " \t");
+	if (!trimmed_line)
+		return (NULL);
+	trimmed_line += 2;
+	double_trimmed_line = ft_strtrim(trimmed_line, " \n");
+	trimmed_line = NULL;
+	if (!double_trimmed_line)
+		return (NULL);
+	double_trimmed_line += 2;
+	final_trimmed_line = ft_strtrim(double_trimmed_line, " \n");
+	double_trimmed_line = NULL;
+	if (!final_trimmed_line)
+		return (NULL);
+	return (final_trimmed_line);
 }
 
 int	verify_checked_elements(t_map *map, char *current_line, int *fd)

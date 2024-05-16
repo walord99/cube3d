@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/14 16:56:33 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/16 08:27:24 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,6 @@ int					full_color_check(t_map *map, char *current_line, int fd,
 						char color_pref);
 int					full_tex_check(t_map *map, char *current_line,
 						int *line_counter, int *grid_idx);
-
 // vector functions
 t_dbl_vector		multiply_vector(t_dbl_vector v, double mult);
 t_dbl_vector		add_vector(t_dbl_vector v1, t_dbl_vector v2);

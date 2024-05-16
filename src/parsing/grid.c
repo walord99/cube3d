@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:44:23 by yothmani          #+#    #+#             */
-/*   Updated: 2024/04/29 15:51:41 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/16 08:32:31 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,15 @@ void	set_value_to_grid(t_map *map, int width, int height, char c)
 
 void	read_lines_until(int fd, int target_line)
 {
-	int	i;
+	int		i;
+	char	*line;
 
 	i = 0;
 	while (i < target_line)
 	{
-		get_next_line(fd, true);
+		line = get_next_line(fd, true);
 		i++;
+		free(line);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:11 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/07 13:54:12 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/16 08:48:12 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	free_map(t_map *map)
 int	handle_error(char *error_msg, char *current_line, int fd)
 {
 	ft_printf_fd("%s\n", 2, error_msg);
-	free(current_line);
+	if(current_line)
+		free(current_line);
 	close(fd);
 	return (1);
 }

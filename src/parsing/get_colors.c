@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:58:27 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/08 15:13:51 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/16 08:53:52 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@ void	get_floor_color(t_map *map, char *current_line)
 
 	new_current_line = ft_strtrim(current_line, "F");
 	split = ft_split(new_current_line, ',');
+	if (!split)
+	{
+		free(new_current_line);
+		return ;
+	}
 	map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),
 			ft_atoi(split[2]), 255);
+	free(new_current_line);
+	free_tab((void **)split, &free);
 }
 
 void	get_cieling_color(t_map *map, char *current_line)
@@ -30,8 +37,15 @@ void	get_cieling_color(t_map *map, char *current_line)
 
 	new_current_line = ft_strtrim(current_line, "C");
 	split = ft_split(new_current_line, ',');
-	map->cieling = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),
+	if (!split)
+	{
+		free(new_current_line);
+		return ;
+	}
+	map->floor = rbga_builder(ft_atoi(split[0]), ft_atoi(split[1]),
 			ft_atoi(split[2]), 255);
+	free(new_current_line);
+	free_tab((void **)split, &free);
 }
 
 int	full_color_check(t_map *map, char *current_line, int fd, char color_pref)

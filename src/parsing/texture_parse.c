@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/14 12:00:22 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/16 07:48:24 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 bool	is_valid_tex_prefix(char *tex_str)
 {
 	char	*tex_pref;
+	bool	result;
 
 	tex_pref = ft_strtrim(tex_str, " \t");
-	if ((tex_pref[0] == 'N' && tex_pref[1] == 'O') || (tex_pref[0] == 'S'
-			&& tex_pref[1] == 'O') || (tex_pref[0] == 'W' && tex_pref[1] == 'E')
-		|| (tex_pref[0] == 'E' && tex_pref[1] == 'A'))
-		return (tex_pref[2] == ' ');
-	return (false);
+	if (!tex_pref)
+		return (false);
+	result = ((tex_pref[0] == 'N' && tex_pref[1] == 'O') || (tex_pref[0] == 'S'
+				&& tex_pref[1] == 'O') || (tex_pref[0] == 'W'
+				&& tex_pref[1] == 'E') || (tex_pref[0] == 'E'
+				&& tex_pref[1] == 'A')) && (tex_pref[2] == ' ');
+	free(tex_pref);
+	return (result);
 }
 
 int	check_tex_extension(char *path_to_tex)
@@ -56,9 +60,6 @@ int	load_texture(t_map *map, char *path_to_tex, int direction)
 
 int	create_texture(t_map *map, char *path_to_tex, int direction)
 {
-	// map->mlx = mlx_init(100, 100, "cub3d", false);
-	// if (!map->mlx)
-	// 	return (1);
 	if (load_texture(map, path_to_tex, direction))
 	{
 		ft_printf_fd("BAD PATH\n", 2);
