@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 16:56:33 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/15 15:53:00 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ void	init_game(t_game *game)
 	create_texture(&game->map, "includes/textures/arrow.png", ARROW);
 	create_texture(&game->map, "includes/textures/door.png", DOOR);
 	dot = mlx_texture_to_image(game->mlx, game->map.textures[ARROW]);
-	mlx_image_to_window(game->mlx, dot, SCREENWIDTH - SCREENHEIGHT / 4 / 2,
-		SCREENHEIGHT / 4 / 2);
 	mlx_resize_image(dot, 20, 20);
+	mlx_image_to_window(game->mlx, dot, SCREENWIDTH - SCREENHEIGHT / 4 / 2 - dot->width / 2,
+		SCREENHEIGHT / 4 / 2 - dot->height / 2);
 	dot->instances[0].z = 4;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
