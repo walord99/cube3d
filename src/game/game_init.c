@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/18 02:24:38 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:52:03 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	init_game(t_game *game)
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
-	game->plane.x = 1 / (1.7 / (SCREENWIDTH / SCREENHEIGHT));
+	game->plane.x = 1 / ((1920 / 1080) / (SCREENWIDTH / SCREENHEIGHT));
 	game->plane.y = 0;
 	game->rendered = NULL;
 	game->minimap.render = NULL;
