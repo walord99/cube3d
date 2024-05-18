@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/15 15:53:00 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:24:38 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	init_game(t_game *game)
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
-	game->plane.x = 1;
+	game->plane.x = 1 / (1.7 / (SCREENWIDTH / SCREENHEIGHT));
 	game->plane.y = 0;
 	game->rendered = NULL;
 	game->minimap.render = NULL;
@@ -114,13 +114,18 @@ void	init_game(t_game *game)
 	create_door_array(game);
 	init_player_move_box(game);
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
+	create_texture(&game->map, "includes/textures/circle.png", CIRCLE);
 	create_texture(&game->map, "includes/textures/arrow.png", ARROW);
 	create_texture(&game->map, "includes/textures/door.png", DOOR);
-	dot = mlx_texture_to_image(game->mlx, game->map.textures[ARROW]);
-	mlx_resize_image(dot, 20, 20);
-	mlx_image_to_window(game->mlx, dot, SCREENWIDTH - SCREENHEIGHT / 4 / 2 - dot->width / 2,
-		SCREENHEIGHT / 4 / 2 - dot->height / 2);
-	dot->instances[0].z = 4;
+	game->minimap.arrow = mlx_texture_to_image(game->mlx, game->map.textures[ARROW]);
+	game->minimap.circle = mlx_texture_to_image(game->mlx, game->map.textures[CIRCLE]);
+	mlx_resize_image(game->minimap.arrow, 20, 20);
+	mlx_resize_image(game->minimap.circle, SCREENHEIGHT / 4, SCREENHEIGHT / 4);
+	mlx_image_to_window(game->mlx, game->minimap.arrow, SCREENWIDTH - SCREENHEIGHT / 4 / 2 - game->minimap.arrow->width / 2,
+		SCREENHEIGHT / 4 / 2 - game->minimap.arrow->height / 2);
+	mlx_image_to_window(game->mlx, game->minimap.circle, SCREENWIDTH - SCREENHEIGHT / 4, 0);
+	game->minimap.arrow->instances[0].z = 4;
+	game->minimap.circle->instances[0].z = 5;
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;

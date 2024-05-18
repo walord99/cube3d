@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/14 15:36:45 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:19:20 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void	free_game(t_game *game)
 	int	i;
 
 	i = 0;
-	while (i < 6)
+	while (i < 7)
 	{
 		mlx_delete_texture(game->map.textures[i]);
 		i++;
 	}
 	mlx_delete_image(game->mlx, game->rendered);
+	mlx_delete_image(game->mlx, game->minimap.arrow);
+	mlx_delete_image(game->mlx, game->minimap.circle);
 	mlx_delete_image(game->mlx, game->minimap.render);
 	i = 0;
 	while (game->doors[i])

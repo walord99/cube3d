@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/14 16:56:33 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:27:44 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ typedef struct s_map
 
 typedef struct s_minimap
 {
+	mlx_image_t		*arrow;
+	mlx_image_t		*circle;
 	mlx_image_t		*render;
 	t_dbl_vector	norm_rot[2];
 }					t_minimap;
