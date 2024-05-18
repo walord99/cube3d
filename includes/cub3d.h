@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/18 02:27:44 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:53:26 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ typedef struct s_draw_info
 	int				draw_end;
 	int				tex_x;
 	int				tex_y;
+	double			step;
+	double			tex_pos;
 	mlx_texture_t	*texture;
 }					t_draw_info;
 
