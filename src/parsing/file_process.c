@@ -6,7 +6,7 @@
 /*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 15:07:15 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/19 01:59:28 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/19 02:09:59 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	process_map(t_map *map, char *current_line, int *line_counter,
 	int	fd;
 
 	fd = map->fd;
-	while(is_white_space(*current_line))
+	while (is_white_space(*current_line))
 		current_line++;
 	if (*current_line == '1')
 	{
