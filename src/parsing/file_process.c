@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 15:07:15 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 15:16:15 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/19 01:59:28 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	process_map(t_map *map, char *current_line, int *line_counter,
 	int	fd;
 
 	fd = map->fd;
+	while(is_white_space(*current_line))
+		current_line++;
 	if (*current_line == '1')
 	{
 		if (verify_checked_elements(map, current_line, &fd))
