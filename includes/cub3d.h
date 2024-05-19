@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/16 08:27:24 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/19 01:29:27 by joe_jam          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ typedef struct s_draw_info
 	int				draw_end;
 	int				tex_x;
 	int				tex_y;
+	double			step;
+	double			tex_pos;
 	mlx_texture_t	*texture;
 }					t_draw_info;
 
@@ -143,6 +145,8 @@ typedef struct s_map
 
 typedef struct s_minimap
 {
+	mlx_image_t		*arrow;
+	mlx_image_t		*circle;
 	mlx_image_t		*render;
 	t_dbl_vector	norm_rot[2];
 }					t_minimap;

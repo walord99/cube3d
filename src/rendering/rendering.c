@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 17:04:44 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/18 02:59:11 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+typedef struct s_mpcf
+{
+	int			r2;
+	int			x;
+	int			y;
+	int			delta_y;
+	int			delta_x;
+	int			d;
+}				t_mpcf;
 
 void	get_pixel_color(t_int_vector pixel_pos, t_int_vector center,
 		t_game *game)
@@ -50,47 +60,47 @@ void	itterate_fill(t_int_vector pos, t_int_vector center, t_game *game)
 		get_pixel_color(pos, center, game);
 }
 
+void	mirror_8(t_mpcf *p, int center_x, int center_y, t_game *game)
+{
+	itterate_fill((t_int_vector){.x = center_x - p->x, .y = center_y - p->y},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x + p->x, .y = center_y - p->y},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x - p->x, .y = center_y + p->y},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x + p->x, .y = center_y + p->y},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x - p->y, .y = center_y - p->x},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x + p->y, .y = center_y - p->x},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x - p->y, .y = center_y + p->x},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+	itterate_fill((t_int_vector){.x = center_x + p->y, .y = center_y + p->x},
+		(t_int_vector){.x = center_x, .y = center_y}, game);
+}
+
 void	mid_point_circle_fill(int center_x, int center_y, int r, t_game *game)
 {
-	int	r2;
-	int	x;
-	int	y;
-	int	dy;
-	int	dx;
-	int	d;
+	t_mpcf	p;
 
-	r2 = r + r;
-	x = r;
-	y = 0;
-	dy = -2;
-	dx = r2 + r2 - 4;
-	d = r2 - 1;
-	while (y <= x)
+	p.r2 = r + r;
+	p.x = r;
+	p.y = 0;
+	p.delta_y = -2;
+	p.delta_x = p.r2 + p.r2 - 4;
+	p.d = p.r2 - 1;
+	while (p.y <= p.x)
 	{
-		itterate_fill((t_int_vector){.x = center_x - x, .y = center_y - y},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x + x, .y = center_y - y},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x - x, .y = center_y + y},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x + x, .y = center_y + y},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x - y, .y = center_y - x},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x + y, .y = center_y - x},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x - y, .y = center_y + x},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		itterate_fill((t_int_vector){.x = center_x + y, .y = center_y + x},
-			(t_int_vector){.x = center_x, .y = center_y}, game);
-		d += dy;
-		dy -= 4;
-		y++;
-		if (d < 0)
+		mirror_8(&p, center_x, center_y, game);
+		p.d += p.delta_y;
+		p.delta_y -= 4;
+		p.y++;
+		if (p.d < 0)
 		{
-			d += dx;
-			dx -= 4;
-			x--;
+			p.d += p.delta_x;
+			p.delta_x -= 4;
+			p.x--;
 		}
 	}
 }
@@ -147,12 +157,30 @@ mlx_texture_t	*get_texture(t_game *game, t_raycaster *ri)
 	return (game->map.textures[NO]);
 }
 
+void	set_draw_info(t_draw_info *di, t_raycaster *ray_info)
+{
+	di->line_height = SCREENHEIGHT / ray_info->perp_wall_dist;
+	di->draw_start = -di->line_height / 2 + SCREENHEIGHT / 2;
+	if (di->draw_start < 0)
+		di->draw_start = 0;
+	di->draw_end = di->line_height / 2 + SCREENHEIGHT / 2;
+	if (di->draw_end >= SCREENHEIGHT)
+		di->draw_end = SCREENHEIGHT - 1;
+	di->screen_pos.y = di->draw_start;
+	di->tex_x = (int)(ray_info->wall_x * (double)di->texture->width);
+	if (ray_info->side == 0 && ray_info->ray_dir.x > 0)
+		di->tex_x = di->texture->width - di->tex_x - 1;
+	if (ray_info->side == 1 && ray_info->ray_dir.y < 0)
+		di->tex_x = di->texture->width - di->tex_x - 1;
+	di->step = 1.0 * di->texture->height / di->line_height;
+	di->tex_pos = (di->draw_start - SCREENHEIGHT / 2 + di->line_height / 2)
+		* di->step;
+}
+
 void	render_wall(t_game *game)
 {
 	t_raycaster	ray_info;
 	t_draw_info	di;
-	double		step;
-	double		tex_pos;
 
 	di.screen_pos.x = 0;
 	ray_info.start_pos = game->pos;
@@ -164,26 +192,11 @@ void	render_wall(t_game *game)
 				multiply_vector(game->plane, di.camera_x));
 		cast_ray(&ray_info, game);
 		di.texture = get_texture(game, &ray_info);
-		di.line_height = SCREENHEIGHT / ray_info.perp_wall_dist;
-		di.draw_start = -di.line_height / 2 + SCREENHEIGHT / 2;
-		if (di.draw_start < 0)
-			di.draw_start = 0;
-		di.draw_end = di.line_height / 2 + SCREENHEIGHT / 2;
-		if (di.draw_end >= SCREENHEIGHT)
-			di.draw_end = SCREENHEIGHT - 1;
-		di.screen_pos.y = di.draw_start;
-		di.tex_x = (int)(ray_info.wall_x * (double)di.texture->width);
-		if (ray_info.side == 0 && ray_info.ray_dir.x > 0)
-			di.tex_x = di.texture->width - di.tex_x - 1;
-		if (ray_info.side == 1 && ray_info.ray_dir.y < 0)
-			di.tex_x = di.texture->width - di.tex_x - 1;
-		step = 1.0 * di.texture->height / di.line_height;
-		tex_pos = (di.draw_start - SCREENHEIGHT / 2 + di.line_height / 2)
-			* step;
+		set_draw_info(&di, &ray_info);
 		while (di.screen_pos.y <= di.draw_end)
 		{
-			di.tex_y = (int)tex_pos; // & (game->map.textures[1]->height - 1);
-			tex_pos += step;
+			di.tex_y = (int)di.tex_pos;
+			di.tex_pos += di.step;
 			mlx_put_pixel(game->rendered, di.screen_pos.x, di.screen_pos.y,
 				get_texture_color(di.tex_x, di.tex_y, di.texture));
 			di.screen_pos.y++;
