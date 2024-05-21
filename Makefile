@@ -45,7 +45,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
    		mkdir -p $(dir $@); \
 	fi
-	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ $(CASAN) $(GMON) -g
+	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ $(CASAN) $(GMON) -g -O3
 
 $(LIBFT): | $(LIBFT_DIR)/Makefile
 	make -C $(LIBFT_DIR)
@@ -71,7 +71,7 @@ fclean: clean
 
 re: fclean all
 
-leaks:
-	make && valgrind --leak-check=full ./$(NAME) map.cub
+leaks: $(NAME)
+	valgrind --leak-check=full ./$(NAME) map.cub
 
 .PHONY: all clean fclean re

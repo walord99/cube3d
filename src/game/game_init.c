@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/18 03:12:02 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 13:21:42 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	init_player_info(t_game *game)
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
-	game->plane.x = 1 / ((1920 / 1080) / (SCREENWIDTH / SCREENHEIGHT));
+	game->plane.x = 1 / (((double)1920 / (double)1080) / (SCREENWIDTH / SCREENHEIGHT));
 	game->plane.y = 0;
 	if (game->map.spawn_direction == 'S')
 		rotate_player(game, deg_to_rad(180));

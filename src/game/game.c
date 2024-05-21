@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 16:51:59 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 13:19:25 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,10 +187,13 @@ void	rotate_player_from_input(t_game *game)
 		rotate_player(game, rot_speed);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
 		rotate_player(game, -rot_speed);
-	mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
-	game->mouse_pos.x = game->mouse_pos.x - SCREENWIDTH / 2;
-	game->mouse_pos.y = game->mouse_pos.y - SCREENHEIGHT / 2;
-	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	if (!mlx_is_key_down(game->mlx, MLX_KEY_LEFT_ALT))
+	{
+		mlx_get_mouse_pos(game->mlx, &game->mouse_pos.x, &game->mouse_pos.y);
+		game->mouse_pos.x = game->mouse_pos.x - SCREENWIDTH / 2;
+		game->mouse_pos.y = game->mouse_pos.y - SCREENHEIGHT / 2;
+		mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	}
 	rotate_player(game, game->mouse_pos.x / 20);
 }
 
