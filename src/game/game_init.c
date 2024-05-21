@@ -6,7 +6,7 @@
 /*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 13:21:42 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 15:05:03 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	init_player_info(t_game *game)
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
-	game->plane.x = 1 / (((double)1920 / (double)1080) / (SCREENWIDTH / SCREENHEIGHT));
+	game->plane.x = 1 / (((double)1920 / (double)1080) / ((double)SCREENWIDTH / (double)SCREENHEIGHT));
 	game->plane.y = 0;
 	if (game->map.spawn_direction == 'S')
 		rotate_player(game, deg_to_rad(180));
@@ -134,6 +134,10 @@ void	init_game(t_game *game)
 	init_player_info(game);
 	create_door_array(game);
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
+	mlx_image_t *drive = mlx_texture_to_image(game->mlx, mlx_load_png("/Users/bplante/code/cube3d/includes/textures/drive_straight-Photoroom.png-Photoroom.png"));
+	mlx_resize_image(drive, drive->width * 1.30, drive->height * 1.30);
+	mlx_image_to_window(game->mlx, drive, SCREENWIDTH / 2 - drive->width / 2, SCREENHEIGHT - drive->height * 0.6);
+	drive->instances[0].z = 6;
 	minimap_fixed_textures(game);
 	create_texture(&game->map, "includes/textures/door.png", DOOR);
 	game->fc_img = create_floor_ceil_image(game);
