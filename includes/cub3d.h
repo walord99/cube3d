@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/19 01:29:27 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/21 15:08:13 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,10 @@ t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
 char				get_map_loc(int x, int y, t_map *map);
 t_door				*get_door(int x, int y, t_game *game);
+
+//input handling
+t_dbl_vector	get_move_from_input(t_game *game);
+void	rotate_player_from_input(t_game *game);
 
 void				rotate_player(t_game *game, double rot);
 
