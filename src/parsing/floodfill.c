@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:14:59 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 12:46:14 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:18:04 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	**allocate_grid_to_explore(int height, int width)
 	return (visited);
 }
 
-bool	floodfill(t_map *map, bool **is_explored, int i, int j)
+bool	floodfill(t_map *map, bool **is_explored, unsigned int i, unsigned int j)
 {
 	bool	is_playable;
 
@@ -69,8 +69,8 @@ bool	floodfill(t_map *map, bool **is_explored, int i, int j)
 
 bool	is_door_closed(char **str, t_map *map)
 {
-	int	x;
-	int	y;
+	unsigned int	x;
+	unsigned int	y;
 
 	x = 0;
 	while (x < map->height)

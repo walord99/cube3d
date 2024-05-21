@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 12:38:56 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/16 09:08:21 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:18:18 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	verify_checked_elements(t_map *map, char *current_line, int *fd)
 void	get_map_dimensions(t_map *map, char *current_line, int *map_start_idx,
 		int *line_counter)
 {
-	int	width;
+	unsigned int	width;
 
 	width = ft_strlen(current_line);
 	if (width > map->width)

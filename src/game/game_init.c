@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 15:05:03 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 15:21:59 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	create_door_array(t_game *game)
 {
-	int		x;
-	int		y;
+	unsigned int		x;
+	unsigned int		y;
 	char	tile;
 	t_list	*doors;
 	t_door	*door;
@@ -133,8 +133,8 @@ void	init_game(t_game *game)
 	game->minimap.render = NULL;
 	init_player_info(game);
 	create_door_array(game);
-	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
-	mlx_image_t *drive = mlx_texture_to_image(game->mlx, mlx_load_png("/Users/bplante/code/cube3d/includes/textures/drive_straight-Photoroom.png-Photoroom.png"));
+	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3D", false);
+	mlx_image_t *drive = mlx_texture_to_image(game->mlx, mlx_load_png("includes/textures/drive_straight-Photoroom.png-Photoroom.png"));
 	mlx_resize_image(drive, drive->width * 1.30, drive->height * 1.30);
 	mlx_image_to_window(game->mlx, drive, SCREENWIDTH / 2 - drive->width / 2, SCREENHEIGHT - drive->height * 0.6);
 	drive->instances[0].z = 6;

@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:41:42 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 12:46:27 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:19:22 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 bool	validate_grid_characters(char **str, t_map *map)
 {
-	int	x;
-	int	y;
+	unsigned int	x;
+	unsigned int	y;
 
 	x = 0;
 	while (x < map->height)
@@ -43,8 +43,8 @@ bool	validate_grid_characters(char **str, t_map *map)
 
 bool	handle_start_points(char **str, t_map *map)
 {
-	int	x;
-	int	y;
+	unsigned int	x;
+	unsigned int	y;
 
 	x = 0;
 	while (x < map->height)

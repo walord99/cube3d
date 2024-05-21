@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:44:23 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/16 08:32:31 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:20:03 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	allocate_grid(t_map *map)
 {
-	int	i;
+	unsigned int	i;
 
 	map->grid = ft_calloc(map->height, sizeof(char *));
 	if (!map->grid)
@@ -49,9 +49,9 @@ void	read_lines_until(int fd, int target_line)
 
 void	fill_grid(t_map *map, int fd)
 {
-	int		i;
+	unsigned int		i;
 	char	*current_line;
-	int		width;
+	unsigned int		width;
 
 	i = 0;
 	while (i < map->height)

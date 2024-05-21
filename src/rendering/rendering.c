@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/18 02:59:11 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 15:20:22 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ uint32_t	rbga_builder(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-uint32_t	get_texture_color(int x, int y, mlx_texture_t *tex)
+uint32_t	get_texture_color(unsigned int x,unsigned int y, mlx_texture_t *tex)
 {
 	uint8_t	*byte;
 

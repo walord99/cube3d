@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:11 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/19 02:10:30 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/21 15:19:39 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	print_and_return(char *msg, int status)
 
 void	free_map(t_map *map)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	if (map)
