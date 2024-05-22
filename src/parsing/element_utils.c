@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 12:38:56 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 15:18:18 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:36:53 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,21 @@ char	*double_trim(char *current_line)
 	char	*trimmed_line;
 	char	*double_trimmed_line;
 	char	*final_trimmed_line;
+	char	*temp;
 
 	trimmed_line = ft_strtrim(current_line, " \t");
 	if (!trimmed_line)
 		return (NULL);
+	temp = trimmed_line;
 	trimmed_line += 2;
 	double_trimmed_line = ft_strtrim(trimmed_line, " \n");
-	trimmed_line = NULL;
+	free(temp);
 	if (!double_trimmed_line)
 		return (NULL);
+	temp = double_trimmed_line;
 	double_trimmed_line += 2;
 	final_trimmed_line = ft_strtrim(double_trimmed_line, " \n");
-	double_trimmed_line = NULL;
+	free(temp);
 	if (!final_trimmed_line)
 		return (NULL);
 	return (final_trimmed_line);

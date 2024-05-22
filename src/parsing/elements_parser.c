@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/16 09:02:54 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:42:10 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	north_texture_process(t_map *map, char *current_line, int *fd)
 		free(new_current_line);
 		return (handle_error(ERR_TEX_N, current_line, *fd));
 	}
-	if (!is_valid_tex(map, new_current_line))
+	if (!is_valid_tex(new_current_line))
 	{
 		free(trimmed);
 		free(new_current_line);
@@ -52,7 +52,7 @@ int	south_texture_process(t_map *map, char *current_line, int *fd)
 		return (handle_error(ERR_TEX_S, current_line, *fd));
 	}
 	free(trimmed);
-	if (is_valid_tex(map, new_current_line))
+	if (is_valid_tex(new_current_line))
 		map->checked_element.texture_so = true;
 	else
 	{
@@ -77,7 +77,7 @@ int	east_texture_process(t_map *map, char *current_line, int *fd)
 		return (handle_error(ERR_TEX_E, current_line, *fd));
 	}
 	free(trimmed);
-	if (is_valid_tex(map, new_current_line))
+	if (is_valid_tex(new_current_line))
 		map->checked_element.texture_ea = true;
 	else
 	{
@@ -102,7 +102,7 @@ int	west_texture_process(t_map *map, char *current_line, int *fd)
 		return (handle_error(ERR_TEX_W, current_line, *fd));
 	}
 	free(trimmed);
-	if (is_valid_tex(map, new_current_line))
+	if (is_valid_tex(new_current_line))
 		map->checked_element.texture_we = true;
 	else
 	{

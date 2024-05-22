@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 15:21:44 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:59:32 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ between or after map lines!"
 # define DOOR 4
 # define ARROW 5
 # define CIRCLE 6
+# define TEXTURE_COUNT 7
 
 typedef struct s_dbl_vector
 {
@@ -195,7 +196,7 @@ void				init_map_struct(t_map *map, int fd);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
 void				populate_grid(t_map *map, int fd);
-bool				is_valid_tex(t_map *map, char *path_to_tex);
+bool				is_valid_tex(char *path_to_tex);
 bool				is_map_playable(t_map *map);
 bool				print_and_return(char *msg, int status);
 void				free_map(t_map *map);
@@ -237,6 +238,8 @@ int					full_color_check(t_map *map, char *current_line, int fd,
 						char color_pref);
 int					full_tex_check(t_map *map, char *current_line,
 						int *line_counter, int *grid_idx);
+void				free_textures(t_game game);
+void				free_game(t_game *game);
 // vector functions
 t_dbl_vector		multiply_vector(t_dbl_vector v, double mult);
 t_dbl_vector		add_vector(t_dbl_vector v1, t_dbl_vector v2);

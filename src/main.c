@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/18 02:19:20 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/21 20:01:41 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	free_game(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	while (i < 7)
-	{
-		mlx_delete_texture(game->map.textures[i]);
-		i++;
-	}
-	mlx_delete_image(game->mlx, game->rendered);
-	mlx_delete_image(game->mlx, game->minimap.arrow);
-	mlx_delete_image(game->mlx, game->minimap.circle);
-	mlx_delete_image(game->mlx, game->minimap.render);
-	i = 0;
-	while (game->doors[i])
-		free(game->doors[i++]);
-	free(game->doors);
-	mlx_terminate(game->mlx);
-}
 
 int	main(int argc, char **argv)
 {
@@ -43,7 +22,10 @@ int	main(int argc, char **argv)
 		return (1);
 	init_map_struct(&game.map, fd);
 	if (parse(argc, argv, &game.map, &fd))
+	{
+		free_game(&game);	
 		return (1);
+	}
 	close(fd);
 	init_game(&game);
 	free_game(&game);

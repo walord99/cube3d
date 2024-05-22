@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:17 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/16 07:48:24 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:22:30 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,8 @@ int	create_texture(t_map *map, char *path_to_tex, int direction)
 	return (0);
 }
 
-bool	is_valid_tex(t_map *map, char *path_to_tex)
+bool	is_valid_tex(char *path_to_tex)
 {
-	(void)map;
 	if (check_tex_extension(path_to_tex))
 		return (false);
 	return (true);

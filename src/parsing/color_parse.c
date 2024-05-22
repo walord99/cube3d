@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/19 02:09:56 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/21 16:14:39 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,14 @@ bool	is_valid_color_str(char *color_str)
 	if (!color_pref)
 		return (false);
 	if (comma_count != 2)
+	{
+		free(color_pref);
 		return (false);
+	}
 	else
 	{
 		trimmed_str = color_pref + 1;
+		free(color_pref);
 		return (validate_color_components(trimmed_str));
 	}
 }
