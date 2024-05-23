@@ -59,12 +59,12 @@ $(MLX_DIR)/CMakeLists.txt:
 
 clean:
 	@echo "$(BOLD)$(PINK)Cleaning object files...$(RESET)"
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR) $(NAME).dSYM
 
 fclean: clean
 	@echo "$(BOLD)$(PINK)Cleaning executable...$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR)  fclean > /dev/null
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(NAME).dSYM
 
 norm :
 	@echo "$(BOLD)$(PINK)Launching norminette ...$(RESET)"
@@ -82,7 +82,7 @@ norm :
 re: fclean all
 
 leaks: $(NAME)
-	@leaks --atExit -- ./$(NAME) map.cub
+	@leaks --atExit -- ./$(NAME) maps/school_map.cub
 
 .PHONY: all clean fclean re
 
