@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 14:54:54 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 00:44:32 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ void				fill_square(mlx_image_t *img, uint32_t color,
 						t_int_vector start, t_int_vector end);
 
 // game functions
-void				init_game(t_game *game);
+int				init_game(t_game *game);
 t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
 char				get_map_loc(int x, int y, t_map *map);

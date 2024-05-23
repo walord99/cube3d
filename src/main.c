@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/18 02:19:20 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 00:44:43 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	main(int argc, char **argv)
 	if (parse(argc, argv, &game.map, &fd))
 		return (1);
 	close(fd);
-	init_game(&game);
+	if (init_game(&game))
+		return (1);
 	free_game(&game);
 	return (0);
 }
