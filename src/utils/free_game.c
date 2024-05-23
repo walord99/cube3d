@@ -3,46 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   free_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:58:34 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 19:58:52 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:29:05 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void free_images(t_game *game)
+void	free_images(t_game *game)
 {
-    if (game->rendered)
-        mlx_delete_image(game->mlx, game->rendered);
-    if (game->minimap.arrow)
-        mlx_delete_image(game->mlx, game->minimap.arrow);
-    if (game->minimap.circle)
-        mlx_delete_image(game->mlx, game->minimap.circle);
-    if (game->minimap.render)
-        mlx_delete_image(game->mlx, game->minimap.render);
+	if (game->rendered)
+		mlx_delete_image(game->mlx, game->rendered);
+	if (game->minimap.arrow)
+		mlx_delete_image(game->mlx, game->minimap.arrow);
+	if (game->minimap.circle)
+		mlx_delete_image(game->mlx, game->minimap.circle);
+	if (game->minimap.render)
+		mlx_delete_image(game->mlx, game->minimap.render);
 }
 
-void free_textures(t_game game)
+void	free_textures(t_game game)
 {
-    int i = 0;
-    while (i < TEXTURE_COUNT)
-    {
-        if (game.map.textures[i])
-            mlx_delete_texture(game.map.textures[i]);
-        i++;
-    }
+	int	i;
+
+	i = 0;
+	while (i < TEXTURE_COUNT)
+	{
+		if (game.map.textures[i])
+			mlx_delete_texture(game.map.textures[i]);
+		i++;
+	}
 }
 
-void free_doors(t_game *game)
+void	free_doors(t_game *game)
 {
-    int i = 0;
-    while (game->doors[i])
-        free(game->doors[i++]);
+	int	i;
+
+	i = 0;
+	if (!game->doors)
+		return ;
+	while (game->doors[i])
+		free(game->doors[i++]);
 	free(game->doors);
 }
-
 
 void	free_game(t_game *game)
 {
@@ -55,10 +60,7 @@ void	free_game(t_game *game)
 		i++;
 	}
 	free_images(game);
-	i = 0;
-	while (game->doors[i])
-		free(game->doors[i++]);
-	free(game->doors);
+	free_doors(game);
 	free_map(&game->map);
 	mlx_terminate(game->mlx);
 }

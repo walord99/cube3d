@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floodfill.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:14:59 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 19:41:30 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:17:24 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	floodfill(t_map *map, bool **is_explored, unsigned int i,
 {
 	bool	is_playable;
 
-	if (i < 0 || i >= map->height || j < 0 || j >= map->width)
+	if (i >= map->height || j >= map->width)
 		return (false);
 	if (is_explored[i][j] == true || map->grid[i][j] == '1')
 		return (true);
