@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 00:51:07 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/23 00:53:37 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 11:49:12 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-uint32_t	get_texture_color(int x, int y, mlx_texture_t *tex)
+uint32_t	get_texture_color(unsigned int x, unsigned int y,
+		mlx_texture_t *tex)
 {
 	uint8_t	*byte;
 

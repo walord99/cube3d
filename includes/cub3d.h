@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 11:38:05 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:44:57 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,8 @@ void				fill_square(mlx_image_t *img, uint32_t color,
 						t_int_vector start, t_int_vector end);
 void				mid_point_circle_fill(int center_x, int center_y, int r,
 						t_game *game);
-uint32_t			get_texture_color(int x, int y, mlx_texture_t *tex);
+uint32_t			get_texture_color(unsigned int x, unsigned int y,
+						mlx_texture_t *tex);
 mlx_image_t			*create_floor_ceil_image(t_game *game);
 
 void				get_pixel_color(t_int_vector pixel_pos, t_int_vector center,

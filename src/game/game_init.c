@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/23 11:40:58 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:42:33 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	create_door_array(t_game *game)
 {
-	unsigned int		x;
-	unsigned int		y;
-	char	tile;
-	t_list	*doors;
-	t_door	*door;
+	unsigned int	x;
+	unsigned int	y;
+	char			tile;
+	t_list			*doors;
+	t_door			*door;
 
 	doors = NULL;
 	x = 0;
