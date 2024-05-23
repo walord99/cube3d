@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 00:44:32 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 01:04:26 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,14 +171,23 @@ typedef struct s_game
 	t_door			**doors;
 }					t_game;
 
-typedef struct s_c2
+typedef struct s_c2_vars
 {
 	t_dbl_vector	*mov;
 	t_dbl_vector	*mov_dir;
 	t_raycaster		*shortest;
 	t_dbl_vector	new_pos;
 	double			*move_len;
-}					t_c2;
+}					t_c2_vars;
+typedef struct s_mpcf
+{
+	int				r2;
+	int				x;
+	int				y;
+	int				delta_y;
+	int				delta_x;
+	int				d;
+}					t_mpcf;
 
 // PARSING FUNCTIONS
 int					first_non_white(char *line);
@@ -244,8 +253,6 @@ t_dbl_vector		add_vector(t_dbl_vector v1, t_dbl_vector v2);
 t_dbl_vector		rotate_vector(const t_dbl_vector v, double angle);
 t_dbl_vector		round_off_floating_point_errors(t_dbl_vector v);
 t_dbl_vector		normalise_vector(t_dbl_vector v);
-double				magnetude(t_dbl_vector v);
-t_int_vector		new_int_vector(int x, int y);
 
 // raycasting
 t_dbl_vector		cast_ray(t_raycaster *ri, t_game *game);
@@ -255,18 +262,33 @@ uint32_t			rbga_builder(int r, int g, int b, int a);
 void				draw(t_game *game);
 void				fill_square(mlx_image_t *img, uint32_t color,
 						t_int_vector start, t_int_vector end);
+void				mid_point_circle_fill(int center_x, int center_y, int r,
+						t_game *game);
+uint32_t			get_texture_color(int x, int y, mlx_texture_t *tex);
+mlx_image_t			*create_floor_ceil_image(t_game *game);
+
+void				get_pixel_color(t_int_vector pixel_pos, t_int_vector center,
+						t_game *game);
+
+// dda init
+void				get_delta_dist(t_raycaster *ri);
+void				get_step_and_side(t_raycaster *ri);
+void				step(t_raycaster *ri);
+// dda end
+void				set_dda_result(t_raycaster *ri, t_dbl_vector *hit_loc);
+void				set_door_hit_info(t_raycaster *ri, t_dbl_vector *hit_loc,
+						t_door *door);
 
 // game functions
-int				init_game(t_game *game);
+int					init_game(t_game *game);
 t_dbl_vector		collision_detection(t_game *game, t_dbl_vector movement,
 						t_dbl_vector movement_dir);
 char				get_map_loc(int x, int y, t_map *map);
 t_door				*get_door(int x, int y, t_game *game);
 
-//input handling
-t_dbl_vector	get_move_from_input(t_game *game);
-void	rotate_player_from_input(t_game *game);
-
+// input handling
+t_dbl_vector		get_move_from_input(t_game *game);
+void				rotate_player_from_input(t_game *game);
 void				rotate_player(t_game *game, double rot);
 
 // math utils

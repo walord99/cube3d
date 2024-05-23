@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/23 00:44:01 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 00:55:11 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,44 +39,6 @@ void	create_door_array(t_game *game)
 	}
 	game->doors = lst_to_tab(doors);
 	lst_destroy_nodes(doors);
-}
-
-void	fill_square(mlx_image_t *img, uint32_t color, t_int_vector start,
-		t_int_vector end)
-{
-	int	temp;
-
-	temp = start.y;
-	while (start.x != end.x)
-	{
-		start.y = temp;
-		while (start.y != end.y)
-		{
-			mlx_put_pixel(img, start.x, start.y, color);
-			start.y++;
-		}
-		start.x++;
-	}
-}
-
-mlx_image_t	*create_floor_ceil_image(t_game *game)
-{
-	mlx_image_t		*fc_img;
-	t_int_vector	start;
-	t_int_vector	end;
-
-	fc_img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	start.x = 0;
-	start.y = 0;
-	end.x = SCREENWIDTH;
-	end.y = SCREENHEIGHT / 2;
-	fill_square(fc_img, game->map.cieling, start, end);
-	start.y = SCREENHEIGHT / 2;
-	start.x = 0;
-	end.x = SCREENWIDTH;
-	end.y = SCREENHEIGHT;
-	fill_square(fc_img, game->map.floor, start, end);
-	return (fc_img);
 }
 
 void	init_player_move_box(t_game *game)
@@ -139,7 +101,7 @@ int	init_game(t_game *game)
 	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
 	if (minimap_fixed_textures(game) || create_texture(&game->map,
 			"includes/textures/door.png", DOOR))
-		return 1;
+		return (1);
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;
@@ -147,5 +109,5 @@ int	init_game(t_game *game)
 	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
 	mlx_loop(game->mlx);
-	return 0;
+	return (0);
 }

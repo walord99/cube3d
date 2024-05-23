@@ -3,7 +3,8 @@ FILES			=	parsing/map.c  parsing/file.c  parsing/floodfill.c parsing/element_uti
 					parsing/map_utils.c  parsing/error_handler.c parsing/parser.c parsing/get_colors.c parsing/file_process.c\
 					parsing/color_parse.c  parsing/grid.c  parsing/parsing_utils.c  parsing/texture_parse.c main.c \
 					game/game.c rendering/rendering.c utils/vector.c utils/more_math.c \
-					utils/map_accessor.c raycasting/raycasting.c game/game_init.c game/input_handling.c game/player_movement.c
+					utils/map_accessor.c raycasting/raycasting.c game/game_init.c game/input_handling.c game/player_movement.c \
+					rendering/rendering_utils.c rendering/circle_fill.c raycasting/raycasting_utils.c rendering/background_renderer.c
 
 SRC_DIR			=	src
 OBJ_DIR			=	obj
