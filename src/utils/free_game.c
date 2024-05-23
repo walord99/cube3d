@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:58:34 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 12:39:53 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:17:32 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ void	free_textures(t_game game)
 
 void	free_doors(t_game *game)
 {
-    int i = 0;
-    while (game->doors[i])
-        free(game->doors[i++]);
+	int	i;
+
+	i = 0;
+	while (game->doors[i])
+		free(game->doors[i++]);
 	free(game->doors);
 }
 
