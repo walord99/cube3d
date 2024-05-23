@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:58:34 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 11:42:41 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:39:53 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,9 @@ void	free_textures(t_game game)
 
 void	free_doors(t_game *game)
 {
-	int	i;
-
-	i = 0;
-	while (game->doors[i])
-		free(game->doors[i++]);
+    int i = 0;
+    while (game->doors[i])
+        free(game->doors[i++]);
 	free(game->doors);
 }
 
@@ -58,10 +56,7 @@ void	free_game(t_game *game)
 		i++;
 	}
 	free_images(game);
-	i = 0;
-	while (game->doors[i])
-		free(game->doors[i++]);
-	free(game->doors);
+	free_doors(game);
 	free_map(&game->map);
 	mlx_terminate(game->mlx);
 }
