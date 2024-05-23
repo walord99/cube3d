@@ -6,7 +6,7 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 00:32:21 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 15:29:20 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ bool	validate_color_components(char *color_str)
 		i++;
 	}
 	free_tab((void **)colors, &free);
+	free(color_str);
 	return (true);
 }
 
@@ -104,8 +105,6 @@ bool	is_valid_color_str(char *color_str)
 	else
 	{
 		trimmed_str = color_pref + 1;
-		//free(color_pref); 
-		//caused segfault (use after free)
 		return (validate_color_components(trimmed_str));
 	}
 }
