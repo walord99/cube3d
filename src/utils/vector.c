@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:04:35 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/14 13:49:43 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 00:58:45 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-t_int_vector	new_int_vector(int x, int y)
-{
-	t_int_vector	v;
-
-	v.x = x;
-	v.y = y;
-	return (v);
-}
 
 t_dbl_vector	rotate_vector(const t_dbl_vector v, double angle_rad)
 {
@@ -69,9 +60,4 @@ t_dbl_vector	normalise_vector(t_dbl_vector v)
 	v.x *= inv_square_root;
 	v.y *= inv_square_root;
 	return (v);
-}
-
-double	magnetude(t_dbl_vector v)
-{
-	return (sqrt(pow(v.x, 2) + pow(v.y, 2)));
 }

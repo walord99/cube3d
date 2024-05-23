@@ -6,104 +6,11 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:13:31 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 15:20:22 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:38:30 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-typedef struct s_mpcf
-{
-	int			r2;
-	int			x;
-	int			y;
-	int			delta_y;
-	int			delta_x;
-	int			d;
-}				t_mpcf;
-
-void	get_pixel_color(t_int_vector pixel_pos, t_int_vector center,
-		t_game *game)
-{
-	t_dbl_vector	relpos;
-	t_dbl_vector	pos;
-	t_dbl_vector	*rot_pre;
-	char			tile;
-
-	rot_pre = game->minimap.norm_rot;
-	relpos.x = (pixel_pos.x - center.x) * 0.05;
-	relpos.y = (pixel_pos.y - center.y) * 0.05;
-	pos = add_vector(add_vector(multiply_vector(rot_pre[0], relpos.x),
-				multiply_vector(rot_pre[1], relpos.y)), game->pos);
-	tile = get_map_loc((int)pos.x, (int)pos.y, &game->map);
-	if (tile == '1')
-		mlx_put_pixel(game->minimap.render, pixel_pos.x, pixel_pos.y,
-			rbga_builder(0, 0, 0, 255));
-	else if (tile == '-' || tile == '|')
-		mlx_put_pixel(game->minimap.render, pixel_pos.x, pixel_pos.y,
-			rbga_builder(0, 0, 0, 150));
-}
-
-void	itterate_fill(t_int_vector pos, t_int_vector center, t_game *game)
-{
-	int	dir;
-
-	dir = -1;
-	if (pos.x < center.x)
-		dir = 1;
-	while (pos.x != center.x)
-	{
-		get_pixel_color(pos, center, game);
-		pos.x += dir;
-	}
-	if (dir == 1)
-		get_pixel_color(pos, center, game);
-}
-
-void	mirror_8(t_mpcf *p, int center_x, int center_y, t_game *game)
-{
-	itterate_fill((t_int_vector){.x = center_x - p->x, .y = center_y - p->y},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x + p->x, .y = center_y - p->y},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x - p->x, .y = center_y + p->y},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x + p->x, .y = center_y + p->y},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x - p->y, .y = center_y - p->x},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x + p->y, .y = center_y - p->x},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x - p->y, .y = center_y + p->x},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-	itterate_fill((t_int_vector){.x = center_x + p->y, .y = center_y + p->x},
-		(t_int_vector){.x = center_x, .y = center_y}, game);
-}
-
-void	mid_point_circle_fill(int center_x, int center_y, int r, t_game *game)
-{
-	t_mpcf	p;
-
-	p.r2 = r + r;
-	p.x = r;
-	p.y = 0;
-	p.delta_y = -2;
-	p.delta_x = p.r2 + p.r2 - 4;
-	p.d = p.r2 - 1;
-	while (p.y <= p.x)
-	{
-		mirror_8(&p, center_x, center_y, game);
-		p.d += p.delta_y;
-		p.delta_y -= 4;
-		p.y++;
-		if (p.d < 0)
-		{
-			p.d += p.delta_x;
-			p.delta_x -= 4;
-			p.x--;
-		}
-	}
-}
 
 void	render_minimap(t_game *game)
 {
@@ -117,24 +24,6 @@ void	render_minimap(t_game *game)
 	mlx_image_to_window(game->mlx, game->minimap.render, SCREENWIDTH
 		- SCREENHEIGHT / 4, 0);
 	game->minimap.render->instances[0].z = 2;
-}
-
-uint32_t	rbga_builder(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-uint32_t	get_texture_color(unsigned int x,unsigned int y, mlx_texture_t *tex)
-{
-	uint8_t	*byte;
-
-	if (y >= tex->height - 1)
-		y = tex->height - 2;
-	if (x >= tex->width - 1)
-		x = tex->width - 2;
-	byte = &tex->pixels[(y * tex->width + (x * -1 + tex->width))
-		* tex->bytes_per_pixel];
-	return (rbga_builder(byte[0], byte[1], byte[2], byte[3]));
 }
 
 mlx_texture_t	*get_texture(t_game *game, t_raycaster *ri)

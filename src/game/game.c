@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:20:44 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 14:41:41 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 00:54:04 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	rotate_player(t_game *game, double rot)
 	game->look_dir = rotate_vector(game->look_dir, rad);
 	game->plane = rotate_vector(game->plane, rad);
 }
-
 
 void	loop_hook(void *param)
 {

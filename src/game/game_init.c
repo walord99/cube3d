@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:23:23 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 15:21:59 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:40:58 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,6 @@ void	create_door_array(t_game *game)
 	lst_destroy_nodes(doors);
 }
 
-void	fill_square(mlx_image_t *img, uint32_t color, t_int_vector start,
-		t_int_vector end)
-{
-	int	temp;
-
-	temp = start.y;
-	while (start.x != end.x)
-	{
-		start.y = temp;
-		while (start.y != end.y)
-		{
-			mlx_put_pixel(img, start.x, start.y, color);
-			start.y++;
-		}
-		start.x++;
-	}
-}
-
-mlx_image_t	*create_floor_ceil_image(t_game *game)
-{
-	mlx_image_t		*fc_img;
-	t_int_vector	start;
-	t_int_vector	end;
-
-	fc_img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	start.x = 0;
-	start.y = 0;
-	end.x = SCREENWIDTH;
-	end.y = SCREENHEIGHT / 2;
-	fill_square(fc_img, game->map.cieling, start, end);
-	start.y = SCREENHEIGHT / 2;
-	start.x = 0;
-	end.x = SCREENWIDTH;
-	end.y = SCREENHEIGHT;
-	fill_square(fc_img, game->map.floor, start, end);
-	return (fc_img);
-}
-
 void	init_player_move_box(t_game *game)
 {
 	game->aabb_corners[0].x = -PLAYER_MOVE_BOX;
@@ -91,10 +53,11 @@ void	init_player_move_box(t_game *game)
 	game->aabb_corners[3].y = PLAYER_MOVE_BOX;
 }
 
-void	minimap_fixed_textures(t_game *game)
+int	minimap_fixed_textures(t_game *game)
 {
-	create_texture(&game->map, "includes/textures/circle.png", CIRCLE);
-	create_texture(&game->map, "includes/textures/arrow.png", ARROW);
+	if (create_texture(&game->map, "includes/textures/circle.png", CIRCLE)
+		|| create_texture(&game->map, "includes/textures/arrow.png", ARROW))
+		return (1);
 	game->minimap.arrow = mlx_texture_to_image(game->mlx,
 			game->map.textures[ARROW]);
 	game->minimap.circle = mlx_texture_to_image(game->mlx,
@@ -108,6 +71,7 @@ void	minimap_fixed_textures(t_game *game)
 		- SCREENHEIGHT / 4, 0);
 	game->minimap.arrow->instances[0].z = 4;
 	game->minimap.circle->instances[0].z = 5;
+	return (0);
 }
 
 void	init_player_info(t_game *game)
@@ -116,7 +80,8 @@ void	init_player_info(t_game *game)
 	game->pos.y = game->map.spawn_y + 0.5;
 	game->look_dir.x = 0;
 	game->look_dir.y = -1;
-	game->plane.x = 1 / (((double)1920 / (double)1080) / ((double)SCREENWIDTH / (double)SCREENHEIGHT));
+	game->plane.x = 1 / (((double)1920 / (double)1080) / ((double)SCREENWIDTH
+				/ (double)SCREENHEIGHT));
 	game->plane.y = 0;
 	if (game->map.spawn_direction == 'S')
 		rotate_player(game, deg_to_rad(180));
@@ -127,19 +92,16 @@ void	init_player_info(t_game *game)
 	init_player_move_box(game);
 }
 
-void	init_game(t_game *game)
+int	init_game(t_game *game)
 {
 	game->rendered = NULL;
 	game->minimap.render = NULL;
 	init_player_info(game);
 	create_door_array(game);
-	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3D", false);
-	mlx_image_t *drive = mlx_texture_to_image(game->mlx, mlx_load_png("includes/textures/drive_straight-Photoroom.png-Photoroom.png"));
-	mlx_resize_image(drive, drive->width * 1.30, drive->height * 1.30);
-	mlx_image_to_window(game->mlx, drive, SCREENWIDTH / 2 - drive->width / 2, SCREENHEIGHT - drive->height * 0.6);
-	drive->instances[0].z = 6;
-	minimap_fixed_textures(game);
-	create_texture(&game->map, "includes/textures/door.png", DOOR);
+	game->mlx = mlx_init(SCREENWIDTH, SCREENHEIGHT, "cub3d", false);
+	if (minimap_fixed_textures(game) || create_texture(&game->map,
+			"includes/textures/door.png", DOOR))
+		return (1);
 	game->fc_img = create_floor_ceil_image(game);
 	mlx_image_to_window(game->mlx, game->fc_img, 0, 0);
 	game->fc_img->instances[0].z = 0;
@@ -147,4 +109,5 @@ void	init_game(t_game *game)
 	mlx_loop_hook(game->mlx, &loop_hook, game);
 	mlx_set_mouse_pos(game->mlx, SCREENWIDTH / 2, SCREENHEIGHT / 2);
 	mlx_loop(game->mlx);
+	return (0);
 }

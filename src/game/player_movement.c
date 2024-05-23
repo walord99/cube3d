@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_movement.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 14:40:54 by bplante           #+#    #+#             */
-/*   Updated: 2024/05/21 14:41:06 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 01:04:10 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	float_fix(t_raycaster *shortest, t_dbl_vector *newpos)
 		newpos->x -= 0.0001 * shortest->step.x;
 }
 
-void	collision_2(t_game *game, t_c2 a)
+void	collision_2(t_game *game, t_c2_vars a)
 {
 	if (a.shortest->side == 1)
 	{
@@ -86,7 +86,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	double			move_len;
 	int				shortest_ray;
 
-	move_len = magnetude(movement);
+	move_len = sqrt(pow(movement.x, 2) + pow(movement.y, 2));
 	init_aabb_rays(ray_info, game->pos, game->aabb_corners, movement_dir);
 	shortest_ray = cast_aabb_rays(ray_info, hitloc, game);
 	if (ray_info[shortest_ray].perp_wall_dist > move_len)
@@ -94,7 +94,7 @@ t_dbl_vector	collision_detection(t_game *game, t_dbl_vector movement,
 	newpos = add_vector(hitloc[shortest_ray],
 			multiply_vector(game->aabb_corners[shortest_ray], -1));
 	float_fix(&ray_info[shortest_ray], &newpos);
-	collision_2(game, (t_c2){.mov = &movement, .mov_dir = &movement_dir,
+	collision_2(game, (t_c2_vars){.mov = &movement, .mov_dir = &movement_dir,
 		.move_len = &move_len, .new_pos = newpos,
 		.shortest = &ray_info[shortest_ray]});
 	init_aabb_rays(ray_info, newpos, game->aabb_corners, movement_dir);

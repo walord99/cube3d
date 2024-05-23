@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/21 20:01:41 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:39:07 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	close(fd);
-	init_game(&game);
+	if (init_game(&game))
+		return (1);
 	free_game(&game);
 	return (0);
 }
