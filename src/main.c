@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/23 19:58:15 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:53:21 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	init_map_struct(&game.map, fd);
 	if (parse(argc, argv, &game, &fd))
 	{
-		free(&game.map.textures); //TODO:fix this leak
+		free(game.map.textures);
 		return (1);
 	}
 	close(fd);
