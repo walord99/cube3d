@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 19:47:28 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:23:47 by bplante          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define ERR_BADFILE "ERROR: Bad file extension\n"
 # define ERR_C "ERROR: Ceiling color is not valid"
 # define ERR_F "ERROR:Floor color is not valid"
-#define ERR_DUP_COLOR "ERROR: color is duplicated"
+# define ERR_DUP_COLOR "ERROR: color is duplicated"
 # define ERR_NL \
 	"ERROR: Empty lines are not permitted \
 between or after map lines!"
@@ -121,12 +121,12 @@ typedef struct s_draw_info
 
 typedef struct s_element_check
 {
-	bool		f_color;
-	bool		c_color;
-	int			texture_no;
-	int			texture_so;
-	int			texture_we;
-	int			texture_ea;
+	bool			f_color;
+	bool			c_color;
+	int				texture_no;
+	int				texture_so;
+	int				texture_we;
+	int				texture_ea;
 }					t_element_check;
 
 typedef struct s_map
