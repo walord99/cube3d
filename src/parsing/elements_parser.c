@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 11:55:00 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/21 19:42:10 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:45:11 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,25 +113,33 @@ int	west_texture_process(t_map *map, char *current_line, int *fd)
 	return (0);
 }
 
-int	element_parse(t_map *map, char *current_line, int *fd)
+int element_parse(t_map *map, char *current_line, int *fd)
 {
-	if (*current_line == 'N' && !map->checked_element.texture_no)
+	if (*current_line == 'N')
 	{
+		if (map->checked_element.texture_no)
+			return handle_error("ERR_DUPLICATE_N_ELEM", current_line, *fd);
 		if (north_texture_process(map, current_line, fd))
 			return (1);
 	}
-	else if (*current_line == 'S' && !map->checked_element.texture_so)
+	else if (*current_line == 'S')
 	{
+		if (map->checked_element.texture_so)
+			return handle_error("ERR_DUPLICATE_S_ELEM", current_line, *fd);
 		if (south_texture_process(map, current_line, fd))
 			return (1);
 	}
-	else if (*current_line == 'E' && !map->checked_element.texture_ea)
+	else if (*current_line == 'E')
 	{
+		if (map->checked_element.texture_ea)
+			return handle_error("ERR_DUPLICATE_E_ELEM", current_line, *fd);
 		if (east_texture_process(map, current_line, fd))
 			return (1);
 	}
-	else if (*current_line == 'W' && !map->checked_element.texture_we)
+	else if (*current_line == 'W')
 	{
+		if (map->checked_element.texture_we)
+			return handle_error("ERR_DUPLICATE_W_ELEM", current_line, *fd);
 		if (west_texture_process(map, current_line, fd))
 			return (1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 00:32:21 by bplante          ###   ########.fr       */
+/*   Updated: 2024/05/23 13:07:53 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ bool	is_valid_color_str(char *color_str)
 	else
 	{
 		trimmed_str = color_pref + 1;
-		//free(color_pref); 
-		//caused segfault (use after free)
+		free(color_pref);
 		return (validate_color_components(trimmed_str));
 	}
 }

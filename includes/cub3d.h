@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:45:12 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 11:44:57 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:47:28 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,27 @@
 # define ERR_BADFILE "ERROR: Bad file extension\n"
 # define ERR_C "ERROR: Ceiling color is not valid"
 # define ERR_F "ERROR:Floor color is not valid"
+#define ERR_DUP_COLOR "ERROR: color is duplicated"
 # define ERR_NL \
 	"ERROR: Empty lines are not permitted \
 between or after map lines!"
 # define ERR_DUP_ELEM "ERROR: duplicate element found!"
 # define ERR_INV_ELEM "ERROR: Invalid elements!"
+# define ERR_MISSING_N_ELEM "ERROR: Path to the north texture not found!"
+# define ERR_MISSING_E_ELEM "ERROR: Path to the east texture not found!"
+# define ERR_MISSING_W_ELEM "ERROR: Path to the west texture not found!"
+# define ERR_MISSING_S_ELEM "ERROR: Path to the south texture not found!"
+# define ERR_MISSING_COLOR "ERROR: Missing color element!"
 # define ERR_INC_MAP "ERROR: Incorrect map!"
 # define ERR_EMPTY_MAP "ERROR: Empty map!"
 # define ERR_TEX_N "ERROR: path to the north texture is invalid"
+# define ERR_DUP_N_ELEM "ERROR: path to the north texture is duplicated"
 # define ERR_TEX_S "ERROR: path to the south texture is invalid"
+# define ERR_DUP_S_ELEM "ERROR: path to the south texture is duplicated"
 # define ERR_TEX_E "ERROR: path to the east texture is invalid"
+# define ERR_DUP_E_ELEM "ERROR: path to the east texture is duplicated"
 # define ERR_TEX_W "ERROR: path to the west texture is invalid"
+# define ERR_DUP_W_ELEM "ERROR: path to the west texture is duplicated"
 # define ERR_FL "ERROR: First line has incorrect character\n"
 # define ERR_LL "ERROR: Last line has incorrect character\n"
 # define ERR_SP "ERROR: Only one start point is permitted\n"
@@ -111,20 +121,13 @@ typedef struct s_draw_info
 
 typedef struct s_element_check
 {
-	bool			f_color;
-	bool			c_color;
-	bool			texture_no;
-	bool			texture_so;
-	bool			texture_we;
-	bool			texture_ea;
+	bool		f_color;
+	bool		c_color;
+	int			texture_no;
+	int			texture_so;
+	int			texture_we;
+	int			texture_ea;
 }					t_element_check;
-
-typedef struct s_textures
-{
-	mlx_texture_t	*texture_test;
-	mlx_image_t		*img_test;
-	int				type;
-}					t_textures;
 
 typedef struct s_map
 {
@@ -141,7 +144,7 @@ typedef struct s_map
 	mlx_t			*mlx;
 	uint32_t		floor;
 	uint32_t		cieling;
-	mlx_texture_t	*textures[7];
+	mlx_texture_t	**textures;
 }					t_map;
 
 typedef struct s_minimap
@@ -200,7 +203,7 @@ bool				is_valid_color_str(char *color_pref);
 int					check_file_extension(char *file_name);
 void				free_map(t_map *map);
 int					arg_check(int argc, char **argv);
-int					parse(int argc, char **argv, t_map *map, int *fd);
+int					parse(int argc, char **argv, t_game *game, int *fd);
 void				init_map_struct(t_map *map, int fd);
 int					read_and_parse_file(int fd, t_map *map);
 void				allocate_grid(t_map *map);
@@ -220,8 +223,7 @@ int					element_parse(t_map *map, char *current_line, int *fd);
 int					handle_error(char *error_msg, char *current_line, int fd);
 void				get_map_dimensions(t_map *map, char *current_line,
 						int *map_start_idx, int *line_counter);
-int					verify_checked_elements(t_map *map, char *current_line,
-						int *fd);
+int					verify_checked_elements(t_map *map, int *fd);
 int					process_map_line(char *current_line, int *line_counter,
 						int *map_start_idx, int *fd);
 bool				is_line_empty_or_whitespace(char *current_line);

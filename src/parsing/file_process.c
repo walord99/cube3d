@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joe_jam <joe_jam@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 15:07:15 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/19 02:09:59 by joe_jam          ###   ########.fr       */
+/*   Updated: 2024/05/23 17:31:31 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,20 @@ int	process_map(t_map *map, char *current_line, int *line_counter,
 		int *grid_idx)
 {
 	int	fd;
-
+	char *new_line;
+	
+	if(is_white_space(*current_line))
+		new_line = current_line;
 	fd = map->fd;
 	while (is_white_space(*current_line))
 		current_line++;
 	if (*current_line == '1')
 	{
-		if (verify_checked_elements(map, current_line, &fd))
+		if (verify_checked_elements(map, &fd))
+		{
+			free(new_line);
 			return (1);
+		}
 		get_map_dimensions(map, current_line, grid_idx, line_counter);
 	}
 	else

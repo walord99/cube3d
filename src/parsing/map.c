@@ -6,31 +6,39 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 15:01:26 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:56:15 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	init_map_struct(t_map *map, int fd)
+void init_map_struct(t_map *map, int fd)
 {
-	map->grid = NULL;
-	map->height = 0;
-	map->width = 0;
-	map->fd = fd;
-	map->first_map_line = -1;
-	map->has_direction = false;
-	map->spawn_direction = 0;
-	map->spawn_x = -1;
-	map->spawn_y = -1;
-	map->checked_element = (t_element_check){
-		.f_color = false,
-		.c_color = false,
-		.texture_no = false,
-		.texture_so = false,
-		.texture_we = false,
-		.texture_ea = false,
-	};
+    int i;
+
+    map->grid = NULL;
+    map->height = 0;
+    map->width = 0;
+    map->fd = fd;
+    map->first_map_line = -1;
+    map->has_direction = false;
+    map->spawn_direction = 0;
+    map->spawn_x = -1;
+    map->spawn_y = -1;
+    map->textures = malloc(TEXTURE_COUNT * sizeof(mlx_texture_t *));
+    if (!map->textures)
+        return;
+    i = 0;
+    while (i < TEXTURE_COUNT)
+        map->textures[i++] = NULL;
+    map->checked_element = (t_element_check){
+        .f_color = false,
+        .c_color = false,
+        .texture_no = false,
+        .texture_so = false,
+        .texture_we = false,
+        .texture_ea = false,
+    };
 }
 
 bool	is_char_valid(char **str, t_map *map)

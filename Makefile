@@ -67,7 +67,7 @@ fclean: clean
 	@rm -f $(NAME) $(NAME).dSYM
 
 norm :
-	@echo "$(BOLD)$(PINK)Launching norminette ...$(RESET)"
+	@echo "$(BOLD)$(PINK)🚀Launching norminette ...$(RESET)"
 	@sleep 1
 	@echo "$(BOLD)$(CYAN)checking libraries ...$(RESET)"
 	@sleep 1
@@ -78,11 +78,12 @@ norm :
 	@echo "$(BOLD)$(CYAN)checking sources ...$(RESET)"
 	@sleep 1
 	@norminette $(SRC)
+	@echo "$(BOLD)$(GREEN)✔ All checks passed! Code is in perfect norm. ✔$(RESET)"
 
 re: fclean all
 
 leaks: $(NAME)
-	@leaks --atExit -- ./$(NAME) maps/school_map.cub
+	@leaks --atExit -- ./$(NAME) maps/empty_map.cub
 
 .PHONY: all clean fclean re
 
