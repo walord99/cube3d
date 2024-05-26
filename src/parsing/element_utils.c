@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 12:38:56 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 18:57:35 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:40:26 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,26 @@ int	verify_checked_elements(t_map *map, int *fd)
 {
 	if (!map->checked_element.c_color || !map->checked_element.f_color)
 		return (handle_error(ERR_MISSING_COLOR, NULL, *fd));
-	else if(!map->checked_element.texture_ea)
-		{
-			map->textures[1] = NULL;
-			return (handle_error(ERR_MISSING_E_ELEM, NULL, *fd));
-		}
+	else if (!map->checked_element.texture_ea)
+	{
+		map->textures[1] = NULL;
+		return (handle_error(ERR_MISSING_E_ELEM, NULL, *fd));
+	}
 	else if (!map->checked_element.texture_we)
-		{
-			map->textures[3] = NULL;
-			return (handle_error(ERR_MISSING_W_ELEM, NULL, *fd));
-		}
-	else if(!map->checked_element.texture_so )
-		{
-			map->textures[2] = NULL;
-			return (handle_error(ERR_MISSING_S_ELEM, NULL, *fd));
-		}
-	else if(!map->checked_element.texture_no)
-		{
-			map->textures[0] = NULL;
-			return (handle_error(ERR_MISSING_N_ELEM, NULL, *fd));
-		}
+	{
+		map->textures[3] = NULL;
+		return (handle_error(ERR_MISSING_W_ELEM, NULL, *fd));
+	}
+	else if (!map->checked_element.texture_so)
+	{
+		map->textures[2] = NULL;
+		return (handle_error(ERR_MISSING_S_ELEM, NULL, *fd));
+	}
+	else if (!map->checked_element.texture_no)
+	{
+		map->textures[0] = NULL;
+		return (handle_error(ERR_MISSING_N_ELEM, NULL, *fd));
+	}
 	return (0);
 }
 

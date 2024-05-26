@@ -82,8 +82,17 @@ norm :
 
 re: fclean all
 
-leaks: $(NAME)
+test: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/map.cub
+
+test1: $(NAME)
 	@leaks --atExit -- ./$(NAME) maps/empty_map.cub
+
+test2: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/incorrect_element.cub
+
+leaks: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/school_map.cub
 
 .PHONY: all clean fclean re
 

@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 13:58:27 by joe_jam           #+#    #+#             */
-/*   Updated: 2024/05/23 19:38:15 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:42:33 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,38 +48,6 @@ void	get_ceiling_color(t_map *map, char *current_line)
 	free_tab((void **)split, &free);
 }
 
-// int full_color_check(t_map *map, char *current_line, int fd, char color_pref)
-// {
-//     bool *color_checked;
-//     char *err_msg;
-
-//     if (color_pref == 'F')
-//     {
-//         color_checked = &map->checked_element.f_color;
-//         err_msg = ERR_F;
-//         if (map->checked_element.c_color)
-//             return (handle_error(ERR_DUP_F, current_line, fd));
-//     }
-//     else
-//     {
-//         color_checked = &map->checked_element.c_color;
-//         err_msg = ERR_C;
-//         if (map->checked_element.f_color)
-//             return (handle_error(ERR_DUP_C, current_line, fd)); 
-//     }
-//     if (*color_checked)
-//         return (0);
-//     if (!is_valid_color_str(current_line))
-//         return (handle_error(err_msg, current_line, fd));
-//     if (color_pref == 'F')
-//         get_floor_color(map, current_line);
-//     else
-//         get_ceiling_color(map, current_line);
-//     *color_checked = true;
-//     return (0);
-// }
-
-
 int	full_color_check(t_map *map, char *current_line, int fd, char color_pref)
 {
 	bool	*color_checked;
@@ -98,8 +66,7 @@ int	full_color_check(t_map *map, char *current_line, int fd, char color_pref)
 		err_msg = ERR_C;
 	}
 	if (*color_checked)
-		return (handle_error(ERR_DUP_COLOR, current_line,
-				fd));
+		return (handle_error(ERR_DUP_COLOR, current_line, fd));
 	if (!is_valid_color_str(current_line))
 		return (handle_error(err_msg, current_line, fd));
 	if (color_pref == 'F')

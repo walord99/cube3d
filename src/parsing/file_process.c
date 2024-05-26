@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 15:07:15 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/23 17:31:31 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:42:20 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ int	full_tex_check(t_map *map, char *current_line, int *line_counter,
 int	process_map(t_map *map, char *current_line, int *line_counter,
 		int *grid_idx)
 {
-	int	fd;
-	char *new_line;
-	
-	if(is_white_space(*current_line))
+	int		fd;
+	char	*new_line;
+
+	if (is_white_space(*current_line))
 		new_line = current_line;
 	fd = map->fd;
 	while (is_white_space(*current_line))
