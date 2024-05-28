@@ -63,7 +63,6 @@ clean:
 
 fclean: clean
 	@echo "$(BOLD)$(PINK)Cleaning executable...$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR)  fclean > /dev/null
 	@rm -f $(NAME) $(NAME).dSYM
 
 norm :
