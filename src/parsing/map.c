@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 22:49:31 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/08 15:01:26 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:39:50 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	init_map_struct(t_map *map, int fd)
 {
+	int	i;
+
 	map->grid = NULL;
 	map->height = 0;
 	map->width = 0;
@@ -23,6 +25,12 @@ void	init_map_struct(t_map *map, int fd)
 	map->spawn_direction = 0;
 	map->spawn_x = -1;
 	map->spawn_y = -1;
+	map->textures = malloc(TEXTURE_COUNT * sizeof(mlx_texture_t *));
+	if (!map->textures)
+		return ;
+	i = 0;
+	while (i < TEXTURE_COUNT)
+		map->textures[i++] = NULL;
 	map->checked_element = (t_element_check){
 		.f_color = false,
 		.c_color = false,

@@ -6,7 +6,11 @@
 /*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:58:34 by yothmani          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/23 15:17:32 by bplante          ###   ########.fr       */
+=======
+/*   Updated: 2024/05/23 19:56:51 by yothmani         ###   ########.fr       */
+>>>>>>> parsing
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +64,6 @@ void	free_game(t_game *game)
 	free_images(game);
 	free_doors(game);
 	free_map(&game->map);
+	free(game->map.textures);
 	mlx_terminate(game->mlx);
 }
