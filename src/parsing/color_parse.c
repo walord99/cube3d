@@ -6,7 +6,7 @@
 /*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-/*   Updated: 2024/05/29 16:38:17 by yothmani         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:38:56 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ bool	validate_color_components(char *color_str)
 		i++;
 	}
 	free_tab((void **)colors, &free);
-	// free(color_str);
 	return (true);
 }
 
