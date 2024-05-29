@@ -63,11 +63,10 @@ clean:
 
 fclean: clean
 	@echo "$(BOLD)$(PINK)Cleaning executable...$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR)  fclean > /dev/null
 	@rm -f $(NAME) $(NAME).dSYM
 
 norm :
-	@echo "$(BOLD)$(PINK)Launching norminette ...$(RESET)"
+	@echo "$(BOLD)$(PINK)🚀Launching norminette ...$(RESET)"
 	@sleep 1
 	@echo "$(BOLD)$(CYAN)checking libraries ...$(RESET)"
 	@sleep 1
@@ -78,8 +77,18 @@ norm :
 	@echo "$(BOLD)$(CYAN)checking sources ...$(RESET)"
 	@sleep 1
 	@norminette $(SRC)
+	@echo "$(BOLD)$(GREEN)✔ All checks passed! Code is in perfect norm. ✔$(RESET)"
 
 re: fclean all
+
+test: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/map.cub
+
+test1: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/empty_map.cub
+
+test2: $(NAME)
+	@leaks --atExit -- ./$(NAME) maps/incorrect_element.cub
 
 leaks: $(NAME)
 	@leaks --atExit -- ./$(NAME) maps/school_map.cub

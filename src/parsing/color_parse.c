@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <bplante@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 20:46:13 by yothmani          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/05/23 15:29:20 by bplante          ###   ########.fr       */
-=======
-/*   Updated: 2024/05/28 12:47:06 by bplante          ###   ########.fr       */
->>>>>>> parsing
+/*   Updated: 2024/05/29 15:56:13 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +104,8 @@ bool	is_valid_color_str(char *color_str)
 	}
 	else
 	{
-<<<<<<< HEAD
-		trimmed_str = color_pref + 1;
-		return (validate_color_components(trimmed_str));
-=======
 		ret = validate_color_components(color_pref + 1);
 		free(color_pref);
 		return (ret);
->>>>>>> parsing
 	}
 }

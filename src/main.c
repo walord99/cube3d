@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bplante <benplante99@gmail.com>            +#+  +:+       +#+        */
+/*   By: yothmani <yothmani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 00:40:51 by joe_jam           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/05/23 12:53:39 by yothmani         ###   ########.fr       */
-=======
-/*   Updated: 2024/05/24 13:53:21 by bplante          ###   ########.fr       */
->>>>>>> parsing
+/*   Updated: 2024/05/29 15:54:48 by yothmani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +21,11 @@ int	main(int argc, char **argv)
 	if (fd < 0)
 		return (1);
 	init_map_struct(&game.map, fd);
-<<<<<<< HEAD
 	if (parse(argc, argv, &game.map, &fd))
-=======
-	if (parse(argc, argv, &game, &fd))
 	{
 		free(game.map.textures);
->>>>>>> parsing
 		return (1);
+	}
 	close(fd);
 	if (init_game(&game))
 		return (1);
