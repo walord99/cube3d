@@ -40,7 +40,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@if [ ! -d $(dir $@) ]; then \
         mkdir -p $(dir $@); \
     fi
-	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g
+	$(CC) $(CC_DEBUG) $(INCLUDES) $(ERROR_FLAGS) -c $< -o $@ -g -O3
 
 $(LIBFT): | $(LIBFT_DIR)/Makefile
 	@make -C $(LIBFT_DIR)
@@ -93,7 +93,7 @@ test2: $(NAME)
 leaks: $(NAME)
 	@leaks --atExit -- ./$(NAME) maps/school_map.cub
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm test test1 test2 leaks
 
 ##############COLORS################
 MINT    = \033[38\;2\;189\;252\;201m
