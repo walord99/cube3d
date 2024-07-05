@@ -4,6 +4,12 @@ A small tech demo with rendering similar to wolfenstein 3D built according the s
 
 The rendering is done on the CPU, but since only 2D calculations are needed for each pixel an X axis to render an image, it is still very fast on modern processor. The main bottleneck that causes frames per second to drop is editing the memory of image that holds the wall, not the raycasting.
 
+## build #
+dependecies: glfw\
+run 'make' to build, it will fetch the mlx and libft libraries from github automatically 
+
+## make your own map
+
 ### map specification #
 - a '0' or space represents a walkable tile
 - '1' is a wall
